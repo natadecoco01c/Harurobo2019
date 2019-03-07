@@ -1,0 +1,9 @@
+can.cpp:11:6:void can_init()	4	static
+can.cpp:19:6:void can_set_filter(uint32_t, uint32_t)	16	static
+can.cpp:49:6:void can_enable()	8	static
+can.cpp:89:6:void can_disable()	4	static
+can.cpp:102:6:void can_set_bitrate(can_bitrate)	16	static
+can.cpp:142:6:void can_set_silent(uint8_t)	16	static
+can.cpp:159:10:uint32_t can_tx(CAN_TxHeaderTypeDef*, uint8_t (&)[8])	24	static
+can.cpp:177:10:uint32_t can_rx(CAN_RxHeaderTypeDef*, uint8_t (&)[8])	24	static
+can.cpp:190:9:uint8_t is_can_msg_pending(uint8_t)	16	static

@@ -1,0 +1,6 @@
+SerialClass.hpp:30:5:SerialClass::SerialClass(UART_HandleTypeDef&)	16	static
+SerialClass.hpp:36:39:UART_HandleTypeDef* const SerialClass::get_handle()	16	static
+SerialClass.hpp:125:17:void SerialClass::tx_cplt_callback()	16	static
+SerialClass.cpp:17:17:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	24	static
+SerialClass.cpp:24:1:void __static_initialization_and_destruction_0(int, int)	16	static
+SerialClass.cpp:24:1:cpp)	8	static
