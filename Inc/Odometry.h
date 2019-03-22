@@ -16,7 +16,7 @@
 class Odometry
 {
 private:
-//	float x;
+//	float x; //main.cppからアクセスするためにpublicへ移動
 //	float y;
 //	float yaw;
 
@@ -42,6 +42,7 @@ public:
 	float x;
 	float y;
 	float yaw;
+	static constexpr float margin = 0.176848f; //オドメトリの座標原点と機体中心を合わせるためのもの　単位はm
 	Odometry(void);
 
 	bool Initialize(void);

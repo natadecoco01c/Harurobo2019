@@ -13,7 +13,7 @@
 
 Odometry::Odometry(void)
 {
-	this->x = 0.0f;
+	this->x = -margin; //オドメトリ座標と機体中心座標を揃えるため、差分を引く
 	this->y = 0.0f;
 	this->yaw = 0.0f;
 
@@ -101,7 +101,7 @@ bool Odometry::InitGyro(void)
 
 void Odometry::ReadEncoder(void)
 {
-	volatile int16_t _p1 = static_cast<int16_t>(((TIM_TypeDef *)(0x40000000U + 0x00000400U))->CNT);//TIM3->CNT
+	volatile int16_t _p1 = static_cast<int16_t>(((TIM_TypeDef *)(0x40000000U + 0x00000400U))->CNT);//TIM3->CNT こんな書き方する意味ないかも
 	((TIM_TypeDef *)(0x40000000U + 0x00000400U))->CNT = 0;
 
 	volatile int16_t _p2 = static_cast<int16_t>(((TIM_TypeDef *)(0x40000000U + 0x00000800U))->CNT);//TIM4->CNT
@@ -113,8 +113,9 @@ void Odometry::ReadEncoder(void)
 	float _cos = cosf(_yaw);
 	float _sin = sinf(_yaw);
 
-	x += ((_p1 * _cos) - (_p2 * _sin)) * MPerPulse;
-	y += ((_p1 * _sin) + (_p2 * _cos)) * MPerPulse;
+
+	x += (-(_p1 * _sin) + (_p2 * _cos)) * MPerPulse;
+	y += ((_p1 * _cos) + (_p2 * _sin)) * MPerPulse;
 }
 
 void Odometry::ReadGyro(void)

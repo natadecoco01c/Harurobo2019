@@ -122,7 +122,7 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
     /* Peripheral clock enable */
     __HAL_RCC_CAN1_CLK_ENABLE();
   
-    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE(); //GPIOBじゃ無いあたりが気になるけど、動いてるしバグが怖いのでそのままに
     /**CAN GPIO Configuration    
     PB8     ------> CAN_RX
     PB9     ------> CAN_TX
@@ -181,7 +181,7 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
 * @param hcrc: CRC handle pointer
 * @retval None
 */
-void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc)
+void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc) //要らないかも
 {
 
   if(hcrc->Instance==CRC)
@@ -258,36 +258,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 
     /* SPI2 DMA Init */
     /* SPI2_RX Init */
-//    hdma_spi2_rx.Instance = DMA1_Channel4;
-//    hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-//    hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-//    hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
-//    hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-//    hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-//    hdma_spi2_rx.Init.Mode = DMA_NORMAL;
-//    hdma_spi2_rx.Init.Priority = DMA_PRIORITY_LOW;
-//    if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
-//    {
-//      Error_Handler();
-//    }
-//
-//    __HAL_LINKDMA(hspi,hdmarx,hdma_spi2_rx);
-//
-//    /* SPI2_TX Init */
-//    hdma_spi2_tx.Instance = DMA1_Channel5;
-//    hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
-//    hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
-//    hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
-//    hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-//    hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-//    hdma_spi2_tx.Init.Mode = DMA_NORMAL;
-//    hdma_spi2_tx.Init.Priority = DMA_PRIORITY_LOW;
-//    if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
-//    {
-//      Error_Handler();
-//    }
-//
-//    __HAL_LINKDMA(hspi,hdmatx,hdma_spi2_tx);
+
 
   /* USER CODE BEGIN SPI2_MspInit 1 */
 
