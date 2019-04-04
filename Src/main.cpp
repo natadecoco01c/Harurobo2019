@@ -80,8 +80,8 @@ CAN_RxHeaderTypeDef rx_header;
 Odometry *odom = new Odometry();
 uint32_t current_time;
 uint32_t last_time;
-double X;
-double Y;
+//double X;
+//double Y;
 
 /* USER CODE END PV */
 
@@ -229,12 +229,8 @@ int main(void) {
 
 		//指定した周波数でCANに座標を送る
 		if (current_time - last_time > interval) {
-			float cos_ = cosf(odom->yaw);
-			float sin_ = sinf(odom->yaw);
-			X = ((double) odom->x) + ((double) odom->margin) * cos_;
-			Y = ((double) odom->y) + ((double) odom->margin) * sin_;
-			can_pack(tx_payload_x, X);
-			can_pack(tx_payload_y, Y);
+			can_pack(tx_payload_x, (double) odom->x);
+			can_pack(tx_payload_y, (double) odom->y);
 			can_pack(tx_payload_yaw, (double) odom->yaw);
 
 			can_tx(&tx_header_x, tx_payload_x); //can pack 通して tx_payload //can_txのled_onが上手く動いてないっぽいのでデバッグ用にLEDを変えてみる
