@@ -82,7 +82,9 @@ CAN_TxHeaderTypeDef tx_header_yaw;
 Odometry *odom = new Odometry();
 uint32_t current_time;
 uint32_t last_time;
-
+uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
+uint8_t tx_payload_y[CAN_MTU];
+uint8_t tx_payload_yaw[CAN_MTU];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,9 +115,10 @@ static void CANtxinit(void);
 int main(void) {
 	/* USER CODE BEGIN 1 */
 	// rate in Hz
-	static constexpr int rate = 200;
-	// interval in ms
-	static constexpr double interval = (1.0 / rate) * 1000.0;
+//	static constexpr int rate = 200;
+//	// interval in ms
+//	static constexpr double interval = (1.0 / rate) * 1000.0; //タイマー割り込みでの送信が上手く行けば削除
+
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -189,9 +192,6 @@ int main(void) {
 	HAL_NVIC_EnableIRQ (TIM2_IRQn); //割り込み有効化 上のodom->Initializeが終わってからでないと、初期化終わる前にジャイロの値をとってしまう 初期の角度がズレる
 
 	CANtxinit();
-	uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
-	uint8_t tx_payload_y[CAN_MTU];
-	uint8_t tx_payload_yaw[CAN_MTU];
 
 	/* USER CODE END 2 */
 
@@ -208,24 +208,7 @@ int main(void) {
 		 */
 
 		can_set_silent(0); //要らないかも
-		current_time = HAL_GetTick();
 
-		//指定した周波数でCANに座標を送る
-		if (current_time - last_time > interval) {
-			can_pack(tx_payload_x, (double) odom->x);
-			can_pack(tx_payload_y, (double) odom->y);
-			can_pack(tx_payload_yaw, (double) odom->yaw);
-
-			can_tx(&tx_header_x, tx_payload_x); //can pack 通して tx_payload //can_txのled_onが上手く動いてないっぽいのでデバッグ用にLEDを変えてみる
-			HAL_Delay(1);
-			can_tx(&tx_header_y, tx_payload_y);
-			HAL_Delay(1);
-			can_tx(&tx_header_yaw, tx_payload_yaw);
-
-			last_time = current_time;
-		}
-
-		led_process();
 		/* USER CODE BEGIN 3 */
 	}
 }
@@ -237,7 +220,16 @@ extern "C" void TIM2_IRQHandler(void) //サンプリングレート200
 
 		TIM2->SR &= ~TIM_SR_UIF;
 	}
+	can_pack(tx_payload_x, (double) odom->x);
+	can_pack(tx_payload_y, (double) odom->y);
+	can_pack(tx_payload_yaw, (double) odom->yaw);
 
+	can_tx(&tx_header_x, tx_payload_x); //can pack 通して tx_payload //can_txのled_onが上手く動いてないっぽいのでデバッグ用にLEDを変えてみる
+	asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");
+	can_tx(&tx_header_y, tx_payload_y);
+	asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");
+	can_tx(&tx_header_yaw, tx_payload_yaw);
+	led_process();
 }
 
 void CANtxinit (void) {
