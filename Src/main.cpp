@@ -58,9 +58,12 @@ SPI_HandleTypeDef hspi2; //ジャイロとの通信用
 TIM_HandleTypeDef htim2; //TIM3,4はエンコーダー用
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
-CAN_HandleTypeDef hcan;
 UART_HandleTypeDef huart1; //デバッグ用に残しておく
-CAN_RxHeaderTypeDef rx_header;
+CAN_HandleTypeDef hcan;
+//CAN_RxHeaderTypeDef rx_header;
+CAN_TxHeaderTypeDef tx_header_x; //設定を格納するための構造体？クラス？でいいのかな
+CAN_TxHeaderTypeDef tx_header_y;
+CAN_TxHeaderTypeDef tx_header_yaw;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -76,12 +79,9 @@ CAN_RxHeaderTypeDef rx_header;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-//uint8_t rx_payload[CAN_MTU]; //受信したデータの格納用　今回は使わなかった
 Odometry *odom = new Odometry();
 uint32_t current_time;
 uint32_t last_time;
-//double X;
-//double Y;
 
 /* USER CODE END PV */
 
@@ -97,6 +97,7 @@ static void MX_TIM4_Init(void);
 static void MX_CAN_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_USART1_UART_Init(void);
+static void CANtxinit(void);
 
 /* USER CODE END PFP */
 
@@ -130,7 +131,7 @@ int main(void) {
 	MX_TIM4_Init();
 	MX_CAN_Init(); //要らないかもだけど確認取れて無いので残しておく
 	MX_SPI2_Init();
-	MX_USART1_UART_Init();
+	MX_USART1_UART_Init(); //デバッグ用だよ
 	// CANを初期化する．
 	can_init();
 
@@ -148,30 +149,30 @@ int main(void) {
 
 	/* USER CODE BEGIN 2 */
 	SPI2->CR1 |= SPI_CR1_SPE;
-	HAL_TIM_Base_Start_IT(&htim2);
-	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+	HAL_TIM_Base_Start_IT(&htim2); //タイマー割り込み用
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); //エンコーダ用
 	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
 
 	//CANの通信速度を設定する
 	can_set_bitrate(CAN_BITRATE_500K);
 
-	GPIOC->BSRR = GPIO_BSRR_BS13;
-
-	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2; //この辺要らない　多分
-	HAL_Delay(250);
-	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BR2;
-	HAL_Delay(250);
-	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BS2;
-	HAL_Delay(250);
-	GPIOB->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
-	HAL_Delay(250);
-	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BS2;
-	HAL_Delay(250);
-	GPIOB->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
-	HAL_Delay(250);
-
-	GPIOC->BSRR = GPIO_BSRR_BR13;
-	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
+//	GPIOC->BSRR = GPIO_BSRR_BS13;
+//
+//	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2; //この辺要らない　多分
+//	HAL_Delay(250);
+//	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BR2;
+//	HAL_Delay(250);
+//	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BS2;
+//	HAL_Delay(250);
+//	GPIOB->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
+//	HAL_Delay(250);
+//	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS1 | GPIO_BSRR_BS2;
+//	HAL_Delay(250);
+//	GPIOB->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
+//	HAL_Delay(250);
+//
+//	GPIOC->BSRR = GPIO_BSRR_BR13;
+//	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
 
 	bool r = odom->Initialize(); //ジャイロの初期化に失敗するとループに入る
 	if (!r) {
@@ -187,28 +188,10 @@ int main(void) {
 
 	HAL_NVIC_EnableIRQ (TIM2_IRQn); //割り込み有効化 上のodom->Initializeが終わってからでないと、初期化終わる前にジャイロの値をとってしまう 初期の角度がズレる
 
-	CAN_TxHeaderTypeDef tx_header_x; //設定を格納するための構造体？クラス？でいいのかな
-	CAN_TxHeaderTypeDef tx_header_y;
-	CAN_TxHeaderTypeDef tx_header_yaw;
+	CANtxinit();
 	uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
 	uint8_t tx_payload_y[CAN_MTU];
 	uint8_t tx_payload_yaw[CAN_MTU];
-
-	tx_header_x.RTR = CAN_RTR_DATA;
-	tx_header_x.IDE = CAN_ID_STD;
-	tx_header_x.StdId = 0x205; //ID決める
-	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
-	tx_header_x.DLC = 8;
-	tx_header_y.RTR = CAN_RTR_DATA;
-	tx_header_y.IDE = CAN_ID_STD;
-	tx_header_y.StdId = 0x206;
-	tx_header_y.ExtId = 0;
-	tx_header_y.DLC = 8;
-	tx_header_yaw.RTR = CAN_RTR_DATA;
-	tx_header_yaw.IDE = CAN_ID_STD;
-	tx_header_yaw.StdId = 0x207;
-	tx_header_yaw.ExtId = 0;
-	tx_header_yaw.DLC = 8;
 
 	/* USER CODE END 2 */
 
@@ -255,6 +238,25 @@ extern "C" void TIM2_IRQHandler(void) //サンプリングレート200
 		TIM2->SR &= ~TIM_SR_UIF;
 	}
 
+}
+
+void CANtxinit (void) {
+
+	tx_header_x.RTR = CAN_RTR_DATA;
+	tx_header_x.IDE = CAN_ID_STD;
+	tx_header_x.StdId = 0x205; //ID決める
+	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
+	tx_header_x.DLC = 8;
+	tx_header_y.RTR = CAN_RTR_DATA;
+	tx_header_y.IDE = CAN_ID_STD;
+	tx_header_y.StdId = 0x206;
+	tx_header_y.ExtId = 0;
+	tx_header_y.DLC = 8;
+	tx_header_yaw.RTR = CAN_RTR_DATA;
+	tx_header_yaw.IDE = CAN_ID_STD;
+	tx_header_yaw.StdId = 0x207;
+	tx_header_yaw.ExtId = 0;
+	tx_header_yaw.DLC = 8;
 }
 
 /* USER CODE END 3 */

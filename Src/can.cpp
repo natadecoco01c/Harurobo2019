@@ -167,10 +167,10 @@ uint32_t can_tx(CAN_TxHeaderTypeDef *tx_header, uint8_t (&buf)[CAN_MTU])
     uint32_t tx_mailbox;
     status = HAL_CAN_AddTxMessage(&hcan, tx_header, buf, &tx_mailbox);
 
-    GPIOC->BSRR=GPIO_BSRR_BS13;
-    GPIOC->BSRR=GPIO_BSRR_BR13;
+//    GPIOC->BSRR=GPIO_BSRR_BS13;
+//    GPIOC->BSRR=GPIO_BSRR_BR13;
 
-    //led_on();
+    led_on();
     return status;
 }
 
