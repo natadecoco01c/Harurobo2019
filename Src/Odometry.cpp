@@ -101,10 +101,10 @@ bool Odometry::InitGyro(void)
 
 void Odometry::ReadEncoder(void)
 {
-	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);//TIM3->CNT こんな書き方する意味ないかも
+	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);
 	TIM3->CNT = 0;
 
-	volatile int16_t _p2 = static_cast<int16_t>(TIM4->CNT);//TIM4->CNT
+	volatile int16_t _p2 = static_cast<int16_t>(TIM4->CNT);
 	TIM4->CNT = 0;
 
 	// just a simple rotation matrix

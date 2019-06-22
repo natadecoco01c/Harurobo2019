@@ -207,7 +207,7 @@ int main(void) {
 		 HAL_Delay(100);
 		 */
 
-		can_set_silent(0); //要らないかも
+//		can_set_silent(0); //要らないかも
 
 		/* USER CODE BEGIN 3 */
 	}
