@@ -51,7 +51,7 @@ public:
 	void SetPose(float x, float y, float yaw);
 	void GetPose(float *x, float *y, float *yaw);
 
-	static constexpr int32_t SamplingFrequency = 200; //TIM1の割り込み周波数と一致
+	static constexpr int32_t SamplingFrequency = 1000; //TIM1の割り込み周波数と一致
 };
 
 
