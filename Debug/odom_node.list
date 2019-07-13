@@ -6790,10 +6790,11 @@ bool Odometry::InitGyro(void)
 
 	 // Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x07);  // Use a 1 kHz rate; the same rate set in CONFIG above
-	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
+	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
+	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00);
  8003510:	687b      	ldr	r3, [r7, #4]
  8003512:	681b      	ldr	r3, [r3, #0]
- 8003514:	2204      	movs	r2, #4
+ 8003514:	2200      	movs	r2, #0
  8003516:	2119      	movs	r1, #25
  8003518:	4618      	mov	r0, r3
  800351a:	f7ff fed3 	bl	80032c4 <_ZNK7MPU92509WriteByteEhh>
@@ -7896,7 +7897,7 @@ int main(void) {
 	}
 }
 
-extern "C" void TIM2_IRQHandler(void) //サンプリングレート200
+extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
 		{
  8003c14:	b598      	push	{r3, r4, r7, lr}
  8003c16:	af00      	add	r7, sp, #0
@@ -8666,9 +8667,9 @@ static void MX_TIM2_Init(void) {
  80040a6:	4b22      	ldr	r3, [pc, #136]	; (8004130 <_ZL12MX_TIM2_Initv+0xb4>)
  80040a8:	2200      	movs	r2, #0
  80040aa:	609a      	str	r2, [r3, #8]
-	htim2.Init.Period = 5000 - 1;
+	htim2.Init.Period = 1000 - 1; //set rate 1kHz
  80040ac:	4b20      	ldr	r3, [pc, #128]	; (8004130 <_ZL12MX_TIM2_Initv+0xb4>)
- 80040ae:	f241 3287 	movw	r2, #4999	; 0x1387
+ 80040ae:	f240 32e7 	movw	r2, #999	; 0x3e7
  80040b2:	60da      	str	r2, [r3, #12]
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
  80040b4:	4b1e      	ldr	r3, [pc, #120]	; (8004130 <_ZL12MX_TIM2_Initv+0xb4>)

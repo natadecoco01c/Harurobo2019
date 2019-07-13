@@ -73,7 +73,8 @@ bool Odometry::InitGyro(void)
 
 	 // Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x07);  // Use a 1 kHz rate; the same rate set in CONFIG above
-	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
+	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
+	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00);
 
 	mpu9250->WriteByte(MPUREG_GYRO_CONFIG, BITS_FS_1000DPS);
 

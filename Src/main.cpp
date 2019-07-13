@@ -213,7 +213,7 @@ int main(void) {
 	}
 }
 
-extern "C" void TIM2_IRQHandler(void) //サンプリングレート200
+extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
 		{
 	if (TIM2->SR & TIM_SR_UIF) {
 		odom->Sample();
@@ -468,7 +468,7 @@ static void MX_TIM2_Init(void) {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 72 - 1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 5000 - 1;
+	htim2.Init.Period = 1000 - 1; //set rate 1kHz
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
