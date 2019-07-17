@@ -85,6 +85,7 @@ uint32_t last_time;
 uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
 uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];
+double X,Y;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -206,7 +207,6 @@ int main(void) {
 		 HAL_UART_Transmit_IT(&huart1,(uint8_t *)kakudo,7);
 		 HAL_Delay(100);
 		 */
-
 //		can_set_silent(0); //要らないかも
 
 		/* USER CODE BEGIN 3 */
@@ -220,8 +220,12 @@ extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
 
 		TIM2->SR &= ~TIM_SR_UIF;
 	}
-	can_pack(tx_payload_x, (double) odom->x);
-	can_pack(tx_payload_y, (double) odom->y);
+	float cos_ = cosf(odom->yaw);
+	float sin_ = sinf(odom->yaw);
+	X = ((double) odom->x) + ((double) odom->margin) * cos_;
+	Y = ((double) odom->y) + ((double) odom->margin) * sin_;
+	can_pack(tx_payload_x, X);
+	can_pack(tx_payload_y, Y);
 	can_pack(tx_payload_yaw, (double) odom->yaw);
 
 	can_tx(&tx_header_x, tx_payload_x); //can pack 通して tx_payload //can_txのled_onが上手く動いてないっぽいのでデバッグ用にLEDを変えてみる
@@ -468,7 +472,7 @@ static void MX_TIM2_Init(void) {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 72 - 1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 1000 - 1; //set rate 1kHz
+	htim2.Init.Period = 2000 - 1; //set rate 500Hz
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
