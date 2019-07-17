@@ -86,6 +86,7 @@ uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
 uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];
 double X,Y;
+uint32_t Period = pow(10,6)/(odom->SamplingFrequency);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -472,7 +473,7 @@ static void MX_TIM2_Init(void) {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 72 - 1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 2000 - 1; //set rate 500Hz
+	htim2.Init.Period = Period - 1;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
