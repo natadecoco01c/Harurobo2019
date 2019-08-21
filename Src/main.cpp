@@ -80,8 +80,8 @@ CAN_TxHeaderTypeDef tx_header_yaw;
 
 /* USER CODE BEGIN PV */
 Odometry *odom = new Odometry();
-uint32_t current_time;
-uint32_t last_time;
+//uint32_t current_time;
+//uint32_t last_time;
 uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
 uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];

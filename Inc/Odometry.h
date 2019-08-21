@@ -42,7 +42,7 @@ public:
 	float x;
 	float y;
 	float yaw;
-	//static constexpr float margin = 0.176848f; //オドメトリの座標原点と機体中心を合わせるためのもの　単位はm
+	static constexpr float margin = 0.176848f; //オドメトリの座標原点と機体中心を合わせるためのもの　単位はm
 	Odometry(void);
 
 	bool Initialize(void);
@@ -51,7 +51,7 @@ public:
 	void SetPose(float x, float y, float yaw);
 	void GetPose(float *x, float *y, float *yaw);
 
-	static constexpr int32_t SamplingFrequency = 1000; //TIM1の割り込み周波数と一致
+	static constexpr int32_t SamplingFrequency = 500; //TIM1の割り込み周波数と一致
 };
 
 
