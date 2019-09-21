@@ -116,10 +116,7 @@ static void CANtxinit(void);
  */
 int main(void) {
 	/* USER CODE BEGIN 1 */
-	// rate in Hz
-//	static constexpr int rate = 200;
-//	// interval in ms
-//	static constexpr double interval = (1.0 / rate) * 1000.0; //タイマー割り込みでの送信が上手く行けば削除
+
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
