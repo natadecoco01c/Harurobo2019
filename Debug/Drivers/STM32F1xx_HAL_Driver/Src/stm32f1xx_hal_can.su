@@ -12,7 +12,7 @@ stm32f1xx_hal_can.c:852:19:HAL_CAN_AddTxMessage	20	static
 stm32f1xx_hal_can.c:960:19:HAL_CAN_AbortTxRequest	0	static
 stm32f1xx_hal_can.c:1009:10:HAL_CAN_GetTxMailboxesFreeLevel	0	static
 stm32f1xx_hal_can.c:1052:10:HAL_CAN_IsTxMessagePending	0	static
-stm32f1xx_hal_can.c:1084:10:HAL_CAN_GetTxTimestamp	0	static
+stm32f1xx_hal_can.c:1084:10:HAL_CAN_GetTxTimestamp	0	static,ignoring_inline_asm
 stm32f1xx_hal_can.c:1118:19:HAL_CAN_GetRxMessage	20	static
 stm32f1xx_hal_can.c:1208:10:HAL_CAN_GetRxFifoFillLevel	0	static
 stm32f1xx_hal_can.c:1261:19:HAL_CAN_ActivateNotification	0	static

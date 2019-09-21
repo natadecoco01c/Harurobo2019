@@ -1,5 +1,5 @@
 stm32f1xx_hal_rcc.c:218:19:HAL_RCC_DeInit	16	static
-stm32f1xx_hal_rcc.c:363:19:HAL_RCC_OscConfig	32	static
+stm32f1xx_hal_rcc.c:363:19:HAL_RCC_OscConfig	32	static,ignoring_inline_asm
 stm32f1xx_hal_rcc.c:1015:6:HAL_RCC_MCOConfig	40	static
 stm32f1xx_hal_rcc.c:1052:6:HAL_RCC_EnableCSS	0	static
 stm32f1xx_hal_rcc.c:1061:6:HAL_RCC_DisableCSS	0	static

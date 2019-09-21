@@ -134,7 +134,7 @@ int main(void) {
 	MX_TIM2_Init();
 	MX_TIM3_Init();
 	MX_TIM4_Init();
-	MX_CAN_Init(); //要らないかもだけど確認取れて無いので残しておく
+//	MX_CAN_Init(); //要らないかもだけど確認取れて無いので残しておく
 	MX_SPI2_Init();
 	MX_USART1_UART_Init(); //デバッグ用だよ
 	// CANを初期化する．
@@ -234,6 +234,11 @@ extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
 	can_tx(&tx_header_y, tx_payload_y);
 	asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");asm("NOP");
 	can_tx(&tx_header_yaw, tx_payload_yaw);
+
+	if(((CAN1->ESR)&0b100) == 0b100){
+		asm("NOP");
+	}
+
 	led_process();
 }
 
