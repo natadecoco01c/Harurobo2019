@@ -29,10 +29,17 @@ private:
 	/// Kpd = 2_pi_r[mm/rev] / Kp[pulse/rev]
 	static constexpr float MPerPulse = M_PI * WheelDiameter / PulsePerRevolution;
 
-	// moving average in milli-degree-per-second
-	int movavg;
+	// milli degree per sec
+	int movavgGX;
+	int movavgGY;
+	int movavgGZ;
+	// milli G per sec
+	int movavgAX;
+	int movavgAY;
+	int movavgAZ;
 
-	void GetGyroBias(float * const avg, float * const stdev) const;
+	void GetGyroBias(float * const avg, float * const stdev, uint8_t const addr) const;
+	void GetAccBias(float * const avg, float * const stdev, uint8_t const addr) const;
 	bool InitGyro(void);
 
 	void ReadEncoder(void);

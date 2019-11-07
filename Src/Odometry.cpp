@@ -22,13 +22,19 @@ Odometry::Odometry(void) {
 	this->y = 0.0f;
 	this->yaw = 0.0f;
 
-	this->movavg = 0;
+	this->movavgGX = 0;
+	this->movavgGY = 0;
+	this->movavgGZ = 0;
+	this->movavgAX = 0;
+	this->movavgAY = 0;
+	this->movavgAZ = 0;
 
 	//this->mpu9250 = new MPU9250(SPI_MPU9250, GPIOC, GPIO_PIN_0);
 	this->mpu9250 = new MPU9250(SPI_MPU9250, GPIO_MPU9250, PIN_MPU9250);
 }
 
-void Odometry::GetGyroBias(float * const avg, float * const stdev) const {
+void Odometry::GetGyroBias(float * const avg, float * const stdev,
+		uint8_t const addr) const {
 	static constexpr int NumOfTrial = 256;
 
 	float _avg = 0.0f;
@@ -36,14 +42,41 @@ void Odometry::GetGyroBias(float * const avg, float * const stdev) const {
 
 	for (int i = 0; i < NumOfTrial; i++) {
 		float reading = (int16_t) mpu9250->WriteWord(
-				READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000) * 1000.0f
-				/ GyroSensitivityScaleFactor;
+		READ_FLAG | addr, 0x0000) * 1000.0f / GyroSensitivityScaleFactor;
 
 		_avg += reading;
 		_stdev += reading * reading;
 
 		//Timer::sleep(5);
-		HAL_Delay(5);
+		HAL_Delay(1); //６つ分やるとすごい時間になるので短く 5->1
+	}
+
+	_avg /= NumOfTrial;
+
+	_stdev -= NumOfTrial * _avg * _avg;
+	_stdev /= NumOfTrial - 1;
+	_stdev = sqrtf(_stdev);
+
+	*avg = _avg;
+	*stdev = _stdev;
+}
+
+void Odometry::GetAccBias(float * const avg, float * const stdev,
+		uint8_t const addr) const {
+	static constexpr int NumOfTrial = 256;
+
+	float _avg = 0.0f;
+	float _stdev = 0.0f;
+
+	for (int i = 0; i < NumOfTrial; i++) {
+		float reading = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | addr, 0x0000) * 1000.0f / AccSensitivityScaleFactor;
+
+		_avg += reading;
+		_stdev += reading * reading;
+
+		//Timer::sleep(5);
+		HAL_Delay(1); //６つ分やるとすごい時間になるので短く 5->1
 	}
 
 	_avg /= NumOfTrial;
@@ -85,14 +118,79 @@ bool Odometry::InitGyro(void) {
 	//Timer::sleep(100);
 	HAL_Delay(100);
 
-	float avg = 0.0f;
+	float avg = 0.0f; //GX
 	float stdev = 1000.0f;
 
 	for (int i = 0; i < 10; i++) {
-		this->GetGyroBias(&avg, &stdev);
+		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_XOUT_H);
 
 		if (stdev < 700) {
-			movavg = (int32_t) avg;
+			movavgGX = (int32_t) avg;
+
+			return true;
+		}
+	}
+
+	avg = 0.0f; //GY
+	stdev = 1000.0f;
+
+	for (int i = 0; i < 10; i++) {
+		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_YOUT_H);
+
+		if (stdev < 700) {
+			movavgGY = (int32_t) avg;
+
+			return true;
+		}
+	}
+
+	avg = 0.0f; //GZ
+	stdev = 1000.0f;
+
+	for (int i = 0; i < 10; i++) {
+		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_ZOUT_H);
+
+		if (stdev < 700) {
+			movavgGZ = (int32_t) avg;
+
+			return true;
+		}
+	}
+
+	avg = 0.0f; //AX
+	stdev = 1000.0f;
+
+	for (int i = 0; i < 10; i++) {
+		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_XOUT_H);
+
+		if (stdev < 700) {
+			movavgAX = (int32_t) avg;
+
+			return true;
+		}
+	}
+
+	avg = 0.0f; //AY
+	stdev = 1000.0f;
+
+	for (int i = 0; i < 10; i++) {
+		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_YOUT_H);
+
+		if (stdev < 700) {
+			movavgAY = (int32_t) avg;
+
+			return true;
+		}
+	}
+
+	avg = 0.0f; //AZ
+	stdev = 1000.0f;
+
+	for (int i = 0; i < 10; i++) {
+		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_ZOUT_H);
+
+		if (stdev < 700) {
+			movavgAZ = (int32_t) avg;
 
 			return true;
 		}
@@ -136,43 +234,41 @@ void Odometry::ReadGyro(void) {
 	grawZ = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H,
 			0x0000);
 
-	accX = (1. * arawX / AccSensitivityScaleFactor) ;
-	accY = (1. * arawY / AccSensitivityScaleFactor) ;
-	accZ = (1. * arawZ / AccSensitivityScaleFactor) ;
-	gyroX = (1. * grawX / GyroSensitivityScaleFactor) ;
-	gyroY = (1. * grawY / GyroSensitivityScaleFactor) ;
-	gyroZ = (1. * grawZ / GyroSensitivityScaleFactor) ;
+	accX = (1. * arawX / AccSensitivityScaleFactor);
+	accY = (1. * arawY / AccSensitivityScaleFactor);
+	accZ = (1. * arawZ / AccSensitivityScaleFactor);
+	gyroX = (1. * grawX / GyroSensitivityScaleFactor);
+	gyroY = (1. * grawY / GyroSensitivityScaleFactor);
+	gyroZ = (1. * grawZ / GyroSensitivityScaleFactor);
 
 	MDGF.updateIMU(gyroX, gyroY, gyroZ, accX, accY, accZ);
 
 	static constexpr int32_t movband = 100;
 	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
-	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg / SamplingFrequency;
+	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg
+			/ SamplingFrequency;
 	static constexpr float w = 0.01f;
 	//static constexpr float halfPi = M_PI / 2.0;
 
-	int dy_raw_mdps = (((int16_t)mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000)) * 1000 / SensitivityScaleFactor) + 0.5f;
+	int dy_raw_mdps = (((int16_t) mpu9250->WriteWord(
+	READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000)) * 1000 / SensitivityScaleFactor)
+			+ 0.5f;
 	//temp = mpu9250->WriteWord(READ_FLAG | MPUREG_TEMP_OUT_H, 0x0000);
 
 	int dy_biased_mdps = dy_raw_mdps - movavg;
 
-	if(dy_biased_mdps < -movband || movband < dy_biased_mdps)
-	{
+	if (dy_biased_mdps < -movband || movband < dy_biased_mdps) {
 		// yaw is in radian, so, convert from mdps to radian.
-		yaw += (float)dy_biased_mdps * RadPerMilliDegPerSec;
+		yaw += (float) dy_biased_mdps * RadPerMilliDegPerSec;
 
-		if(yaw > (float)M_PI)
-		{
-			yaw -= (2.0f * (float)M_PI);
+		if (yaw > (float) M_PI) {
+			yaw -= (2.0f * (float) M_PI);
+		} else if (yaw < -(float) M_PI) {
+			yaw += (2.0f * (float) M_PI);
 		}
-		else if(yaw < -(float)M_PI)
-		{
-			yaw += (2.0f * (float)M_PI);
-		}
-	}
-	else
-	{
-		movavg = (int)((((float)movavg * (1 - w)) + ((float)dy_raw_mdps * w)) + 0.5f);
+	} else {
+		movavg = (int) ((((float) movavg * (1 - w)) + ((float) dy_raw_mdps * w))
+				+ 0.5f);
 	}
 
 }
