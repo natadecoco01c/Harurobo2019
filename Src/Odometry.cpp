@@ -6,13 +6,18 @@
  */
 
 #include "Odometry.h"
+#include "MadgwickAHRS.h"
 //#include "stm32f10x_conf.h"
 //#include "Timer.h"
 
 #include <cmath>
 
-Odometry::Odometry(void)
-{
+Madgwick MDGF;
+
+Odometry::Odometry(void) {
+
+	MDGF.begin(500);
+
 	this->x = 0.0f;
 	this->y = 0.0f;
 	this->yaw = 0.0f;
@@ -23,16 +28,16 @@ Odometry::Odometry(void)
 	this->mpu9250 = new MPU9250(SPI_MPU9250, GPIO_MPU9250, PIN_MPU9250);
 }
 
-void Odometry::GetGyroBias(float * const avg, float * const stdev) const
-{
+void Odometry::GetGyroBias(float * const avg, float * const stdev) const {
 	static constexpr int NumOfTrial = 256;
 
 	float _avg = 0.0f;
 	float _stdev = 0.0f;
 
-	for(int i = 0; i < NumOfTrial; i++)
-	{
-		float reading = (int16_t)mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000) * 1000.0f / SensitivityScaleFactor;
+	for (int i = 0; i < NumOfTrial; i++) {
+		float reading = (int16_t) mpu9250->WriteWord(
+				READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000) * 1000.0f
+				/ GyroSensitivityScaleFactor;
 
 		_avg += reading;
 		_stdev += reading * reading;
@@ -51,32 +56,31 @@ void Odometry::GetGyroBias(float * const avg, float * const stdev) const
 	*stdev = _stdev;
 }
 
-bool Odometry::InitGyro(void)
-{
+bool Odometry::InitGyro(void) {
 	uint8_t whoami = mpu9250->WriteByte(READ_FLAG | MPUREG_WHOAMI, 0x00);
 
-	if(whoami != 0x71)
-	{
+	if (whoami != 0x71) {
 		delete mpu9250;
 		return false;
 	}
 
-	 // get stable time source
-	mpu9250->WriteByte(MPUREG_PWR_MGMT_1, 0x03);  // Set clock source to be PLL with z-axis gyroscope reference, bits 2:0 = 011
+	// get stable time source
+	mpu9250->WriteByte(MPUREG_PWR_MGMT_1, 0x03); // Set clock source to be PLL with z-axis gyroscope reference, bits 2:0 = 011
 
-	 // Configure Gyro and Accelerometer
-	 // Disable FSYNC and set accelerometer and gyro bandwidth to 4000 and 250 Hz, respectively;
-	 // DLPF_CFG = bits 2:0 = 000; this sets the sample rate at 8 kHz for both
-	 // Maximum delay is 0.97 ms which is just over a 1 kHz maximum rate
+	// Configure Gyro and Accelerometer
+	// Disable FSYNC and set accelerometer and gyro bandwidth to 4000 and 250 Hz, respectively;
+	// DLPF_CFG = bits 2:0 = 000; this sets the sample rate at 8 kHz for both
+	// Maximum delay is 0.97 ms which is just over a 1 kHz maximum rate
 	//mpu9250->WriteByte(MPUREG_CONFIG, 0x00);
-	mpu9250->WriteByte(MPUREG_CONFIG, 0x03);
+	mpu9250->WriteByte(MPUREG_CONFIG, 0x03);	//1khz
 
-	 // Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
+	// Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x07);  // Use a 1 kHz rate; the same rate set in CONFIG above
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
-	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00);
+	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00); //1khzでサンプリング
 
 	mpu9250->WriteByte(MPUREG_GYRO_CONFIG, BITS_FS_1000DPS);
+	mpu9250->WriteByte(MPUREG_ACCEL_CONFIG, 0b11000);
 
 	//Timer::sleep(100);
 	HAL_Delay(100);
@@ -84,13 +88,11 @@ bool Odometry::InitGyro(void)
 	float avg = 0.0f;
 	float stdev = 1000.0f;
 
-	for(int i = 0; i < 10; i++)
-	{
+	for (int i = 0; i < 10; i++) {
 		this->GetGyroBias(&avg, &stdev);
 
-		if (stdev < 700)
-		{
-			movavg = (int32_t)avg;
+		if (stdev < 700) {
+			movavg = (int32_t) avg;
 
 			return true;
 		}
@@ -100,8 +102,7 @@ bool Odometry::InitGyro(void)
 	return false;
 }
 
-void Odometry::ReadEncoder(void)
-{
+void Odometry::ReadEncoder(void) {
 	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);
 	TIM3->CNT = 0;
 
@@ -110,17 +111,40 @@ void Odometry::ReadEncoder(void)
 
 	// just a simple rotation matrix
 	// translate encoder rates to velocity on x-y plane
-	float _yaw = yaw - ((float)M_PI / 4.0f); //いじるとしたらこの辺　ジャイロの付け方に依る
+	float _yaw = yaw - ((float) M_PI / 4.0f); //いじるとしたらこの辺　ジャイロの付け方に依る
 	float _cos = cosf(_yaw);
 	float _sin = sinf(_yaw);
-
 
 	x += ((_p1 * _cos) - (_p2 * _sin)) * MPerPulse;
 	y += ((_p1 * _sin) + (_p2 * _cos)) * MPerPulse;
 }
 
-void Odometry::ReadGyro(void)
-{
+void Odometry::ReadGyro(void) {
+	int16_t arawX, arawY, arawZ, grawX, grawY, grawZ;
+	float accX, accY, accZ, gyroX, gyroY, gyroZ;
+
+	arawX = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_XOUT_H,
+			0x0000);
+	arawY = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_YOUT_H,
+			0x0000);
+	arawZ = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_ZOUT_H,
+			0x0000);
+	grawX = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,
+			0x0000);
+	grawY = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_YOUT_H,
+			0x0000);
+	grawZ = (int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H,
+			0x0000);
+
+	accX = (1. * arawX / AccSensitivityScaleFactor) ;
+	accY = (1. * arawY / AccSensitivityScaleFactor) ;
+	accZ = (1. * arawZ / AccSensitivityScaleFactor) ;
+	gyroX = (1. * grawX / GyroSensitivityScaleFactor) ;
+	gyroY = (1. * grawY / GyroSensitivityScaleFactor) ;
+	gyroZ = (1. * grawZ / GyroSensitivityScaleFactor) ;
+
+	MDGF.updateIMU(gyroX, gyroY, gyroZ, accX, accY, accZ);
+
 	static constexpr int32_t movband = 100;
 	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
 	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg / SamplingFrequency;
@@ -153,35 +177,24 @@ void Odometry::ReadGyro(void)
 
 }
 
-bool Odometry::Initialize(void)
-{
+bool Odometry::Initialize(void) {
 	return this->InitGyro();
 }
 
-void Odometry::Sample(void)
-{
+void Odometry::Sample(void) {
 	this->ReadEncoder();
 	this->ReadGyro();
 }
 
-void Odometry::SetPose(const float x, const float y, const float yaw)
-{
+void Odometry::SetPose(const float x, const float y, const float yaw) {
 	this->x = x;
 	this->y = y;
 	this->yaw = yaw;
 }
 
-void Odometry::GetPose(float * const x, float * const y, float * const yaw)
-{
+void Odometry::GetPose(float * const x, float * const y, float * const yaw) {
 	*x = this->x;
 	*y = this->y;
-	*yaw = this->yaw;
+	*yaw = MDGF.getYawRadians();
 }
-
-
-
-
-
-
-
 

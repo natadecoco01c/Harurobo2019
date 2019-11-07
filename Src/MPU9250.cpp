@@ -81,11 +81,11 @@ void MPU9250::ReadBurst(const uint8_t addr, const uint16_t cnt, uint8_t * const 
 	}
 }
 
-float MPU9250::ReadGyroZ(void)
-{
-	float raw = (int16_t)WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000);
-	return (raw / SensitivityScaleFactor) - this->_gyroZ_bias;
-}
+//float MPU9250::ReadGyroZ(void)
+//{
+//	float raw = (int16_t)WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000);
+//	return (raw / GyroSensitivityScaleFactor) - this->_gyroZ_bias;
+//}
 
 /*
 void MPU9250::CalibrateGyroZ(void)

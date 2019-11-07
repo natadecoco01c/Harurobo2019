@@ -159,42 +159,71 @@
 
 #define READ_FLAG   0x80
 
-#define FS_SEL 0x02
+#define GYRO_FS_SEL 0x02
 
-#if FS_SEL == 0x00
+#if GYRO_FS_SEL == 0x00
 
-	static constexpr int FullScaleRange = 250;
-	static constexpr float SensitivityScaleFactor = 131.0f;
+	static constexpr int GyroFullScaleRange = 250;
+	static constexpr float GyroSensitivityScaleFactor = 131.0f;
 
-#elif FS_SEL == 0x01
+#elif GYRO_FS_SEL == 0x01
 
-	static constexpr int FullScaleRange = 500;
-	static constexpr float SensitivityScaleFactor = 65.5f;
+	static constexpr int GyroFullScaleRange = 500;
+	static constexpr float GyroSensitivityScaleFactor = 65.5f;
 
-#elif FS_SEL == 0x02
+#elif GYRO_FS_SEL == 0x02
 
-	static constexpr int FullScaleRange = 1000;
-	static constexpr float SensitivityScaleFactor = 32.8f;
+static constexpr int GyroFullScaleRange = 1000;
+static constexpr float GyroSensitivityScaleFactor = 32.8f;
 
-#elif FS_SEL == 0x03
+#elif GYRO_FS_SEL == 0x03
 
-	static constexpr int FullScaleRange = 2000;
-	static constexpr float SensitivityScaleFactor = 16.4f;
+	static constexpr int GyroFullScaleRange = 2000;
+	static constexpr float GyroSensitivityScaleFactor = 16.4f;
 
 #else
 
-#error "FS_SEL is not defined."
+#error "GYRO_FS_SEL is not defined."
 
 #endif
 
-class MPU9250
-{
+#define ACCEL_FS_SEL 0x03
+
+#if ACCEL_FS_SEL == 0x00
+
+	static constexpr int AccFullScaleRange = 2;
+	static constexpr int AccSensitivityScaleFactor = 16384;
+
+#elif ACCEL_FS_SEL == 0x01
+
+	static constexpr int AccFullScaleRange = 4;
+	static constexpr int AccSensitivityScaleFactor = 8192;
+
+#elif ACCEL_FS_SEL == 0x02
+
+static constexpr int AccFullScaleRange = 8;
+static constexpr int AccSensitivityScaleFactor = 4096;
+
+#elif ACCEL_FS_SEL == 0x03
+
+static constexpr int AccFullScaleRange = 16;
+static constexpr int AccSensitivityScaleFactor = 2048;
+
+#else
+
+#error "ACCEL_FS_SEL is not defined."
+
+#endif
+
+class MPU9250 {
 public:
-	MPU9250(SPI_TypeDef * const spi, GPIO_TypeDef * const ss_gpio, const uint32_t ss_pin);
+	MPU9250(SPI_TypeDef * const spi, GPIO_TypeDef * const ss_gpio,
+			const uint32_t ss_pin);
 
 	uint8_t WriteByte(const uint8_t addr, const uint8_t data) const;
 	uint16_t WriteWord(const uint8_t addr, const uint16_t data) const;
-	void ReadBurst(const uint8_t addr, const uint16_t cnt, uint8_t * const dest) const;
+	void ReadBurst(const uint8_t addr, const uint16_t cnt,
+			uint8_t * const dest) const;
 
 	float ReadGyroZ(void);
 
@@ -203,13 +232,11 @@ public:
 	float MeasureGyroZOffsetFloat(void);
 	int32_t MeasureGyroZOffsetInt(void);
 
-	inline float getGyroZOffset(void)
-	{
+	inline float getGyroZOffset(void) {
 		return this->_gyroZ_bias;
 	}
 
-	inline void setGyroZOffset(float offset)
-	{
+	inline void setGyroZOffset(float offset) {
 		this->_gyroZ_bias = offset;
 	}
 
@@ -224,8 +251,5 @@ private:
 	inline void _spiChipSelect() const;
 	inline void _spiChipDeselect() const;
 };
-
-
-
 
 #endif /* INCLUDE_MPU9250_H_ */

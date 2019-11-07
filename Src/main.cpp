@@ -176,14 +176,14 @@ int main(void) {
 //	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
 
 	bool r = odom->Initialize(); //ジャイロの初期化に失敗するとループに入る
-	if (!r) {
-		while (1) {
-			HAL_Delay(100);
-			GPIOB->BSRR = GPIO_BSRR_BR9;
-			HAL_Delay(100);
-			GPIOB->BSRR = GPIO_BSRR_BS9;
-		}
-	}
+//	if (!r) {
+//		while (1) {
+//			HAL_Delay(100);
+//			GPIOB->BSRR = GPIO_BSRR_BR9;
+//			HAL_Delay(100);
+//			GPIOB->BSRR = GPIO_BSRR_BS9;
+//		}
+//	}
 
 	can_enable(); //CANの有効化
 
