@@ -33,60 +33,50 @@ Odometry::Odometry(void) {
 	this->mpu9250 = new MPU9250(SPI_MPU9250, GPIO_MPU9250, PIN_MPU9250);
 }
 
-void Odometry::GetGyroBias(float * const avg, float * const stdev,
-		uint8_t const addr) const {
+void Odometry::GetBias(float * const avg, float * const stdev) const {
 	static constexpr int NumOfTrial = 256;
 
-	float _avg = 0.0f;
-	float _stdev = 0.0f;
+	float _avg[6] = { };
+	float _stdev[6] = { };
 
 	for (int i = 0; i < NumOfTrial; i++) {
-		float reading = (int16_t) mpu9250->WriteWord(
-		READ_FLAG | addr, 0x0000) * 1000.0f / GyroSensitivityScaleFactor;
-
-		_avg += reading;
-		_stdev += reading * reading;
-
+		float reading[6] = { };
+		reading[0] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_GYRO_XOUT_H, 0x0000) * 1000.0f
+				/ GyroSensitivityScaleFactor;
+		reading[1] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_GYRO_XOUT_Y, 0x0000) * 1000.0f
+				/ GyroSensitivityScaleFactor;
+		reading[2] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_GYRO_XOUT_Z, 0x0000) * 1000.0f
+				/ GyroSensitivityScaleFactor;
+		reading[3] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_ACCEL_XOUT_H, 0x0000) * 1000.0f
+				/ AccSensitivityScaleFactor;
+		reading[4] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_ACCEL_YOUT_H, 0x0000) * 1000.0f
+				/ AccSensitivityScaleFactor;
+		reading[5] = (int16_t) mpu9250->WriteWord(
+		READ_FLAG | MPUREG_ACCEL_ZOUT_H, 0x0000) * 1000.0f
+				/ AccSensitivityScaleFactor;
+		for (int j = 0; j < 6; j++) {
+			_avg[j] += reading[j];
+			_stdev[j] += reading[j] * reading[j];
+		}
 		//Timer::sleep(5);
-		HAL_Delay(1); //６つ分やるとすごい時間になるので短く 5->1
+		HAL_Delay(5); //６つ分やるとすごい時間になるので短く 5->1
 	}
 
-	_avg /= NumOfTrial;
+	for (int k; k < 6; k++) {
+		_avg[k] /= NumOfTrial;
 
-	_stdev -= NumOfTrial * _avg * _avg;
-	_stdev /= NumOfTrial - 1;
-	_stdev = sqrtf(_stdev);
+		_stdev[k] -= NumOfTrial * _avg[k] * _avg[k];
+		_stdev[k] /= NumOfTrial - 1;
+		_stdev[k] = sqrtf(_stdev[k]);
 
-	*avg = _avg;
-	*stdev = _stdev;
-}
-
-void Odometry::GetAccBias(float * const avg, float * const stdev,
-		uint8_t const addr) const {
-	static constexpr int NumOfTrial = 256;
-
-	float _avg = 0.0f;
-	float _stdev = 0.0f;
-
-	for (int i = 0; i < NumOfTrial; i++) {
-		float reading = (int16_t) mpu9250->WriteWord(
-		READ_FLAG | addr, 0x0000) * 1000.0f / AccSensitivityScaleFactor;
-
-		_avg += reading;
-		_stdev += reading * reading;
-
-		//Timer::sleep(5);
-		HAL_Delay(1); //６つ分やるとすごい時間になるので短く 5->1
+		*avg[k] = _avg[k];
+		*stdev[k] = _stdev[k];
 	}
-
-	_avg /= NumOfTrial;
-
-	_stdev -= NumOfTrial * _avg * _avg;
-	_stdev /= NumOfTrial - 1;
-	_stdev = sqrtf(_stdev);
-
-	*avg = _avg;
-	*stdev = _stdev;
 }
 
 bool Odometry::InitGyro(void) {
@@ -118,79 +108,14 @@ bool Odometry::InitGyro(void) {
 	//Timer::sleep(100);
 	HAL_Delay(100);
 
-	float avg = 0.0f; //GX
-	float stdev = 1000.0f;
+	float avg[6] = {}; //GX
+	float stdev[6] = {1000.0,1000.0,1000.0,1000.0,1000.0,1000.0};
 
 	for (int i = 0; i < 10; i++) {
-		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_XOUT_H);
+		this->GetBias(&avg, &stdev);
 
 		if (stdev < 700) {
 			movavgGX = (int32_t) avg;
-
-			return true;
-		}
-	}
-
-	avg = 0.0f; //GY
-	stdev = 1000.0f;
-
-	for (int i = 0; i < 10; i++) {
-		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_YOUT_H);
-
-		if (stdev < 700) {
-			movavgGY = (int32_t) avg;
-
-			return true;
-		}
-	}
-
-	avg = 0.0f; //GZ
-	stdev = 1000.0f;
-
-	for (int i = 0; i < 10; i++) {
-		this->GetGyroBias(&avg, &stdev, MPUREG_GYRO_ZOUT_H);
-
-		if (stdev < 700) {
-			movavgGZ = (int32_t) avg;
-
-			return true;
-		}
-	}
-
-	avg = 0.0f; //AX
-	stdev = 1000.0f;
-
-	for (int i = 0; i < 10; i++) {
-		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_XOUT_H);
-
-		if (stdev < 700) {
-			movavgAX = (int32_t) avg;
-
-			return true;
-		}
-	}
-
-	avg = 0.0f; //AY
-	stdev = 1000.0f;
-
-	for (int i = 0; i < 10; i++) {
-		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_YOUT_H);
-
-		if (stdev < 700) {
-			movavgAY = (int32_t) avg;
-
-			return true;
-		}
-	}
-
-	avg = 0.0f; //AZ
-	stdev = 1000.0f;
-
-	for (int i = 0; i < 10; i++) {
-		this->GetAccBias(&avg, &stdev, MPUREG_ACCEL_ZOUT_H);
-
-		if (stdev < 700) {
-			movavgAZ = (int32_t) avg;
 
 			return true;
 		}

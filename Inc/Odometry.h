@@ -38,7 +38,7 @@ private:
 	int movavgAY;
 	int movavgAZ;
 
-	void GetGyroBias(float * const avg, float * const stdev, uint8_t const addr) const;
+	void GetBias(float * const avg, float * const stdev) const;
 	void GetAccBias(float * const avg, float * const stdev, uint8_t const addr) const;
 	bool InitGyro(void);
 
