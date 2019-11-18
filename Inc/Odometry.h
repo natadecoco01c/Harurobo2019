@@ -29,21 +29,15 @@ private:
 	/// Kpd = 2_pi_r[mm/rev] / Kp[pulse/rev]
 	static constexpr float MPerPulse = M_PI * WheelDiameter / PulsePerRevolution;
 
-	// milli degree per sec
-	int movavgGX;
-	int movavgGY;
-	int movavgGZ;
-	// milli G per sec
-	int movavgAX;
-	int movavgAY;
-	int movavgAZ;
+	// milli degree per sec // milli G per sec //Gxyz,Axyz
+	int movavg[6];
+	int biased[6];
 
 	void GetBias(float * const avg, float * const stdev) const;
-	void GetAccBias(float * const avg, float * const stdev, uint8_t const addr) const;
 	bool InitGyro(void);
 
 	void ReadEncoder(void);
-	void ReadGyro(void);
+	void ReadAccGyro(void);
 
 public:
 	Odometry(void);
