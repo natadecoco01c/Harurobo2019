@@ -16,8 +16,6 @@ Madgwick MDGF;
 
 Odometry::Odometry(void) {
 
-	MDGF.begin(500);
-
 	this->x = 0.0f;
 	this->y = 0.0f;
 	this->yaw = 0.0f;
@@ -116,6 +114,8 @@ bool Odometry::InitGyro(void) {
 			movavg[4] = (int32_t) avg[4];
 			movavg[5] = (int32_t) avg[5];
 
+			MDGF.begin(this->SamplingFrequency);
+
 			return true;
 		}
 	}
@@ -149,7 +149,7 @@ void Odometry::ReadAccGyro(void) {
 //			/ SamplingFrequency;
 	static constexpr float ang_w = 0.1f; //追従の強さ
 	static constexpr float acc_w = 0.1f;
-	static const float offset_G = movavg[5] / 1000.0f;
+	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
 
 	int raw[6];
 	float data[6];
@@ -216,14 +216,8 @@ void Odometry::ReadAccGyro(void) {
 				+ ((float) raw[5] * acc_w)) + 0.5f);
 	}
 
-//	accX = (1. * arawX / AccSensitivityScaleFactor);
-//	accY = (1. * arawY / AccSensitivityScaleFactor);
-//	accZ = (1. * arawZ / AccSensitivityScaleFactor);
-//	gyroX = (1. * grawX / GyroSensitivityScaleFactor);
-//	gyroY = (1. * grawY / GyroSensitivityScaleFactor);
-//	gyroZ = (1. * grawZ / GyroSensitivityScaleFactor);
-
 	MDGF.updateIMU(data[0], data[1], data[2], data[3], data[4], data[5]);
+	this->yaw = MDGF.getYawRadians();
 }
 
 bool Odometry::Initialize(void) {
@@ -244,6 +238,6 @@ void Odometry::SetPose(const float x, const float y, const float yaw) {
 void Odometry::GetPose(float * const x, float * const y, float * const yaw) {
 	*x = this->x;
 	*y = this->y;
-	*yaw = MDGF.getYawRadians();
+	*yaw = this->yaw;
 }
 

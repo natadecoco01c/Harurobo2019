@@ -48,7 +48,8 @@ public:
 	void SetPose(float x, float y, float yaw);
 	void GetPose(float *x, float *y, float *yaw);
 
-	static constexpr int32_t SamplingFrequency = 500; //TIM1の割り込み周波数と一致
+	static constexpr int32_t SamplingFrequency = 512; //TIM2の割り込み周波数と一致
+	//正直madgwickfilterがそんなに周波数出るかわからん
 };
 
 

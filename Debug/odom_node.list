@@ -21,29 +21,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000029  00000000  00000000  00020854  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0001fbfa  00000000  00000000  0002087d  2**0
+  9 .debug_info   0001fe19  00000000  00000000  0002087d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 0000425b  00000000  00000000  00040477  2**0
+ 10 .debug_abbrev 000042f0  00000000  00000000  00040696  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00006b83  00000000  00000000  000446d2  2**0
+ 11 .debug_loc    00006b83  00000000  00000000  00044986  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_aranges 00000ba0  00000000  00000000  0004b258  2**3
+ 12 .debug_aranges 00000b98  00000000  00000000  0004b510  2**3
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000de8  00000000  00000000  0004bdf8  2**3
+ 13 .debug_ranges 00000de0  00000000  00000000  0004c0a8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_macro  0001b2bf  00000000  00000000  0004cbe0  2**0
+ 14 .debug_macro  0001b52f  00000000  00000000  0004ce88  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_line   0000ce2c  00000000  00000000  00067e9f  2**0
+ 15 .debug_line   0000d229  00000000  00000000  000683b7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_str    000815ef  00000000  00000000  00074ccb  2**0
+ 16 .debug_str    00081626  00000000  00000000  000755e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .comment      0000007b  00000000  00000000  000f62ba  2**0
+ 17 .comment      0000007b  00000000  00000000  000f6c06  2**0
                   CONTENTS, READONLY
- 18 .debug_frame  00002f84  00000000  00000000  000f6338  2**2
+ 18 .debug_frame  00002f6c  00000000  00000000  000f6c84  2**2
                   CONTENTS, READONLY, DEBUGGING
- 19 .stab         0000003c  00000000  00000000  000f92bc  2**2
+ 19 .stab         0000003c  00000000  00000000  000f9bf0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 20 .stabstr      00000076  00000000  00000000  000f92f8  2**0
+ 20 .stabstr      00000076  00000000  00000000  000f9c2c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -4930,12 +4930,12 @@ Madgwick::Madgwick() {
  8002494:	3dcccccd 	.word	0x3dcccccd
 
 08002498 <_ZN8Madgwick9updateIMUEffffff>:
-}
 
 //-------------------------------------------------------------------------------------------
 // IMU algorithm update
 
-void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float az) {
+void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay,
+		float az) {
  8002498:	b590      	push	{r4, r7, lr}
  800249a:	b09b      	sub	sp, #108	; 0x6c
  800249c:	af00      	add	r7, sp, #0
@@ -4943,9 +4943,9 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  80024a0:	60b9      	str	r1, [r7, #8]
  80024a2:	607a      	str	r2, [r7, #4]
  80024a4:	603b      	str	r3, [r7, #0]
-	float s0, s1, s2, s3;
 	float qDot1, qDot2, qDot3, qDot4;
-	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2 ,_8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
+	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2, _8q1, _8q2, q0q0, q1q1,
+			q2q2, q3q3;
 
 	// Convert gyroscope degrees/sec to radians/sec
 	gx *= 0.0174533f;
@@ -5107,7 +5107,7 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  800260c:	65bb      	str	r3, [r7, #88]	; 0x58
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-	if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
+	if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) {
  800260e:	f04f 0100 	mov.w	r1, #0
  8002612:	6fb8      	ldr	r0, [r7, #120]	; 0x78
  8002614:	f7fe fc5a 	bl	8000ecc <__aeabi_fcmpeq>
@@ -5323,7 +5323,7 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  80027e2:	f7fe f8d5 	bl	8000990 <__aeabi_fsub>
  80027e6:	4603      	mov	r3, r0
  80027e8:	61fb      	str	r3, [r7, #28]
-		s1 = _4q1 * q3q3 - _2q3 * ax + 4.0f * q0q0 * q1 - _2q0 * ay - _4q1 + _8q1 * q1q1 + _8q1 * q2q2 + _4q1 * az;
+		s1 = _4q1 * q3q3 - _2q3 * ax + 4.0f * q0q0 * q1 - _2q0 * ay - _4q1
  80027ea:	6a39      	ldr	r1, [r7, #32]
  80027ec:	6bf8      	ldr	r0, [r7, #60]	; 0x3c
  80027ee:	f7fe f9d9 	bl	8000ba4 <__aeabi_fmul>
@@ -5367,6 +5367,7 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  800284c:	f7fe f8a0 	bl	8000990 <__aeabi_fsub>
  8002850:	4603      	mov	r3, r0
  8002852:	461c      	mov	r4, r3
+				+ _8q1 * q1q1 + _8q1 * q2q2 + _4q1 * az;
  8002854:	6ab9      	ldr	r1, [r7, #40]	; 0x28
  8002856:	6b78      	ldr	r0, [r7, #52]	; 0x34
  8002858:	f7fe f9a4 	bl	8000ba4 <__aeabi_fmul>
@@ -5389,12 +5390,13 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  8002884:	6bf8      	ldr	r0, [r7, #60]	; 0x3c
  8002886:	f7fe f98d 	bl	8000ba4 <__aeabi_fmul>
  800288a:	4603      	mov	r3, r0
+		s1 = _4q1 * q3q3 - _2q3 * ax + 4.0f * q0q0 * q1 - _2q0 * ay - _4q1
  800288c:	4619      	mov	r1, r3
  800288e:	4620      	mov	r0, r4
  8002890:	f7fe f880 	bl	8000994 <__addsf3>
  8002894:	4603      	mov	r3, r0
  8002896:	61bb      	str	r3, [r7, #24]
-		s2 = 4.0f * q0q0 * q2 + _2q0 * ax + _4q2 * q3q3 - _2q3 * ay - _4q2 + _8q2 * q1q1 + _8q2 * q2q2 + _4q2 * az;
+		s2 = 4.0f * q0q0 * q2 + _2q0 * ax + _4q2 * q3q3 - _2q3 * ay - _4q2
  8002898:	f04f 4181 	mov.w	r1, #1082130432	; 0x40800000
  800289c:	6af8      	ldr	r0, [r7, #44]	; 0x2c
  800289e:	f7fe f981 	bl	8000ba4 <__aeabi_fmul>
@@ -5438,6 +5440,7 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  80028fa:	f7fe f849 	bl	8000990 <__aeabi_fsub>
  80028fe:	4603      	mov	r3, r0
  8002900:	461c      	mov	r4, r3
+				+ _8q2 * q1q1 + _8q2 * q2q2 + _4q2 * az;
  8002902:	6ab9      	ldr	r1, [r7, #40]	; 0x28
  8002904:	6b38      	ldr	r0, [r7, #48]	; 0x30
  8002906:	f7fe f94d 	bl	8000ba4 <__aeabi_fmul>
@@ -5460,6 +5463,7 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
  8002932:	6bb8      	ldr	r0, [r7, #56]	; 0x38
  8002934:	f7fe f936 	bl	8000ba4 <__aeabi_fmul>
  8002938:	4603      	mov	r3, r0
+		s2 = 4.0f * q0q0 * q2 + _2q0 * ax + _4q2 * q3q3 - _2q3 * ay - _4q2
  800293a:	4619      	mov	r1, r3
  800293c:	4620      	mov	r0, r4
  800293e:	f7fe f829 	bl	8000994 <__addsf3>
@@ -5811,17 +5815,17 @@ float Madgwick::invSqrt(float x) {
 	float y = x;
  8002c16:	687b      	ldr	r3, [r7, #4]
  8002c18:	613b      	str	r3, [r7, #16]
-	long i = *(long*)&y;
+	long i = *(long*) &y;
  8002c1a:	f107 0310 	add.w	r3, r7, #16
  8002c1e:	681b      	ldr	r3, [r3, #0]
  8002c20:	60fb      	str	r3, [r7, #12]
-	i = 0x5f3759df - (i>>1);
+	i = 0x5f3759df - (i >> 1);
  8002c22:	68fb      	ldr	r3, [r7, #12]
  8002c24:	105a      	asrs	r2, r3, #1
  8002c26:	4b21      	ldr	r3, [pc, #132]	; (8002cac <_ZN8Madgwick7invSqrtEf+0xac>)
  8002c28:	1a9b      	subs	r3, r3, r2
  8002c2a:	60fb      	str	r3, [r7, #12]
-	y = *(float*)&i;
+	y = *(float*) &i;
  8002c2c:	f107 030c 	add.w	r3, r7, #12
  8002c30:	681b      	ldr	r3, [r3, #0]
  8002c32:	613b      	str	r3, [r7, #16]
@@ -5885,13 +5889,12 @@ float Madgwick::invSqrt(float x) {
 
 //-------------------------------------------------------------------------------------------
 
-void Madgwick::computeAngles()
-{
+void Madgwick::computeAngles() {
  8002cb0:	b5b0      	push	{r4, r5, r7, lr}
  8002cb2:	b082      	sub	sp, #8
  8002cb4:	af00      	add	r7, sp, #0
  8002cb6:	6078      	str	r0, [r7, #4]
-	roll = atan2f(q0*q1 + q2*q3, 0.5f - q1*q1 - q2*q2);
+	roll = atan2f(q0 * q1 + q2 * q3, 0.5f - q1 * q1 - q2 * q2);
  8002cb8:	687b      	ldr	r3, [r7, #4]
  8002cba:	685a      	ldr	r2, [r3, #4]
  8002cbc:	687b      	ldr	r3, [r7, #4]
@@ -5945,7 +5948,7 @@ void Madgwick::computeAngles()
  8002d2e:	4602      	mov	r2, r0
  8002d30:	687b      	ldr	r3, [r7, #4]
  8002d32:	619a      	str	r2, [r3, #24]
-	pitch = asinf(-2.0f * (q1*q3 - q0*q2));
+	pitch = asinf(-2.0f * (q1 * q3 - q0 * q2));
  8002d34:	687b      	ldr	r3, [r7, #4]
  8002d36:	689a      	ldr	r2, [r3, #8]
  8002d38:	687b      	ldr	r3, [r7, #4]
@@ -5976,7 +5979,7 @@ void Madgwick::computeAngles()
  8002d76:	4602      	mov	r2, r0
  8002d78:	687b      	ldr	r3, [r7, #4]
  8002d7a:	61da      	str	r2, [r3, #28]
-	yaw = atan2f(q1*q2 + q0*q3, 0.5f - q2*q2 - q3*q3);
+	yaw = atan2f(q1 * q2 + q0 * q3, 0.5f - q2 * q2 - q3 * q3);
  8002d7c:	687b      	ldr	r3, [r7, #4]
  8002d7e:	689a      	ldr	r2, [r3, #8]
  8002d80:	687b      	ldr	r3, [r7, #4]
@@ -6106,1425 +6109,1424 @@ Odometry::Odometry(void) {
  8002e5a:	2200      	movs	r2, #0
  8002e5c:	60da      	str	r2, [r3, #12]
 
-	MDGF.begin(500);
- 8002e5e:	4911      	ldr	r1, [pc, #68]	; (8002ea4 <_ZN8OdometryC1Ev+0x54>)
- 8002e60:	4811      	ldr	r0, [pc, #68]	; (8002ea8 <_ZN8OdometryC1Ev+0x58>)
- 8002e62:	f7ff ffd1 	bl	8002e08 <_ZN8Madgwick5beginEf>
-
 	this->x = 0.0f;
+ 8002e5e:	687b      	ldr	r3, [r7, #4]
+ 8002e60:	f04f 0200 	mov.w	r2, #0
+ 8002e64:	601a      	str	r2, [r3, #0]
+	this->y = 0.0f;
  8002e66:	687b      	ldr	r3, [r7, #4]
  8002e68:	f04f 0200 	mov.w	r2, #0
- 8002e6c:	601a      	str	r2, [r3, #0]
-	this->y = 0.0f;
+ 8002e6c:	605a      	str	r2, [r3, #4]
+	this->yaw = 0.0f;
  8002e6e:	687b      	ldr	r3, [r7, #4]
  8002e70:	f04f 0200 	mov.w	r2, #0
- 8002e74:	605a      	str	r2, [r3, #4]
-	this->yaw = 0.0f;
- 8002e76:	687b      	ldr	r3, [r7, #4]
- 8002e78:	f04f 0200 	mov.w	r2, #0
- 8002e7c:	609a      	str	r2, [r3, #8]
+ 8002e74:	609a      	str	r2, [r3, #8]
 
 	//this->mpu9250 = new MPU9250(SPI_MPU9250, GPIOC, GPIO_PIN_0);
 	this->mpu9250 = new MPU9250(SPI_MPU9250, GPIO_MPU9250, PIN_MPU9250);
- 8002e7e:	2010      	movs	r0, #16
- 8002e80:	f001 fcb5 	bl	80047ee <_Znwj>
- 8002e84:	4603      	mov	r3, r0
- 8002e86:	461c      	mov	r4, r3
- 8002e88:	f44f 5380 	mov.w	r3, #4096	; 0x1000
- 8002e8c:	4a07      	ldr	r2, [pc, #28]	; (8002eac <_ZN8OdometryC1Ev+0x5c>)
- 8002e8e:	4908      	ldr	r1, [pc, #32]	; (8002eb0 <_ZN8OdometryC1Ev+0x60>)
- 8002e90:	4620      	mov	r0, r4
- 8002e92:	f7ff fa1d 	bl	80022d0 <_ZN7MPU9250C1EP11SPI_TypeDefP12GPIO_TypeDefm>
- 8002e96:	687b      	ldr	r3, [r7, #4]
- 8002e98:	60dc      	str	r4, [r3, #12]
+ 8002e76:	2010      	movs	r0, #16
+ 8002e78:	f001 fcb9 	bl	80047ee <_Znwj>
+ 8002e7c:	4603      	mov	r3, r0
+ 8002e7e:	461c      	mov	r4, r3
+ 8002e80:	f44f 5380 	mov.w	r3, #4096	; 0x1000
+ 8002e84:	4a05      	ldr	r2, [pc, #20]	; (8002e9c <_ZN8OdometryC1Ev+0x4c>)
+ 8002e86:	4906      	ldr	r1, [pc, #24]	; (8002ea0 <_ZN8OdometryC1Ev+0x50>)
+ 8002e88:	4620      	mov	r0, r4
+ 8002e8a:	f7ff fa21 	bl	80022d0 <_ZN7MPU9250C1EP11SPI_TypeDefP12GPIO_TypeDefm>
+ 8002e8e:	687b      	ldr	r3, [r7, #4]
+ 8002e90:	60dc      	str	r4, [r3, #12]
 }
- 8002e9a:	687b      	ldr	r3, [r7, #4]
- 8002e9c:	4618      	mov	r0, r3
- 8002e9e:	370c      	adds	r7, #12
- 8002ea0:	46bd      	mov	sp, r7
- 8002ea2:	bd90      	pop	{r4, r7, pc}
- 8002ea4:	43fa0000 	.word	0x43fa0000
- 8002ea8:	20000870 	.word	0x20000870
- 8002eac:	40010c00 	.word	0x40010c00
- 8002eb0:	40003800 	.word	0x40003800
+ 8002e92:	687b      	ldr	r3, [r7, #4]
+ 8002e94:	4618      	mov	r0, r3
+ 8002e96:	370c      	adds	r7, #12
+ 8002e98:	46bd      	mov	sp, r7
+ 8002e9a:	bd90      	pop	{r4, r7, pc}
+ 8002e9c:	40010c00 	.word	0x40010c00
+ 8002ea0:	40003800 	.word	0x40003800
 
-08002eb4 <_ZNK8Odometry7GetBiasEPfS0_>:
+08002ea4 <_ZNK8Odometry7GetBiasEPfS0_>:
 
 void Odometry::GetBias(float * const avg, float * const stdev) const {
- 8002eb4:	b590      	push	{r4, r7, lr}
- 8002eb6:	b09b      	sub	sp, #108	; 0x6c
- 8002eb8:	af00      	add	r7, sp, #0
- 8002eba:	60f8      	str	r0, [r7, #12]
- 8002ebc:	60b9      	str	r1, [r7, #8]
- 8002ebe:	607a      	str	r2, [r7, #4]
+ 8002ea4:	b590      	push	{r4, r7, lr}
+ 8002ea6:	b09b      	sub	sp, #108	; 0x6c
+ 8002ea8:	af00      	add	r7, sp, #0
+ 8002eaa:	60f8      	str	r0, [r7, #12]
+ 8002eac:	60b9      	str	r1, [r7, #8]
+ 8002eae:	607a      	str	r2, [r7, #4]
 	static constexpr int NumOfTrial = 256;
 
 	float _avg[6] = { };
- 8002ec0:	f107 0344 	add.w	r3, r7, #68	; 0x44
- 8002ec4:	2200      	movs	r2, #0
- 8002ec6:	601a      	str	r2, [r3, #0]
- 8002ec8:	605a      	str	r2, [r3, #4]
- 8002eca:	609a      	str	r2, [r3, #8]
- 8002ecc:	60da      	str	r2, [r3, #12]
- 8002ece:	611a      	str	r2, [r3, #16]
- 8002ed0:	615a      	str	r2, [r3, #20]
+ 8002eb0:	f107 0344 	add.w	r3, r7, #68	; 0x44
+ 8002eb4:	2200      	movs	r2, #0
+ 8002eb6:	601a      	str	r2, [r3, #0]
+ 8002eb8:	605a      	str	r2, [r3, #4]
+ 8002eba:	609a      	str	r2, [r3, #8]
+ 8002ebc:	60da      	str	r2, [r3, #12]
+ 8002ebe:	611a      	str	r2, [r3, #16]
+ 8002ec0:	615a      	str	r2, [r3, #20]
 	float _stdev[6] = { };
- 8002ed2:	f107 032c 	add.w	r3, r7, #44	; 0x2c
- 8002ed6:	2200      	movs	r2, #0
- 8002ed8:	601a      	str	r2, [r3, #0]
- 8002eda:	605a      	str	r2, [r3, #4]
- 8002edc:	609a      	str	r2, [r3, #8]
- 8002ede:	60da      	str	r2, [r3, #12]
- 8002ee0:	611a      	str	r2, [r3, #16]
- 8002ee2:	615a      	str	r2, [r3, #20]
+ 8002ec2:	f107 032c 	add.w	r3, r7, #44	; 0x2c
+ 8002ec6:	2200      	movs	r2, #0
+ 8002ec8:	601a      	str	r2, [r3, #0]
+ 8002eca:	605a      	str	r2, [r3, #4]
+ 8002ecc:	609a      	str	r2, [r3, #8]
+ 8002ece:	60da      	str	r2, [r3, #12]
+ 8002ed0:	611a      	str	r2, [r3, #16]
+ 8002ed2:	615a      	str	r2, [r3, #20]
 
 	for (int i = 0; i < NumOfTrial; i++) {
- 8002ee4:	2300      	movs	r3, #0
- 8002ee6:	667b      	str	r3, [r7, #100]	; 0x64
- 8002ee8:	6e7b      	ldr	r3, [r7, #100]	; 0x64
- 8002eea:	2bff      	cmp	r3, #255	; 0xff
- 8002eec:	f300 80ee 	bgt.w	80030cc <_ZNK8Odometry7GetBiasEPfS0_+0x218>
+ 8002ed4:	2300      	movs	r3, #0
+ 8002ed6:	667b      	str	r3, [r7, #100]	; 0x64
+ 8002ed8:	6e7b      	ldr	r3, [r7, #100]	; 0x64
+ 8002eda:	2bff      	cmp	r3, #255	; 0xff
+ 8002edc:	f300 80ee 	bgt.w	80030bc <_ZNK8Odometry7GetBiasEPfS0_+0x218>
 		float reading[6] = { };
- 8002ef0:	f107 0314 	add.w	r3, r7, #20
- 8002ef4:	2200      	movs	r2, #0
- 8002ef6:	601a      	str	r2, [r3, #0]
- 8002ef8:	605a      	str	r2, [r3, #4]
- 8002efa:	609a      	str	r2, [r3, #8]
- 8002efc:	60da      	str	r2, [r3, #12]
- 8002efe:	611a      	str	r2, [r3, #16]
- 8002f00:	615a      	str	r2, [r3, #20]
+ 8002ee0:	f107 0314 	add.w	r3, r7, #20
+ 8002ee4:	2200      	movs	r2, #0
+ 8002ee6:	601a      	str	r2, [r3, #0]
+ 8002ee8:	605a      	str	r2, [r3, #4]
+ 8002eea:	609a      	str	r2, [r3, #8]
+ 8002eec:	60da      	str	r2, [r3, #12]
+ 8002eee:	611a      	str	r2, [r3, #16]
+ 8002ef0:	615a      	str	r2, [r3, #20]
 		reading[0] = (int16_t) mpu9250->WriteWord(
- 8002f02:	68fb      	ldr	r3, [r7, #12]
- 8002f04:	68db      	ldr	r3, [r3, #12]
- 8002f06:	2200      	movs	r2, #0
- 8002f08:	21c3      	movs	r1, #195	; 0xc3
- 8002f0a:	4618      	mov	r0, r3
- 8002f0c:	f7ff fa66 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8002f10:	4603      	mov	r3, r0
- 8002f12:	b21b      	sxth	r3, r3
+ 8002ef2:	68fb      	ldr	r3, [r7, #12]
+ 8002ef4:	68db      	ldr	r3, [r3, #12]
+ 8002ef6:	2200      	movs	r2, #0
+ 8002ef8:	21c3      	movs	r1, #195	; 0xc3
+ 8002efa:	4618      	mov	r0, r3
+ 8002efc:	f7ff fa6e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002f00:	4603      	mov	r3, r0
+ 8002f02:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_GYRO_XOUT_H, 0x0000) * 1000.0f
- 8002f14:	4618      	mov	r0, r3
- 8002f16:	f7fd fdf1 	bl	8000afc <__aeabi_i2f>
- 8002f1a:	4603      	mov	r3, r0
- 8002f1c:	49b3      	ldr	r1, [pc, #716]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8002f1e:	4618      	mov	r0, r3
- 8002f20:	f7fd fe40 	bl	8000ba4 <__aeabi_fmul>
- 8002f24:	4603      	mov	r3, r0
+ 8002f04:	4618      	mov	r0, r3
+ 8002f06:	f7fd fdf9 	bl	8000afc <__aeabi_i2f>
+ 8002f0a:	4603      	mov	r3, r0
+ 8002f0c:	49b3      	ldr	r1, [pc, #716]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8002f0e:	4618      	mov	r0, r3
+ 8002f10:	f7fd fe48 	bl	8000ba4 <__aeabi_fmul>
+ 8002f14:	4603      	mov	r3, r0
 				/ GyroSensitivityScaleFactor;
- 8002f26:	49b2      	ldr	r1, [pc, #712]	; (80031f0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
- 8002f28:	4618      	mov	r0, r3
- 8002f2a:	f7fd feef 	bl	8000d0c <__aeabi_fdiv>
- 8002f2e:	4603      	mov	r3, r0
+ 8002f16:	49b2      	ldr	r1, [pc, #712]	; (80031e0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
+ 8002f18:	4618      	mov	r0, r3
+ 8002f1a:	f7fd fef7 	bl	8000d0c <__aeabi_fdiv>
+ 8002f1e:	4603      	mov	r3, r0
 		reading[0] = (int16_t) mpu9250->WriteWord(
- 8002f30:	617b      	str	r3, [r7, #20]
+ 8002f20:	617b      	str	r3, [r7, #20]
 		reading[1] = (int16_t) mpu9250->WriteWord(
- 8002f32:	68fb      	ldr	r3, [r7, #12]
- 8002f34:	68db      	ldr	r3, [r3, #12]
- 8002f36:	2200      	movs	r2, #0
- 8002f38:	21c5      	movs	r1, #197	; 0xc5
- 8002f3a:	4618      	mov	r0, r3
- 8002f3c:	f7ff fa4e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8002f40:	4603      	mov	r3, r0
- 8002f42:	b21b      	sxth	r3, r3
+ 8002f22:	68fb      	ldr	r3, [r7, #12]
+ 8002f24:	68db      	ldr	r3, [r3, #12]
+ 8002f26:	2200      	movs	r2, #0
+ 8002f28:	21c5      	movs	r1, #197	; 0xc5
+ 8002f2a:	4618      	mov	r0, r3
+ 8002f2c:	f7ff fa56 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002f30:	4603      	mov	r3, r0
+ 8002f32:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_GYRO_YOUT_H, 0x0000) * 1000.0f
- 8002f44:	4618      	mov	r0, r3
- 8002f46:	f7fd fdd9 	bl	8000afc <__aeabi_i2f>
- 8002f4a:	4603      	mov	r3, r0
- 8002f4c:	49a7      	ldr	r1, [pc, #668]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8002f4e:	4618      	mov	r0, r3
- 8002f50:	f7fd fe28 	bl	8000ba4 <__aeabi_fmul>
- 8002f54:	4603      	mov	r3, r0
+ 8002f34:	4618      	mov	r0, r3
+ 8002f36:	f7fd fde1 	bl	8000afc <__aeabi_i2f>
+ 8002f3a:	4603      	mov	r3, r0
+ 8002f3c:	49a7      	ldr	r1, [pc, #668]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8002f3e:	4618      	mov	r0, r3
+ 8002f40:	f7fd fe30 	bl	8000ba4 <__aeabi_fmul>
+ 8002f44:	4603      	mov	r3, r0
 				/ GyroSensitivityScaleFactor;
- 8002f56:	49a6      	ldr	r1, [pc, #664]	; (80031f0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
- 8002f58:	4618      	mov	r0, r3
- 8002f5a:	f7fd fed7 	bl	8000d0c <__aeabi_fdiv>
- 8002f5e:	4603      	mov	r3, r0
+ 8002f46:	49a6      	ldr	r1, [pc, #664]	; (80031e0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
+ 8002f48:	4618      	mov	r0, r3
+ 8002f4a:	f7fd fedf 	bl	8000d0c <__aeabi_fdiv>
+ 8002f4e:	4603      	mov	r3, r0
 		reading[1] = (int16_t) mpu9250->WriteWord(
- 8002f60:	61bb      	str	r3, [r7, #24]
+ 8002f50:	61bb      	str	r3, [r7, #24]
 		reading[2] = (int16_t) mpu9250->WriteWord(
- 8002f62:	68fb      	ldr	r3, [r7, #12]
- 8002f64:	68db      	ldr	r3, [r3, #12]
- 8002f66:	2200      	movs	r2, #0
- 8002f68:	21c7      	movs	r1, #199	; 0xc7
- 8002f6a:	4618      	mov	r0, r3
- 8002f6c:	f7ff fa36 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8002f70:	4603      	mov	r3, r0
- 8002f72:	b21b      	sxth	r3, r3
+ 8002f52:	68fb      	ldr	r3, [r7, #12]
+ 8002f54:	68db      	ldr	r3, [r3, #12]
+ 8002f56:	2200      	movs	r2, #0
+ 8002f58:	21c7      	movs	r1, #199	; 0xc7
+ 8002f5a:	4618      	mov	r0, r3
+ 8002f5c:	f7ff fa3e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002f60:	4603      	mov	r3, r0
+ 8002f62:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000) * 1000.0f
- 8002f74:	4618      	mov	r0, r3
- 8002f76:	f7fd fdc1 	bl	8000afc <__aeabi_i2f>
- 8002f7a:	4603      	mov	r3, r0
- 8002f7c:	499b      	ldr	r1, [pc, #620]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8002f7e:	4618      	mov	r0, r3
- 8002f80:	f7fd fe10 	bl	8000ba4 <__aeabi_fmul>
- 8002f84:	4603      	mov	r3, r0
+ 8002f64:	4618      	mov	r0, r3
+ 8002f66:	f7fd fdc9 	bl	8000afc <__aeabi_i2f>
+ 8002f6a:	4603      	mov	r3, r0
+ 8002f6c:	499b      	ldr	r1, [pc, #620]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8002f6e:	4618      	mov	r0, r3
+ 8002f70:	f7fd fe18 	bl	8000ba4 <__aeabi_fmul>
+ 8002f74:	4603      	mov	r3, r0
 				/ GyroSensitivityScaleFactor;
- 8002f86:	499a      	ldr	r1, [pc, #616]	; (80031f0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
- 8002f88:	4618      	mov	r0, r3
- 8002f8a:	f7fd febf 	bl	8000d0c <__aeabi_fdiv>
- 8002f8e:	4603      	mov	r3, r0
+ 8002f76:	499a      	ldr	r1, [pc, #616]	; (80031e0 <_ZNK8Odometry7GetBiasEPfS0_+0x33c>)
+ 8002f78:	4618      	mov	r0, r3
+ 8002f7a:	f7fd fec7 	bl	8000d0c <__aeabi_fdiv>
+ 8002f7e:	4603      	mov	r3, r0
 		reading[2] = (int16_t) mpu9250->WriteWord(
- 8002f90:	61fb      	str	r3, [r7, #28]
+ 8002f80:	61fb      	str	r3, [r7, #28]
 		reading[3] = (int16_t) mpu9250->WriteWord(
- 8002f92:	68fb      	ldr	r3, [r7, #12]
- 8002f94:	68db      	ldr	r3, [r3, #12]
- 8002f96:	2200      	movs	r2, #0
- 8002f98:	21bb      	movs	r1, #187	; 0xbb
- 8002f9a:	4618      	mov	r0, r3
- 8002f9c:	f7ff fa1e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8002fa0:	4603      	mov	r3, r0
- 8002fa2:	b21b      	sxth	r3, r3
+ 8002f82:	68fb      	ldr	r3, [r7, #12]
+ 8002f84:	68db      	ldr	r3, [r3, #12]
+ 8002f86:	2200      	movs	r2, #0
+ 8002f88:	21bb      	movs	r1, #187	; 0xbb
+ 8002f8a:	4618      	mov	r0, r3
+ 8002f8c:	f7ff fa26 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002f90:	4603      	mov	r3, r0
+ 8002f92:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_ACCEL_XOUT_H, 0x0000) * 1000.0f
- 8002fa4:	4618      	mov	r0, r3
- 8002fa6:	f7fd fda9 	bl	8000afc <__aeabi_i2f>
- 8002faa:	4603      	mov	r3, r0
- 8002fac:	498f      	ldr	r1, [pc, #572]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8002fae:	4618      	mov	r0, r3
- 8002fb0:	f7fd fdf8 	bl	8000ba4 <__aeabi_fmul>
- 8002fb4:	4603      	mov	r3, r0
+ 8002f94:	4618      	mov	r0, r3
+ 8002f96:	f7fd fdb1 	bl	8000afc <__aeabi_i2f>
+ 8002f9a:	4603      	mov	r3, r0
+ 8002f9c:	498f      	ldr	r1, [pc, #572]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8002f9e:	4618      	mov	r0, r3
+ 8002fa0:	f7fd fe00 	bl	8000ba4 <__aeabi_fmul>
+ 8002fa4:	4603      	mov	r3, r0
 				/ AccSensitivityScaleFactor;
- 8002fb6:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
- 8002fba:	4618      	mov	r0, r3
- 8002fbc:	f7fd fea6 	bl	8000d0c <__aeabi_fdiv>
- 8002fc0:	4603      	mov	r3, r0
+ 8002fa6:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
+ 8002faa:	4618      	mov	r0, r3
+ 8002fac:	f7fd feae 	bl	8000d0c <__aeabi_fdiv>
+ 8002fb0:	4603      	mov	r3, r0
 		reading[3] = (int16_t) mpu9250->WriteWord(
- 8002fc2:	623b      	str	r3, [r7, #32]
+ 8002fb2:	623b      	str	r3, [r7, #32]
 		reading[4] = (int16_t) mpu9250->WriteWord(
- 8002fc4:	68fb      	ldr	r3, [r7, #12]
- 8002fc6:	68db      	ldr	r3, [r3, #12]
- 8002fc8:	2200      	movs	r2, #0
- 8002fca:	21bd      	movs	r1, #189	; 0xbd
- 8002fcc:	4618      	mov	r0, r3
- 8002fce:	f7ff fa05 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8002fd2:	4603      	mov	r3, r0
- 8002fd4:	b21b      	sxth	r3, r3
+ 8002fb4:	68fb      	ldr	r3, [r7, #12]
+ 8002fb6:	68db      	ldr	r3, [r3, #12]
+ 8002fb8:	2200      	movs	r2, #0
+ 8002fba:	21bd      	movs	r1, #189	; 0xbd
+ 8002fbc:	4618      	mov	r0, r3
+ 8002fbe:	f7ff fa0d 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002fc2:	4603      	mov	r3, r0
+ 8002fc4:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_ACCEL_YOUT_H, 0x0000) * 1000.0f
- 8002fd6:	4618      	mov	r0, r3
- 8002fd8:	f7fd fd90 	bl	8000afc <__aeabi_i2f>
- 8002fdc:	4603      	mov	r3, r0
- 8002fde:	4983      	ldr	r1, [pc, #524]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8002fe0:	4618      	mov	r0, r3
- 8002fe2:	f7fd fddf 	bl	8000ba4 <__aeabi_fmul>
- 8002fe6:	4603      	mov	r3, r0
+ 8002fc6:	4618      	mov	r0, r3
+ 8002fc8:	f7fd fd98 	bl	8000afc <__aeabi_i2f>
+ 8002fcc:	4603      	mov	r3, r0
+ 8002fce:	4983      	ldr	r1, [pc, #524]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8002fd0:	4618      	mov	r0, r3
+ 8002fd2:	f7fd fde7 	bl	8000ba4 <__aeabi_fmul>
+ 8002fd6:	4603      	mov	r3, r0
 				/ AccSensitivityScaleFactor;
- 8002fe8:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
- 8002fec:	4618      	mov	r0, r3
- 8002fee:	f7fd fe8d 	bl	8000d0c <__aeabi_fdiv>
- 8002ff2:	4603      	mov	r3, r0
+ 8002fd8:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
+ 8002fdc:	4618      	mov	r0, r3
+ 8002fde:	f7fd fe95 	bl	8000d0c <__aeabi_fdiv>
+ 8002fe2:	4603      	mov	r3, r0
 		reading[4] = (int16_t) mpu9250->WriteWord(
- 8002ff4:	627b      	str	r3, [r7, #36]	; 0x24
+ 8002fe4:	627b      	str	r3, [r7, #36]	; 0x24
 		reading[5] = (int16_t) mpu9250->WriteWord(
- 8002ff6:	68fb      	ldr	r3, [r7, #12]
- 8002ff8:	68db      	ldr	r3, [r3, #12]
- 8002ffa:	2200      	movs	r2, #0
- 8002ffc:	21bf      	movs	r1, #191	; 0xbf
- 8002ffe:	4618      	mov	r0, r3
- 8003000:	f7ff f9ec 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8003004:	4603      	mov	r3, r0
- 8003006:	b21b      	sxth	r3, r3
+ 8002fe6:	68fb      	ldr	r3, [r7, #12]
+ 8002fe8:	68db      	ldr	r3, [r3, #12]
+ 8002fea:	2200      	movs	r2, #0
+ 8002fec:	21bf      	movs	r1, #191	; 0xbf
+ 8002fee:	4618      	mov	r0, r3
+ 8002ff0:	f7ff f9f4 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8002ff4:	4603      	mov	r3, r0
+ 8002ff6:	b21b      	sxth	r3, r3
 		READ_FLAG | MPUREG_ACCEL_ZOUT_H, 0x0000) * 1000.0f
- 8003008:	4618      	mov	r0, r3
- 800300a:	f7fd fd77 	bl	8000afc <__aeabi_i2f>
- 800300e:	4603      	mov	r3, r0
- 8003010:	4976      	ldr	r1, [pc, #472]	; (80031ec <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
- 8003012:	4618      	mov	r0, r3
- 8003014:	f7fd fdc6 	bl	8000ba4 <__aeabi_fmul>
- 8003018:	4603      	mov	r3, r0
+ 8002ff8:	4618      	mov	r0, r3
+ 8002ffa:	f7fd fd7f 	bl	8000afc <__aeabi_i2f>
+ 8002ffe:	4603      	mov	r3, r0
+ 8003000:	4976      	ldr	r1, [pc, #472]	; (80031dc <_ZNK8Odometry7GetBiasEPfS0_+0x338>)
+ 8003002:	4618      	mov	r0, r3
+ 8003004:	f7fd fdce 	bl	8000ba4 <__aeabi_fmul>
+ 8003008:	4603      	mov	r3, r0
 				/ AccSensitivityScaleFactor;
- 800301a:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
- 800301e:	4618      	mov	r0, r3
- 8003020:	f7fd fe74 	bl	8000d0c <__aeabi_fdiv>
- 8003024:	4603      	mov	r3, r0
+ 800300a:	f04f 418a 	mov.w	r1, #1157627904	; 0x45000000
+ 800300e:	4618      	mov	r0, r3
+ 8003010:	f7fd fe7c 	bl	8000d0c <__aeabi_fdiv>
+ 8003014:	4603      	mov	r3, r0
 		reading[5] = (int16_t) mpu9250->WriteWord(
- 8003026:	62bb      	str	r3, [r7, #40]	; 0x28
+ 8003016:	62bb      	str	r3, [r7, #40]	; 0x28
 		for (int j = 0; j < 6; j++) {
- 8003028:	2300      	movs	r3, #0
- 800302a:	663b      	str	r3, [r7, #96]	; 0x60
- 800302c:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 800302e:	2b05      	cmp	r3, #5
- 8003030:	dc45      	bgt.n	80030be <_ZNK8Odometry7GetBiasEPfS0_+0x20a>
+ 8003018:	2300      	movs	r3, #0
+ 800301a:	663b      	str	r3, [r7, #96]	; 0x60
+ 800301c:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 800301e:	2b05      	cmp	r3, #5
+ 8003020:	dc45      	bgt.n	80030ae <_ZNK8Odometry7GetBiasEPfS0_+0x20a>
 			_avg[j] += reading[j];
- 8003032:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 8003034:	009b      	lsls	r3, r3, #2
- 8003036:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 800303a:	4413      	add	r3, r2
- 800303c:	f853 2c24 	ldr.w	r2, [r3, #-36]
- 8003040:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 8003042:	009b      	lsls	r3, r3, #2
- 8003044:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 8003048:	440b      	add	r3, r1
- 800304a:	f853 3c54 	ldr.w	r3, [r3, #-84]
- 800304e:	4619      	mov	r1, r3
- 8003050:	4610      	mov	r0, r2
- 8003052:	f7fd fc9f 	bl	8000994 <__addsf3>
- 8003056:	4603      	mov	r3, r0
- 8003058:	461a      	mov	r2, r3
- 800305a:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 800305c:	009b      	lsls	r3, r3, #2
- 800305e:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 8003062:	440b      	add	r3, r1
- 8003064:	f843 2c24 	str.w	r2, [r3, #-36]
+ 8003022:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 8003024:	009b      	lsls	r3, r3, #2
+ 8003026:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 800302a:	4413      	add	r3, r2
+ 800302c:	f853 2c24 	ldr.w	r2, [r3, #-36]
+ 8003030:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 8003032:	009b      	lsls	r3, r3, #2
+ 8003034:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003038:	440b      	add	r3, r1
+ 800303a:	f853 3c54 	ldr.w	r3, [r3, #-84]
+ 800303e:	4619      	mov	r1, r3
+ 8003040:	4610      	mov	r0, r2
+ 8003042:	f7fd fca7 	bl	8000994 <__addsf3>
+ 8003046:	4603      	mov	r3, r0
+ 8003048:	461a      	mov	r2, r3
+ 800304a:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 800304c:	009b      	lsls	r3, r3, #2
+ 800304e:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003052:	440b      	add	r3, r1
+ 8003054:	f843 2c24 	str.w	r2, [r3, #-36]
 			_stdev[j] += reading[j] * reading[j];
- 8003068:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 800306a:	009b      	lsls	r3, r3, #2
- 800306c:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 8003070:	4413      	add	r3, r2
- 8003072:	f853 4c3c 	ldr.w	r4, [r3, #-60]
- 8003076:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 8003078:	009b      	lsls	r3, r3, #2
- 800307a:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 800307e:	4413      	add	r3, r2
- 8003080:	f853 2c54 	ldr.w	r2, [r3, #-84]
- 8003084:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 8003086:	009b      	lsls	r3, r3, #2
- 8003088:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 800308c:	440b      	add	r3, r1
- 800308e:	f853 3c54 	ldr.w	r3, [r3, #-84]
- 8003092:	4619      	mov	r1, r3
- 8003094:	4610      	mov	r0, r2
- 8003096:	f7fd fd85 	bl	8000ba4 <__aeabi_fmul>
- 800309a:	4603      	mov	r3, r0
- 800309c:	4619      	mov	r1, r3
- 800309e:	4620      	mov	r0, r4
- 80030a0:	f7fd fc78 	bl	8000994 <__addsf3>
- 80030a4:	4603      	mov	r3, r0
- 80030a6:	461a      	mov	r2, r3
- 80030a8:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 80030aa:	009b      	lsls	r3, r3, #2
- 80030ac:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 80030b0:	440b      	add	r3, r1
- 80030b2:	f843 2c3c 	str.w	r2, [r3, #-60]
+ 8003058:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 800305a:	009b      	lsls	r3, r3, #2
+ 800305c:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 8003060:	4413      	add	r3, r2
+ 8003062:	f853 4c3c 	ldr.w	r4, [r3, #-60]
+ 8003066:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 8003068:	009b      	lsls	r3, r3, #2
+ 800306a:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 800306e:	4413      	add	r3, r2
+ 8003070:	f853 2c54 	ldr.w	r2, [r3, #-84]
+ 8003074:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 8003076:	009b      	lsls	r3, r3, #2
+ 8003078:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 800307c:	440b      	add	r3, r1
+ 800307e:	f853 3c54 	ldr.w	r3, [r3, #-84]
+ 8003082:	4619      	mov	r1, r3
+ 8003084:	4610      	mov	r0, r2
+ 8003086:	f7fd fd8d 	bl	8000ba4 <__aeabi_fmul>
+ 800308a:	4603      	mov	r3, r0
+ 800308c:	4619      	mov	r1, r3
+ 800308e:	4620      	mov	r0, r4
+ 8003090:	f7fd fc80 	bl	8000994 <__addsf3>
+ 8003094:	4603      	mov	r3, r0
+ 8003096:	461a      	mov	r2, r3
+ 8003098:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 800309a:	009b      	lsls	r3, r3, #2
+ 800309c:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 80030a0:	440b      	add	r3, r1
+ 80030a2:	f843 2c3c 	str.w	r2, [r3, #-60]
 		for (int j = 0; j < 6; j++) {
- 80030b6:	6e3b      	ldr	r3, [r7, #96]	; 0x60
- 80030b8:	3301      	adds	r3, #1
- 80030ba:	663b      	str	r3, [r7, #96]	; 0x60
- 80030bc:	e7b6      	b.n	800302c <_ZNK8Odometry7GetBiasEPfS0_+0x178>
+ 80030a6:	6e3b      	ldr	r3, [r7, #96]	; 0x60
+ 80030a8:	3301      	adds	r3, #1
+ 80030aa:	663b      	str	r3, [r7, #96]	; 0x60
+ 80030ac:	e7b6      	b.n	800301c <_ZNK8Odometry7GetBiasEPfS0_+0x178>
 		}
 		//Timer::sleep(5);
 		HAL_Delay(4); //６つ分やるとすごい時間になるので短く 5->1
- 80030be:	2004      	movs	r0, #4
- 80030c0:	f7fd ffba 	bl	8001038 <HAL_Delay>
+ 80030ae:	2004      	movs	r0, #4
+ 80030b0:	f7fd ffc2 	bl	8001038 <HAL_Delay>
 	for (int i = 0; i < NumOfTrial; i++) {
- 80030c4:	6e7b      	ldr	r3, [r7, #100]	; 0x64
- 80030c6:	3301      	adds	r3, #1
- 80030c8:	667b      	str	r3, [r7, #100]	; 0x64
- 80030ca:	e70d      	b.n	8002ee8 <_ZNK8Odometry7GetBiasEPfS0_+0x34>
+ 80030b4:	6e7b      	ldr	r3, [r7, #100]	; 0x64
+ 80030b6:	3301      	adds	r3, #1
+ 80030b8:	667b      	str	r3, [r7, #100]	; 0x64
+ 80030ba:	e70d      	b.n	8002ed8 <_ZNK8Odometry7GetBiasEPfS0_+0x34>
 	}
 
 	for (int k = 0; k < 6; k++) {
- 80030cc:	2300      	movs	r3, #0
- 80030ce:	65fb      	str	r3, [r7, #92]	; 0x5c
- 80030d0:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80030d2:	2b05      	cmp	r3, #5
- 80030d4:	f300 8085 	bgt.w	80031e2 <_ZNK8Odometry7GetBiasEPfS0_+0x32e>
+ 80030bc:	2300      	movs	r3, #0
+ 80030be:	65fb      	str	r3, [r7, #92]	; 0x5c
+ 80030c0:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80030c2:	2b05      	cmp	r3, #5
+ 80030c4:	f300 8085 	bgt.w	80031d2 <_ZNK8Odometry7GetBiasEPfS0_+0x32e>
 		_avg[k] /= NumOfTrial;
- 80030d8:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80030da:	009b      	lsls	r3, r3, #2
- 80030dc:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 80030e0:	4413      	add	r3, r2
- 80030e2:	f853 3c24 	ldr.w	r3, [r3, #-36]
- 80030e6:	f04f 4187 	mov.w	r1, #1132462080	; 0x43800000
- 80030ea:	4618      	mov	r0, r3
- 80030ec:	f7fd fe0e 	bl	8000d0c <__aeabi_fdiv>
- 80030f0:	4603      	mov	r3, r0
- 80030f2:	461a      	mov	r2, r3
- 80030f4:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80030f6:	009b      	lsls	r3, r3, #2
- 80030f8:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 80030fc:	440b      	add	r3, r1
- 80030fe:	f843 2c24 	str.w	r2, [r3, #-36]
+ 80030c8:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80030ca:	009b      	lsls	r3, r3, #2
+ 80030cc:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 80030d0:	4413      	add	r3, r2
+ 80030d2:	f853 3c24 	ldr.w	r3, [r3, #-36]
+ 80030d6:	f04f 4187 	mov.w	r1, #1132462080	; 0x43800000
+ 80030da:	4618      	mov	r0, r3
+ 80030dc:	f7fd fe16 	bl	8000d0c <__aeabi_fdiv>
+ 80030e0:	4603      	mov	r3, r0
+ 80030e2:	461a      	mov	r2, r3
+ 80030e4:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80030e6:	009b      	lsls	r3, r3, #2
+ 80030e8:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 80030ec:	440b      	add	r3, r1
+ 80030ee:	f843 2c24 	str.w	r2, [r3, #-36]
 
 		_stdev[k] -= NumOfTrial * _avg[k] * _avg[k];
- 8003102:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 8003104:	009b      	lsls	r3, r3, #2
- 8003106:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 800310a:	4413      	add	r3, r2
- 800310c:	f853 4c3c 	ldr.w	r4, [r3, #-60]
- 8003110:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 8003112:	009b      	lsls	r3, r3, #2
- 8003114:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 8003118:	4413      	add	r3, r2
- 800311a:	f853 3c24 	ldr.w	r3, [r3, #-36]
- 800311e:	f04f 4187 	mov.w	r1, #1132462080	; 0x43800000
- 8003122:	4618      	mov	r0, r3
- 8003124:	f7fd fd3e 	bl	8000ba4 <__aeabi_fmul>
- 8003128:	4603      	mov	r3, r0
- 800312a:	461a      	mov	r2, r3
- 800312c:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 800312e:	009b      	lsls	r3, r3, #2
- 8003130:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 8003134:	440b      	add	r3, r1
- 8003136:	f853 3c24 	ldr.w	r3, [r3, #-36]
- 800313a:	4619      	mov	r1, r3
- 800313c:	4610      	mov	r0, r2
- 800313e:	f7fd fd31 	bl	8000ba4 <__aeabi_fmul>
- 8003142:	4603      	mov	r3, r0
- 8003144:	4619      	mov	r1, r3
- 8003146:	4620      	mov	r0, r4
- 8003148:	f7fd fc22 	bl	8000990 <__aeabi_fsub>
- 800314c:	4603      	mov	r3, r0
- 800314e:	461a      	mov	r2, r3
- 8003150:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 8003152:	009b      	lsls	r3, r3, #2
- 8003154:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 8003158:	440b      	add	r3, r1
- 800315a:	f843 2c3c 	str.w	r2, [r3, #-60]
+ 80030f2:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80030f4:	009b      	lsls	r3, r3, #2
+ 80030f6:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 80030fa:	4413      	add	r3, r2
+ 80030fc:	f853 4c3c 	ldr.w	r4, [r3, #-60]
+ 8003100:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 8003102:	009b      	lsls	r3, r3, #2
+ 8003104:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 8003108:	4413      	add	r3, r2
+ 800310a:	f853 3c24 	ldr.w	r3, [r3, #-36]
+ 800310e:	f04f 4187 	mov.w	r1, #1132462080	; 0x43800000
+ 8003112:	4618      	mov	r0, r3
+ 8003114:	f7fd fd46 	bl	8000ba4 <__aeabi_fmul>
+ 8003118:	4603      	mov	r3, r0
+ 800311a:	461a      	mov	r2, r3
+ 800311c:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 800311e:	009b      	lsls	r3, r3, #2
+ 8003120:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003124:	440b      	add	r3, r1
+ 8003126:	f853 3c24 	ldr.w	r3, [r3, #-36]
+ 800312a:	4619      	mov	r1, r3
+ 800312c:	4610      	mov	r0, r2
+ 800312e:	f7fd fd39 	bl	8000ba4 <__aeabi_fmul>
+ 8003132:	4603      	mov	r3, r0
+ 8003134:	4619      	mov	r1, r3
+ 8003136:	4620      	mov	r0, r4
+ 8003138:	f7fd fc2a 	bl	8000990 <__aeabi_fsub>
+ 800313c:	4603      	mov	r3, r0
+ 800313e:	461a      	mov	r2, r3
+ 8003140:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 8003142:	009b      	lsls	r3, r3, #2
+ 8003144:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003148:	440b      	add	r3, r1
+ 800314a:	f843 2c3c 	str.w	r2, [r3, #-60]
 		_stdev[k] /= NumOfTrial - 1;
- 800315e:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 8003160:	009b      	lsls	r3, r3, #2
- 8003162:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 8003166:	4413      	add	r3, r2
- 8003168:	f853 3c3c 	ldr.w	r3, [r3, #-60]
- 800316c:	4921      	ldr	r1, [pc, #132]	; (80031f4 <_ZNK8Odometry7GetBiasEPfS0_+0x340>)
- 800316e:	4618      	mov	r0, r3
- 8003170:	f7fd fdcc 	bl	8000d0c <__aeabi_fdiv>
- 8003174:	4603      	mov	r3, r0
- 8003176:	461a      	mov	r2, r3
- 8003178:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 800317a:	009b      	lsls	r3, r3, #2
- 800317c:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 8003180:	440b      	add	r3, r1
- 8003182:	f843 2c3c 	str.w	r2, [r3, #-60]
+ 800314e:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 8003150:	009b      	lsls	r3, r3, #2
+ 8003152:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 8003156:	4413      	add	r3, r2
+ 8003158:	f853 3c3c 	ldr.w	r3, [r3, #-60]
+ 800315c:	4921      	ldr	r1, [pc, #132]	; (80031e4 <_ZNK8Odometry7GetBiasEPfS0_+0x340>)
+ 800315e:	4618      	mov	r0, r3
+ 8003160:	f7fd fdd4 	bl	8000d0c <__aeabi_fdiv>
+ 8003164:	4603      	mov	r3, r0
+ 8003166:	461a      	mov	r2, r3
+ 8003168:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 800316a:	009b      	lsls	r3, r3, #2
+ 800316c:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003170:	440b      	add	r3, r1
+ 8003172:	f843 2c3c 	str.w	r2, [r3, #-60]
 		_stdev[k] = sqrtf(_stdev[k]);
- 8003186:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 8003188:	009b      	lsls	r3, r3, #2
- 800318a:	f107 0268 	add.w	r2, r7, #104	; 0x68
- 800318e:	4413      	add	r3, r2
- 8003190:	f853 3c3c 	ldr.w	r3, [r3, #-60]
- 8003194:	4618      	mov	r0, r3
- 8003196:	f001 fbff 	bl	8004998 <sqrtf>
- 800319a:	4602      	mov	r2, r0
- 800319c:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 800319e:	009b      	lsls	r3, r3, #2
- 80031a0:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 80031a4:	440b      	add	r3, r1
- 80031a6:	f843 2c3c 	str.w	r2, [r3, #-60]
+ 8003176:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 8003178:	009b      	lsls	r3, r3, #2
+ 800317a:	f107 0268 	add.w	r2, r7, #104	; 0x68
+ 800317e:	4413      	add	r3, r2
+ 8003180:	f853 3c3c 	ldr.w	r3, [r3, #-60]
+ 8003184:	4618      	mov	r0, r3
+ 8003186:	f001 fc07 	bl	8004998 <sqrtf>
+ 800318a:	4602      	mov	r2, r0
+ 800318c:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 800318e:	009b      	lsls	r3, r3, #2
+ 8003190:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 8003194:	440b      	add	r3, r1
+ 8003196:	f843 2c3c 	str.w	r2, [r3, #-60]
 
 		avg[k] = _avg[k];
- 80031aa:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80031ac:	009b      	lsls	r3, r3, #2
- 80031ae:	68ba      	ldr	r2, [r7, #8]
- 80031b0:	441a      	add	r2, r3
+ 800319a:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 800319c:	009b      	lsls	r3, r3, #2
+ 800319e:	68ba      	ldr	r2, [r7, #8]
+ 80031a0:	441a      	add	r2, r3
+ 80031a2:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80031a4:	009b      	lsls	r3, r3, #2
+ 80031a6:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 80031aa:	440b      	add	r3, r1
+ 80031ac:	f853 3c24 	ldr.w	r3, [r3, #-36]
+ 80031b0:	6013      	str	r3, [r2, #0]
+		stdev[k] = _stdev[k];
  80031b2:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
  80031b4:	009b      	lsls	r3, r3, #2
- 80031b6:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 80031ba:	440b      	add	r3, r1
- 80031bc:	f853 3c24 	ldr.w	r3, [r3, #-36]
- 80031c0:	6013      	str	r3, [r2, #0]
-		stdev[k] = _stdev[k];
- 80031c2:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80031c4:	009b      	lsls	r3, r3, #2
- 80031c6:	687a      	ldr	r2, [r7, #4]
- 80031c8:	441a      	add	r2, r3
- 80031ca:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80031cc:	009b      	lsls	r3, r3, #2
- 80031ce:	f107 0168 	add.w	r1, r7, #104	; 0x68
- 80031d2:	440b      	add	r3, r1
- 80031d4:	f853 3c3c 	ldr.w	r3, [r3, #-60]
- 80031d8:	6013      	str	r3, [r2, #0]
+ 80031b6:	687a      	ldr	r2, [r7, #4]
+ 80031b8:	441a      	add	r2, r3
+ 80031ba:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80031bc:	009b      	lsls	r3, r3, #2
+ 80031be:	f107 0168 	add.w	r1, r7, #104	; 0x68
+ 80031c2:	440b      	add	r3, r1
+ 80031c4:	f853 3c3c 	ldr.w	r3, [r3, #-60]
+ 80031c8:	6013      	str	r3, [r2, #0]
 	for (int k = 0; k < 6; k++) {
- 80031da:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
- 80031dc:	3301      	adds	r3, #1
- 80031de:	65fb      	str	r3, [r7, #92]	; 0x5c
- 80031e0:	e776      	b.n	80030d0 <_ZNK8Odometry7GetBiasEPfS0_+0x21c>
+ 80031ca:	6dfb      	ldr	r3, [r7, #92]	; 0x5c
+ 80031cc:	3301      	adds	r3, #1
+ 80031ce:	65fb      	str	r3, [r7, #92]	; 0x5c
+ 80031d0:	e776      	b.n	80030c0 <_ZNK8Odometry7GetBiasEPfS0_+0x21c>
 	}
 }
- 80031e2:	bf00      	nop
- 80031e4:	376c      	adds	r7, #108	; 0x6c
- 80031e6:	46bd      	mov	sp, r7
- 80031e8:	bd90      	pop	{r4, r7, pc}
- 80031ea:	bf00      	nop
- 80031ec:	447a0000 	.word	0x447a0000
- 80031f0:	42033333 	.word	0x42033333
- 80031f4:	437f0000 	.word	0x437f0000
+ 80031d2:	bf00      	nop
+ 80031d4:	376c      	adds	r7, #108	; 0x6c
+ 80031d6:	46bd      	mov	sp, r7
+ 80031d8:	bd90      	pop	{r4, r7, pc}
+ 80031da:	bf00      	nop
+ 80031dc:	447a0000 	.word	0x447a0000
+ 80031e0:	42033333 	.word	0x42033333
+ 80031e4:	437f0000 	.word	0x437f0000
 
-080031f8 <_ZN8Odometry8InitGyroEv>:
+080031e8 <_ZN8Odometry8InitGyroEv>:
 
 bool Odometry::InitGyro(void) {
- 80031f8:	b5b0      	push	{r4, r5, r7, lr}
- 80031fa:	b090      	sub	sp, #64	; 0x40
- 80031fc:	af00      	add	r7, sp, #0
- 80031fe:	6078      	str	r0, [r7, #4]
+ 80031e8:	b5b0      	push	{r4, r5, r7, lr}
+ 80031ea:	b090      	sub	sp, #64	; 0x40
+ 80031ec:	af00      	add	r7, sp, #0
+ 80031ee:	6078      	str	r0, [r7, #4]
 	uint8_t whoami = mpu9250->WriteByte(READ_FLAG | MPUREG_WHOAMI, 0x00);
- 8003200:	687b      	ldr	r3, [r7, #4]
- 8003202:	68db      	ldr	r3, [r3, #12]
- 8003204:	2200      	movs	r2, #0
- 8003206:	21f5      	movs	r1, #245	; 0xf5
- 8003208:	4618      	mov	r0, r3
- 800320a:	f7ff f8c5 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
- 800320e:	4603      	mov	r3, r0
- 8003210:	f887 303b 	strb.w	r3, [r7, #59]	; 0x3b
+ 80031f0:	687b      	ldr	r3, [r7, #4]
+ 80031f2:	68db      	ldr	r3, [r3, #12]
+ 80031f4:	2200      	movs	r2, #0
+ 80031f6:	21f5      	movs	r1, #245	; 0xf5
+ 80031f8:	4618      	mov	r0, r3
+ 80031fa:	f7ff f8cd 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 80031fe:	4603      	mov	r3, r0
+ 8003200:	f887 303b 	strb.w	r3, [r7, #59]	; 0x3b
 
 	if (whoami != 0x71) {
- 8003214:	f897 303b 	ldrb.w	r3, [r7, #59]	; 0x3b
- 8003218:	2b71      	cmp	r3, #113	; 0x71
- 800321a:	d007      	beq.n	800322c <_ZN8Odometry8InitGyroEv+0x34>
+ 8003204:	f897 303b 	ldrb.w	r3, [r7, #59]	; 0x3b
+ 8003208:	2b71      	cmp	r3, #113	; 0x71
+ 800320a:	d007      	beq.n	800321c <_ZN8Odometry8InitGyroEv+0x34>
 		delete mpu9250;
- 800321c:	687b      	ldr	r3, [r7, #4]
- 800321e:	68db      	ldr	r3, [r3, #12]
- 8003220:	2110      	movs	r1, #16
- 8003222:	4618      	mov	r0, r3
- 8003224:	f001 fae1 	bl	80047ea <_ZdlPvj>
+ 800320c:	687b      	ldr	r3, [r7, #4]
+ 800320e:	68db      	ldr	r3, [r3, #12]
+ 8003210:	2110      	movs	r1, #16
+ 8003212:	4618      	mov	r0, r3
+ 8003214:	f001 fae9 	bl	80047ea <_ZdlPvj>
 		return false;
- 8003228:	2300      	movs	r3, #0
- 800322a:	e0a6      	b.n	800337a <_ZN8Odometry8InitGyroEv+0x182>
+ 8003218:	2300      	movs	r3, #0
+ 800321a:	e0ab      	b.n	8003374 <_ZN8Odometry8InitGyroEv+0x18c>
 	}
 
 	// get stable time source
 	mpu9250->WriteByte(MPUREG_PWR_MGMT_1, 0x03); // Set clock source to be PLL with z-axis gyroscope reference, bits 2:0 = 011
- 800322c:	687b      	ldr	r3, [r7, #4]
- 800322e:	68db      	ldr	r3, [r3, #12]
- 8003230:	2203      	movs	r2, #3
- 8003232:	216b      	movs	r1, #107	; 0x6b
- 8003234:	4618      	mov	r0, r3
- 8003236:	f7ff f8af 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 800321c:	687b      	ldr	r3, [r7, #4]
+ 800321e:	68db      	ldr	r3, [r3, #12]
+ 8003220:	2203      	movs	r2, #3
+ 8003222:	216b      	movs	r1, #107	; 0x6b
+ 8003224:	4618      	mov	r0, r3
+ 8003226:	f7ff f8b7 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
 	// Configure Gyro and Accelerometer
 	// Disable FSYNC and set accelerometer and gyro bandwidth to 4000 and 250 Hz, respectively;
 	// DLPF_CFG = bits 2:0 = 000; this sets the sample rate at 8 kHz for both
 	// Maximum delay is 0.97 ms which is just over a 1 kHz maximum rate
 	//mpu9250->WriteByte(MPUREG_CONFIG, 0x00);
 	mpu9250->WriteByte(MPUREG_CONFIG, 0x03);	//1khz
- 800323a:	687b      	ldr	r3, [r7, #4]
- 800323c:	68db      	ldr	r3, [r3, #12]
- 800323e:	2203      	movs	r2, #3
- 8003240:	211a      	movs	r1, #26
- 8003242:	4618      	mov	r0, r3
- 8003244:	f7ff f8a8 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 800322a:	687b      	ldr	r3, [r7, #4]
+ 800322c:	68db      	ldr	r3, [r3, #12]
+ 800322e:	2203      	movs	r2, #3
+ 8003230:	211a      	movs	r1, #26
+ 8003232:	4618      	mov	r0, r3
+ 8003234:	f7ff f8b0 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
 
 	// Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x07);  // Use a 1 kHz rate; the same rate set in CONFIG above
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
 	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00); //1khzでサンプリング
- 8003248:	687b      	ldr	r3, [r7, #4]
- 800324a:	68db      	ldr	r3, [r3, #12]
- 800324c:	2200      	movs	r2, #0
- 800324e:	2119      	movs	r1, #25
- 8003250:	4618      	mov	r0, r3
- 8003252:	f7ff f8a1 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 8003238:	687b      	ldr	r3, [r7, #4]
+ 800323a:	68db      	ldr	r3, [r3, #12]
+ 800323c:	2200      	movs	r2, #0
+ 800323e:	2119      	movs	r1, #25
+ 8003240:	4618      	mov	r0, r3
+ 8003242:	f7ff f8a9 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
 
 	mpu9250->WriteByte(MPUREG_GYRO_CONFIG, BITS_FS_1000DPS);
- 8003256:	687b      	ldr	r3, [r7, #4]
- 8003258:	68db      	ldr	r3, [r3, #12]
- 800325a:	2210      	movs	r2, #16
- 800325c:	211b      	movs	r1, #27
- 800325e:	4618      	mov	r0, r3
- 8003260:	f7ff f89a 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 8003246:	687b      	ldr	r3, [r7, #4]
+ 8003248:	68db      	ldr	r3, [r3, #12]
+ 800324a:	2210      	movs	r2, #16
+ 800324c:	211b      	movs	r1, #27
+ 800324e:	4618      	mov	r0, r3
+ 8003250:	f7ff f8a2 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
 	mpu9250->WriteByte(MPUREG_ACCEL_CONFIG, 0b11000);
- 8003264:	687b      	ldr	r3, [r7, #4]
- 8003266:	68db      	ldr	r3, [r3, #12]
- 8003268:	2218      	movs	r2, #24
- 800326a:	211c      	movs	r1, #28
- 800326c:	4618      	mov	r0, r3
- 800326e:	f7ff f893 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
+ 8003254:	687b      	ldr	r3, [r7, #4]
+ 8003256:	68db      	ldr	r3, [r3, #12]
+ 8003258:	2218      	movs	r2, #24
+ 800325a:	211c      	movs	r1, #28
+ 800325c:	4618      	mov	r0, r3
+ 800325e:	f7ff f89b 	bl	8002398 <_ZNK7MPU92509WriteByteEhh>
 
 	//Timer::sleep(100);
 	HAL_Delay(100);
- 8003272:	2064      	movs	r0, #100	; 0x64
- 8003274:	f7fd fee0 	bl	8001038 <HAL_Delay>
+ 8003262:	2064      	movs	r0, #100	; 0x64
+ 8003264:	f7fd fee8 	bl	8001038 <HAL_Delay>
 
 	float avg[6] = { };
- 8003278:	f107 0320 	add.w	r3, r7, #32
- 800327c:	2200      	movs	r2, #0
- 800327e:	601a      	str	r2, [r3, #0]
- 8003280:	605a      	str	r2, [r3, #4]
- 8003282:	609a      	str	r2, [r3, #8]
- 8003284:	60da      	str	r2, [r3, #12]
- 8003286:	611a      	str	r2, [r3, #16]
- 8003288:	615a      	str	r2, [r3, #20]
+ 8003268:	f107 0320 	add.w	r3, r7, #32
+ 800326c:	2200      	movs	r2, #0
+ 800326e:	601a      	str	r2, [r3, #0]
+ 8003270:	605a      	str	r2, [r3, #4]
+ 8003272:	609a      	str	r2, [r3, #8]
+ 8003274:	60da      	str	r2, [r3, #12]
+ 8003276:	611a      	str	r2, [r3, #16]
+ 8003278:	615a      	str	r2, [r3, #20]
 	float stdev[6] = { 1000.0, 1000.0, 1000.0, 1000.0, 1000.0, 1000.0 };
- 800328a:	4b3e      	ldr	r3, [pc, #248]	; (8003384 <_ZN8Odometry8InitGyroEv+0x18c>)
- 800328c:	f107 0408 	add.w	r4, r7, #8
- 8003290:	461d      	mov	r5, r3
- 8003292:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 8003294:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 8003296:	e895 0003 	ldmia.w	r5, {r0, r1}
- 800329a:	e884 0003 	stmia.w	r4, {r0, r1}
+ 800327a:	4b40      	ldr	r3, [pc, #256]	; (800337c <_ZN8Odometry8InitGyroEv+0x194>)
+ 800327c:	f107 0408 	add.w	r4, r7, #8
+ 8003280:	461d      	mov	r5, r3
+ 8003282:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8003284:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8003286:	e895 0003 	ldmia.w	r5, {r0, r1}
+ 800328a:	e884 0003 	stmia.w	r4, {r0, r1}
 
 	for (int i = 0; i < 10; i++) {
- 800329e:	2300      	movs	r3, #0
- 80032a0:	63fb      	str	r3, [r7, #60]	; 0x3c
- 80032a2:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 80032a4:	2b09      	cmp	r3, #9
- 80032a6:	dc67      	bgt.n	8003378 <_ZN8Odometry8InitGyroEv+0x180>
+ 800328e:	2300      	movs	r3, #0
+ 8003290:	63fb      	str	r3, [r7, #60]	; 0x3c
+ 8003292:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003294:	2b09      	cmp	r3, #9
+ 8003296:	dc6c      	bgt.n	8003372 <_ZN8Odometry8InitGyroEv+0x18a>
 		this->GetBias(avg, stdev);
- 80032a8:	f107 0208 	add.w	r2, r7, #8
- 80032ac:	f107 0320 	add.w	r3, r7, #32
- 80032b0:	4619      	mov	r1, r3
- 80032b2:	6878      	ldr	r0, [r7, #4]
- 80032b4:	f7ff fdfe 	bl	8002eb4 <_ZNK8Odometry7GetBiasEPfS0_>
+ 8003298:	f107 0208 	add.w	r2, r7, #8
+ 800329c:	f107 0320 	add.w	r3, r7, #32
+ 80032a0:	4619      	mov	r1, r3
+ 80032a2:	6878      	ldr	r0, [r7, #4]
+ 80032a4:	f7ff fdfe 	bl	8002ea4 <_ZNK8Odometry7GetBiasEPfS0_>
 
 		if (stdev[0] < 700 && stdev[1] < 700 && stdev[2] < 700 && stdev[3] < 700
- 80032b8:	68bb      	ldr	r3, [r7, #8]
- 80032ba:	4933      	ldr	r1, [pc, #204]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
+ 80032a8:	68bb      	ldr	r3, [r7, #8]
+ 80032aa:	4935      	ldr	r1, [pc, #212]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
+ 80032ac:	4618      	mov	r0, r3
+ 80032ae:	f7fd fe17 	bl	8000ee0 <__aeabi_fcmplt>
+ 80032b2:	4603      	mov	r3, r0
+ 80032b4:	2b00      	cmp	r3, #0
+ 80032b6:	d058      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
+ 80032b8:	68fb      	ldr	r3, [r7, #12]
+ 80032ba:	4931      	ldr	r1, [pc, #196]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
  80032bc:	4618      	mov	r0, r3
  80032be:	f7fd fe0f 	bl	8000ee0 <__aeabi_fcmplt>
  80032c2:	4603      	mov	r3, r0
  80032c4:	2b00      	cmp	r3, #0
- 80032c6:	d053      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
- 80032c8:	68fb      	ldr	r3, [r7, #12]
- 80032ca:	492f      	ldr	r1, [pc, #188]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
+ 80032c6:	d050      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
+ 80032c8:	693b      	ldr	r3, [r7, #16]
+ 80032ca:	492d      	ldr	r1, [pc, #180]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
  80032cc:	4618      	mov	r0, r3
  80032ce:	f7fd fe07 	bl	8000ee0 <__aeabi_fcmplt>
  80032d2:	4603      	mov	r3, r0
  80032d4:	2b00      	cmp	r3, #0
- 80032d6:	d04b      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
- 80032d8:	693b      	ldr	r3, [r7, #16]
- 80032da:	492b      	ldr	r1, [pc, #172]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
+ 80032d6:	d048      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
+ 80032d8:	697b      	ldr	r3, [r7, #20]
+ 80032da:	4929      	ldr	r1, [pc, #164]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
  80032dc:	4618      	mov	r0, r3
  80032de:	f7fd fdff 	bl	8000ee0 <__aeabi_fcmplt>
  80032e2:	4603      	mov	r3, r0
  80032e4:	2b00      	cmp	r3, #0
- 80032e6:	d043      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
- 80032e8:	697b      	ldr	r3, [r7, #20]
- 80032ea:	4927      	ldr	r1, [pc, #156]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
+ 80032e6:	d040      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
+				&& stdev[4] < 700 && stdev[5] < 700) {
+ 80032e8:	69bb      	ldr	r3, [r7, #24]
+ 80032ea:	4925      	ldr	r1, [pc, #148]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
  80032ec:	4618      	mov	r0, r3
  80032ee:	f7fd fdf7 	bl	8000ee0 <__aeabi_fcmplt>
  80032f2:	4603      	mov	r3, r0
  80032f4:	2b00      	cmp	r3, #0
- 80032f6:	d03b      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
-				&& stdev[4] < 700 && stdev[5] < 700) {
- 80032f8:	69bb      	ldr	r3, [r7, #24]
- 80032fa:	4923      	ldr	r1, [pc, #140]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
+ 80032f6:	d038      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
+ 80032f8:	69fb      	ldr	r3, [r7, #28]
+ 80032fa:	4921      	ldr	r1, [pc, #132]	; (8003380 <_ZN8Odometry8InitGyroEv+0x198>)
  80032fc:	4618      	mov	r0, r3
  80032fe:	f7fd fdef 	bl	8000ee0 <__aeabi_fcmplt>
  8003302:	4603      	mov	r3, r0
  8003304:	2b00      	cmp	r3, #0
- 8003306:	d033      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
- 8003308:	69fb      	ldr	r3, [r7, #28]
- 800330a:	491f      	ldr	r1, [pc, #124]	; (8003388 <_ZN8Odometry8InitGyroEv+0x190>)
- 800330c:	4618      	mov	r0, r3
- 800330e:	f7fd fde7 	bl	8000ee0 <__aeabi_fcmplt>
- 8003312:	4603      	mov	r3, r0
- 8003314:	2b00      	cmp	r3, #0
- 8003316:	d02b      	beq.n	8003370 <_ZN8Odometry8InitGyroEv+0x178>
+ 8003306:	d030      	beq.n	800336a <_ZN8Odometry8InitGyroEv+0x182>
 			movavg[0] = (int32_t) avg[0];
- 8003318:	6a3b      	ldr	r3, [r7, #32]
- 800331a:	4618      	mov	r0, r3
- 800331c:	f7fd fe1e 	bl	8000f5c <__aeabi_f2iz>
- 8003320:	4602      	mov	r2, r0
- 8003322:	687b      	ldr	r3, [r7, #4]
- 8003324:	611a      	str	r2, [r3, #16]
+ 8003308:	6a3b      	ldr	r3, [r7, #32]
+ 800330a:	4618      	mov	r0, r3
+ 800330c:	f7fd fe26 	bl	8000f5c <__aeabi_f2iz>
+ 8003310:	4602      	mov	r2, r0
+ 8003312:	687b      	ldr	r3, [r7, #4]
+ 8003314:	611a      	str	r2, [r3, #16]
 			movavg[1] = (int32_t) avg[1];
- 8003326:	6a7b      	ldr	r3, [r7, #36]	; 0x24
- 8003328:	4618      	mov	r0, r3
- 800332a:	f7fd fe17 	bl	8000f5c <__aeabi_f2iz>
- 800332e:	4602      	mov	r2, r0
- 8003330:	687b      	ldr	r3, [r7, #4]
- 8003332:	615a      	str	r2, [r3, #20]
+ 8003316:	6a7b      	ldr	r3, [r7, #36]	; 0x24
+ 8003318:	4618      	mov	r0, r3
+ 800331a:	f7fd fe1f 	bl	8000f5c <__aeabi_f2iz>
+ 800331e:	4602      	mov	r2, r0
+ 8003320:	687b      	ldr	r3, [r7, #4]
+ 8003322:	615a      	str	r2, [r3, #20]
 			movavg[2] = (int32_t) avg[2];
- 8003334:	6abb      	ldr	r3, [r7, #40]	; 0x28
- 8003336:	4618      	mov	r0, r3
- 8003338:	f7fd fe10 	bl	8000f5c <__aeabi_f2iz>
- 800333c:	4602      	mov	r2, r0
- 800333e:	687b      	ldr	r3, [r7, #4]
- 8003340:	619a      	str	r2, [r3, #24]
+ 8003324:	6abb      	ldr	r3, [r7, #40]	; 0x28
+ 8003326:	4618      	mov	r0, r3
+ 8003328:	f7fd fe18 	bl	8000f5c <__aeabi_f2iz>
+ 800332c:	4602      	mov	r2, r0
+ 800332e:	687b      	ldr	r3, [r7, #4]
+ 8003330:	619a      	str	r2, [r3, #24]
 			movavg[3] = (int32_t) avg[3];
- 8003342:	6afb      	ldr	r3, [r7, #44]	; 0x2c
- 8003344:	4618      	mov	r0, r3
- 8003346:	f7fd fe09 	bl	8000f5c <__aeabi_f2iz>
- 800334a:	4602      	mov	r2, r0
- 800334c:	687b      	ldr	r3, [r7, #4]
- 800334e:	61da      	str	r2, [r3, #28]
+ 8003332:	6afb      	ldr	r3, [r7, #44]	; 0x2c
+ 8003334:	4618      	mov	r0, r3
+ 8003336:	f7fd fe11 	bl	8000f5c <__aeabi_f2iz>
+ 800333a:	4602      	mov	r2, r0
+ 800333c:	687b      	ldr	r3, [r7, #4]
+ 800333e:	61da      	str	r2, [r3, #28]
 			movavg[4] = (int32_t) avg[4];
- 8003350:	6b3b      	ldr	r3, [r7, #48]	; 0x30
- 8003352:	4618      	mov	r0, r3
- 8003354:	f7fd fe02 	bl	8000f5c <__aeabi_f2iz>
- 8003358:	4602      	mov	r2, r0
- 800335a:	687b      	ldr	r3, [r7, #4]
- 800335c:	621a      	str	r2, [r3, #32]
+ 8003340:	6b3b      	ldr	r3, [r7, #48]	; 0x30
+ 8003342:	4618      	mov	r0, r3
+ 8003344:	f7fd fe0a 	bl	8000f5c <__aeabi_f2iz>
+ 8003348:	4602      	mov	r2, r0
+ 800334a:	687b      	ldr	r3, [r7, #4]
+ 800334c:	621a      	str	r2, [r3, #32]
 			movavg[5] = (int32_t) avg[5];
- 800335e:	6b7b      	ldr	r3, [r7, #52]	; 0x34
- 8003360:	4618      	mov	r0, r3
- 8003362:	f7fd fdfb 	bl	8000f5c <__aeabi_f2iz>
- 8003366:	4602      	mov	r2, r0
- 8003368:	687b      	ldr	r3, [r7, #4]
- 800336a:	625a      	str	r2, [r3, #36]	; 0x24
+ 800334e:	6b7b      	ldr	r3, [r7, #52]	; 0x34
+ 8003350:	4618      	mov	r0, r3
+ 8003352:	f7fd fe03 	bl	8000f5c <__aeabi_f2iz>
+ 8003356:	4602      	mov	r2, r0
+ 8003358:	687b      	ldr	r3, [r7, #4]
+ 800335a:	625a      	str	r2, [r3, #36]	; 0x24
+
+			MDGF.begin(this->SamplingFrequency);
+ 800335c:	f04f 4188 	mov.w	r1, #1140850688	; 0x44000000
+ 8003360:	4808      	ldr	r0, [pc, #32]	; (8003384 <_ZN8Odometry8InitGyroEv+0x19c>)
+ 8003362:	f7ff fd51 	bl	8002e08 <_ZN8Madgwick5beginEf>
 
 			return true;
- 800336c:	2301      	movs	r3, #1
- 800336e:	e004      	b.n	800337a <_ZN8Odometry8InitGyroEv+0x182>
+ 8003366:	2301      	movs	r3, #1
+ 8003368:	e004      	b.n	8003374 <_ZN8Odometry8InitGyroEv+0x18c>
 	for (int i = 0; i < 10; i++) {
- 8003370:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 8003372:	3301      	adds	r3, #1
- 8003374:	63fb      	str	r3, [r7, #60]	; 0x3c
- 8003376:	e794      	b.n	80032a2 <_ZN8Odometry8InitGyroEv+0xaa>
+ 800336a:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 800336c:	3301      	adds	r3, #1
+ 800336e:	63fb      	str	r3, [r7, #60]	; 0x3c
+ 8003370:	e78f      	b.n	8003292 <_ZN8Odometry8InitGyroEv+0xaa>
 		}
 	}
 
 	// gyro unit is not in desirable state (not stabilized)
 	return false;
- 8003378:	2300      	movs	r3, #0
+ 8003372:	2300      	movs	r3, #0
 }
- 800337a:	4618      	mov	r0, r3
- 800337c:	3740      	adds	r7, #64	; 0x40
- 800337e:	46bd      	mov	sp, r7
- 8003380:	bdb0      	pop	{r4, r5, r7, pc}
- 8003382:	bf00      	nop
- 8003384:	08006504 	.word	0x08006504
- 8003388:	442f0000 	.word	0x442f0000
+ 8003374:	4618      	mov	r0, r3
+ 8003376:	3740      	adds	r7, #64	; 0x40
+ 8003378:	46bd      	mov	sp, r7
+ 800337a:	bdb0      	pop	{r4, r5, r7, pc}
+ 800337c:	08006504 	.word	0x08006504
+ 8003380:	442f0000 	.word	0x442f0000
+ 8003384:	20000870 	.word	0x20000870
 
-0800338c <_ZN8Odometry11ReadEncoderEv>:
+08003388 <_ZN8Odometry11ReadEncoderEv>:
 
 void Odometry::ReadEncoder(void) {
- 800338c:	b590      	push	{r4, r7, lr}
- 800338e:	b087      	sub	sp, #28
- 8003390:	af00      	add	r7, sp, #0
- 8003392:	6078      	str	r0, [r7, #4]
+ 8003388:	b590      	push	{r4, r7, lr}
+ 800338a:	b087      	sub	sp, #28
+ 800338c:	af00      	add	r7, sp, #0
+ 800338e:	6078      	str	r0, [r7, #4]
 	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);
- 8003394:	4b3c      	ldr	r3, [pc, #240]	; (8003488 <_ZN8Odometry11ReadEncoderEv+0xfc>)
- 8003396:	6a5b      	ldr	r3, [r3, #36]	; 0x24
- 8003398:	b21b      	sxth	r3, r3
- 800339a:	817b      	strh	r3, [r7, #10]
+ 8003390:	4b3c      	ldr	r3, [pc, #240]	; (8003484 <_ZN8Odometry11ReadEncoderEv+0xfc>)
+ 8003392:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+ 8003394:	b21b      	sxth	r3, r3
+ 8003396:	817b      	strh	r3, [r7, #10]
 	TIM3->CNT = 0;
- 800339c:	4b3a      	ldr	r3, [pc, #232]	; (8003488 <_ZN8Odometry11ReadEncoderEv+0xfc>)
- 800339e:	2200      	movs	r2, #0
- 80033a0:	625a      	str	r2, [r3, #36]	; 0x24
+ 8003398:	4b3a      	ldr	r3, [pc, #232]	; (8003484 <_ZN8Odometry11ReadEncoderEv+0xfc>)
+ 800339a:	2200      	movs	r2, #0
+ 800339c:	625a      	str	r2, [r3, #36]	; 0x24
 
 	volatile int16_t _p2 = static_cast<int16_t>(TIM4->CNT);
- 80033a2:	4b3a      	ldr	r3, [pc, #232]	; (800348c <_ZN8Odometry11ReadEncoderEv+0x100>)
- 80033a4:	6a5b      	ldr	r3, [r3, #36]	; 0x24
- 80033a6:	b21b      	sxth	r3, r3
- 80033a8:	813b      	strh	r3, [r7, #8]
+ 800339e:	4b3a      	ldr	r3, [pc, #232]	; (8003488 <_ZN8Odometry11ReadEncoderEv+0x100>)
+ 80033a0:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+ 80033a2:	b21b      	sxth	r3, r3
+ 80033a4:	813b      	strh	r3, [r7, #8]
 	TIM4->CNT = 0;
- 80033aa:	4b38      	ldr	r3, [pc, #224]	; (800348c <_ZN8Odometry11ReadEncoderEv+0x100>)
- 80033ac:	2200      	movs	r2, #0
- 80033ae:	625a      	str	r2, [r3, #36]	; 0x24
+ 80033a6:	4b38      	ldr	r3, [pc, #224]	; (8003488 <_ZN8Odometry11ReadEncoderEv+0x100>)
+ 80033a8:	2200      	movs	r2, #0
+ 80033aa:	625a      	str	r2, [r3, #36]	; 0x24
 
 	// just a simple rotation matrix
 	// translate encoder rates to velocity on x-y plane
 	float _yaw = yaw - ((float) M_PI / 4.0f); //いじるとしたらこの辺　ジャイロの付け方に依る
- 80033b0:	687b      	ldr	r3, [r7, #4]
- 80033b2:	689b      	ldr	r3, [r3, #8]
- 80033b4:	4936      	ldr	r1, [pc, #216]	; (8003490 <_ZN8Odometry11ReadEncoderEv+0x104>)
- 80033b6:	4618      	mov	r0, r3
- 80033b8:	f7fd faea 	bl	8000990 <__aeabi_fsub>
- 80033bc:	4603      	mov	r3, r0
- 80033be:	617b      	str	r3, [r7, #20]
+ 80033ac:	687b      	ldr	r3, [r7, #4]
+ 80033ae:	689b      	ldr	r3, [r3, #8]
+ 80033b0:	4936      	ldr	r1, [pc, #216]	; (800348c <_ZN8Odometry11ReadEncoderEv+0x104>)
+ 80033b2:	4618      	mov	r0, r3
+ 80033b4:	f7fd faec 	bl	8000990 <__aeabi_fsub>
+ 80033b8:	4603      	mov	r3, r0
+ 80033ba:	617b      	str	r3, [r7, #20]
 	float _cos = cosf(_yaw);
- 80033c0:	6978      	ldr	r0, [r7, #20]
- 80033c2:	f001 fa2f 	bl	8004824 <cosf>
- 80033c6:	6138      	str	r0, [r7, #16]
+ 80033bc:	6978      	ldr	r0, [r7, #20]
+ 80033be:	f001 fa31 	bl	8004824 <cosf>
+ 80033c2:	6138      	str	r0, [r7, #16]
 	float _sin = sinf(_yaw);
- 80033c8:	6978      	ldr	r0, [r7, #20]
- 80033ca:	f001 fa5f 	bl	800488c <sinf>
- 80033ce:	60f8      	str	r0, [r7, #12]
+ 80033c4:	6978      	ldr	r0, [r7, #20]
+ 80033c6:	f001 fa61 	bl	800488c <sinf>
+ 80033ca:	60f8      	str	r0, [r7, #12]
 
 	x += ((_p1 * _cos) - (_p2 * _sin)) * MPerPulse;
- 80033d0:	897b      	ldrh	r3, [r7, #10]
- 80033d2:	b21b      	sxth	r3, r3
- 80033d4:	4618      	mov	r0, r3
- 80033d6:	f7fd fb91 	bl	8000afc <__aeabi_i2f>
- 80033da:	4603      	mov	r3, r0
- 80033dc:	6939      	ldr	r1, [r7, #16]
- 80033de:	4618      	mov	r0, r3
- 80033e0:	f7fd fbe0 	bl	8000ba4 <__aeabi_fmul>
- 80033e4:	4603      	mov	r3, r0
- 80033e6:	461c      	mov	r4, r3
- 80033e8:	893b      	ldrh	r3, [r7, #8]
- 80033ea:	b21b      	sxth	r3, r3
- 80033ec:	4618      	mov	r0, r3
- 80033ee:	f7fd fb85 	bl	8000afc <__aeabi_i2f>
- 80033f2:	4603      	mov	r3, r0
- 80033f4:	68f9      	ldr	r1, [r7, #12]
- 80033f6:	4618      	mov	r0, r3
- 80033f8:	f7fd fbd4 	bl	8000ba4 <__aeabi_fmul>
- 80033fc:	4603      	mov	r3, r0
- 80033fe:	4619      	mov	r1, r3
- 8003400:	4620      	mov	r0, r4
- 8003402:	f7fd fac5 	bl	8000990 <__aeabi_fsub>
- 8003406:	4603      	mov	r3, r0
- 8003408:	4922      	ldr	r1, [pc, #136]	; (8003494 <_ZN8Odometry11ReadEncoderEv+0x108>)
- 800340a:	4618      	mov	r0, r3
- 800340c:	f7fd fbca 	bl	8000ba4 <__aeabi_fmul>
- 8003410:	4603      	mov	r3, r0
- 8003412:	461a      	mov	r2, r3
- 8003414:	687b      	ldr	r3, [r7, #4]
- 8003416:	681b      	ldr	r3, [r3, #0]
- 8003418:	4619      	mov	r1, r3
- 800341a:	4610      	mov	r0, r2
- 800341c:	f7fd faba 	bl	8000994 <__addsf3>
- 8003420:	4603      	mov	r3, r0
- 8003422:	461a      	mov	r2, r3
- 8003424:	687b      	ldr	r3, [r7, #4]
- 8003426:	601a      	str	r2, [r3, #0]
+ 80033cc:	897b      	ldrh	r3, [r7, #10]
+ 80033ce:	b21b      	sxth	r3, r3
+ 80033d0:	4618      	mov	r0, r3
+ 80033d2:	f7fd fb93 	bl	8000afc <__aeabi_i2f>
+ 80033d6:	4603      	mov	r3, r0
+ 80033d8:	6939      	ldr	r1, [r7, #16]
+ 80033da:	4618      	mov	r0, r3
+ 80033dc:	f7fd fbe2 	bl	8000ba4 <__aeabi_fmul>
+ 80033e0:	4603      	mov	r3, r0
+ 80033e2:	461c      	mov	r4, r3
+ 80033e4:	893b      	ldrh	r3, [r7, #8]
+ 80033e6:	b21b      	sxth	r3, r3
+ 80033e8:	4618      	mov	r0, r3
+ 80033ea:	f7fd fb87 	bl	8000afc <__aeabi_i2f>
+ 80033ee:	4603      	mov	r3, r0
+ 80033f0:	68f9      	ldr	r1, [r7, #12]
+ 80033f2:	4618      	mov	r0, r3
+ 80033f4:	f7fd fbd6 	bl	8000ba4 <__aeabi_fmul>
+ 80033f8:	4603      	mov	r3, r0
+ 80033fa:	4619      	mov	r1, r3
+ 80033fc:	4620      	mov	r0, r4
+ 80033fe:	f7fd fac7 	bl	8000990 <__aeabi_fsub>
+ 8003402:	4603      	mov	r3, r0
+ 8003404:	4922      	ldr	r1, [pc, #136]	; (8003490 <_ZN8Odometry11ReadEncoderEv+0x108>)
+ 8003406:	4618      	mov	r0, r3
+ 8003408:	f7fd fbcc 	bl	8000ba4 <__aeabi_fmul>
+ 800340c:	4603      	mov	r3, r0
+ 800340e:	461a      	mov	r2, r3
+ 8003410:	687b      	ldr	r3, [r7, #4]
+ 8003412:	681b      	ldr	r3, [r3, #0]
+ 8003414:	4619      	mov	r1, r3
+ 8003416:	4610      	mov	r0, r2
+ 8003418:	f7fd fabc 	bl	8000994 <__addsf3>
+ 800341c:	4603      	mov	r3, r0
+ 800341e:	461a      	mov	r2, r3
+ 8003420:	687b      	ldr	r3, [r7, #4]
+ 8003422:	601a      	str	r2, [r3, #0]
 	y += ((_p1 * _sin) + (_p2 * _cos)) * MPerPulse;
- 8003428:	897b      	ldrh	r3, [r7, #10]
- 800342a:	b21b      	sxth	r3, r3
- 800342c:	4618      	mov	r0, r3
- 800342e:	f7fd fb65 	bl	8000afc <__aeabi_i2f>
- 8003432:	4603      	mov	r3, r0
- 8003434:	68f9      	ldr	r1, [r7, #12]
- 8003436:	4618      	mov	r0, r3
- 8003438:	f7fd fbb4 	bl	8000ba4 <__aeabi_fmul>
- 800343c:	4603      	mov	r3, r0
- 800343e:	461c      	mov	r4, r3
- 8003440:	893b      	ldrh	r3, [r7, #8]
- 8003442:	b21b      	sxth	r3, r3
- 8003444:	4618      	mov	r0, r3
- 8003446:	f7fd fb59 	bl	8000afc <__aeabi_i2f>
- 800344a:	4603      	mov	r3, r0
- 800344c:	6939      	ldr	r1, [r7, #16]
- 800344e:	4618      	mov	r0, r3
- 8003450:	f7fd fba8 	bl	8000ba4 <__aeabi_fmul>
- 8003454:	4603      	mov	r3, r0
- 8003456:	4619      	mov	r1, r3
- 8003458:	4620      	mov	r0, r4
- 800345a:	f7fd fa9b 	bl	8000994 <__addsf3>
- 800345e:	4603      	mov	r3, r0
- 8003460:	490c      	ldr	r1, [pc, #48]	; (8003494 <_ZN8Odometry11ReadEncoderEv+0x108>)
- 8003462:	4618      	mov	r0, r3
- 8003464:	f7fd fb9e 	bl	8000ba4 <__aeabi_fmul>
- 8003468:	4603      	mov	r3, r0
- 800346a:	461a      	mov	r2, r3
- 800346c:	687b      	ldr	r3, [r7, #4]
- 800346e:	685b      	ldr	r3, [r3, #4]
- 8003470:	4619      	mov	r1, r3
- 8003472:	4610      	mov	r0, r2
- 8003474:	f7fd fa8e 	bl	8000994 <__addsf3>
- 8003478:	4603      	mov	r3, r0
- 800347a:	461a      	mov	r2, r3
- 800347c:	687b      	ldr	r3, [r7, #4]
- 800347e:	605a      	str	r2, [r3, #4]
+ 8003424:	897b      	ldrh	r3, [r7, #10]
+ 8003426:	b21b      	sxth	r3, r3
+ 8003428:	4618      	mov	r0, r3
+ 800342a:	f7fd fb67 	bl	8000afc <__aeabi_i2f>
+ 800342e:	4603      	mov	r3, r0
+ 8003430:	68f9      	ldr	r1, [r7, #12]
+ 8003432:	4618      	mov	r0, r3
+ 8003434:	f7fd fbb6 	bl	8000ba4 <__aeabi_fmul>
+ 8003438:	4603      	mov	r3, r0
+ 800343a:	461c      	mov	r4, r3
+ 800343c:	893b      	ldrh	r3, [r7, #8]
+ 800343e:	b21b      	sxth	r3, r3
+ 8003440:	4618      	mov	r0, r3
+ 8003442:	f7fd fb5b 	bl	8000afc <__aeabi_i2f>
+ 8003446:	4603      	mov	r3, r0
+ 8003448:	6939      	ldr	r1, [r7, #16]
+ 800344a:	4618      	mov	r0, r3
+ 800344c:	f7fd fbaa 	bl	8000ba4 <__aeabi_fmul>
+ 8003450:	4603      	mov	r3, r0
+ 8003452:	4619      	mov	r1, r3
+ 8003454:	4620      	mov	r0, r4
+ 8003456:	f7fd fa9d 	bl	8000994 <__addsf3>
+ 800345a:	4603      	mov	r3, r0
+ 800345c:	490c      	ldr	r1, [pc, #48]	; (8003490 <_ZN8Odometry11ReadEncoderEv+0x108>)
+ 800345e:	4618      	mov	r0, r3
+ 8003460:	f7fd fba0 	bl	8000ba4 <__aeabi_fmul>
+ 8003464:	4603      	mov	r3, r0
+ 8003466:	461a      	mov	r2, r3
+ 8003468:	687b      	ldr	r3, [r7, #4]
+ 800346a:	685b      	ldr	r3, [r3, #4]
+ 800346c:	4619      	mov	r1, r3
+ 800346e:	4610      	mov	r0, r2
+ 8003470:	f7fd fa90 	bl	8000994 <__addsf3>
+ 8003474:	4603      	mov	r3, r0
+ 8003476:	461a      	mov	r2, r3
+ 8003478:	687b      	ldr	r3, [r7, #4]
+ 800347a:	605a      	str	r2, [r3, #4]
 }
- 8003480:	bf00      	nop
- 8003482:	371c      	adds	r7, #28
- 8003484:	46bd      	mov	sp, r7
- 8003486:	bd90      	pop	{r4, r7, pc}
- 8003488:	40000400 	.word	0x40000400
- 800348c:	40000800 	.word	0x40000800
- 8003490:	3f490fdb 	.word	0x3f490fdb
- 8003494:	389e1f1d 	.word	0x389e1f1d
+ 800347c:	bf00      	nop
+ 800347e:	371c      	adds	r7, #28
+ 8003480:	46bd      	mov	sp, r7
+ 8003482:	bd90      	pop	{r4, r7, pc}
+ 8003484:	40000400 	.word	0x40000400
+ 8003488:	40000800 	.word	0x40000800
+ 800348c:	3f490fdb 	.word	0x3f490fdb
+ 8003490:	389e1f1d 	.word	0x389e1f1d
 
-08003498 <_ZN8Odometry11ReadAccGyroEv>:
+08003494 <_ZN8Odometry11ReadAccGyroEv>:
 
 void Odometry::ReadAccGyro(void) {
- 8003498:	b5b0      	push	{r4, r5, r7, lr}
- 800349a:	b094      	sub	sp, #80	; 0x50
- 800349c:	af04      	add	r7, sp, #16
- 800349e:	6078      	str	r0, [r7, #4]
+ 8003494:	b5b0      	push	{r4, r5, r7, lr}
+ 8003496:	b094      	sub	sp, #80	; 0x50
+ 8003498:	af04      	add	r7, sp, #16
+ 800349a:	6078      	str	r0, [r7, #4]
 //	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
 //	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg
 //			/ SamplingFrequency;
 	static constexpr float ang_w = 0.1f; //追従の強さ
 	static constexpr float acc_w = 0.1f;
-	static const float offset_G = movavg[5] / 1000.0f;
- 80034a0:	4bb0      	ldr	r3, [pc, #704]	; (8003764 <_ZN8Odometry11ReadAccGyroEv+0x2cc>)
- 80034a2:	681b      	ldr	r3, [r3, #0]
- 80034a4:	f003 0301 	and.w	r3, r3, #1
- 80034a8:	2b00      	cmp	r3, #0
- 80034aa:	d110      	bne.n	80034ce <_ZN8Odometry11ReadAccGyroEv+0x36>
- 80034ac:	687b      	ldr	r3, [r7, #4]
- 80034ae:	6a5b      	ldr	r3, [r3, #36]	; 0x24
- 80034b0:	4618      	mov	r0, r3
- 80034b2:	f7fd fb23 	bl	8000afc <__aeabi_i2f>
- 80034b6:	4603      	mov	r3, r0
- 80034b8:	49ab      	ldr	r1, [pc, #684]	; (8003768 <_ZN8Odometry11ReadAccGyroEv+0x2d0>)
- 80034ba:	4618      	mov	r0, r3
- 80034bc:	f7fd fc26 	bl	8000d0c <__aeabi_fdiv>
- 80034c0:	4603      	mov	r3, r0
- 80034c2:	461a      	mov	r2, r3
- 80034c4:	4ba9      	ldr	r3, [pc, #676]	; (800376c <_ZN8Odometry11ReadAccGyroEv+0x2d4>)
- 80034c6:	601a      	str	r2, [r3, #0]
- 80034c8:	4ba6      	ldr	r3, [pc, #664]	; (8003764 <_ZN8Odometry11ReadAccGyroEv+0x2cc>)
- 80034ca:	2201      	movs	r2, #1
- 80034cc:	601a      	str	r2, [r3, #0]
+	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
+ 800349c:	4bb0      	ldr	r3, [pc, #704]	; (8003760 <_ZN8Odometry11ReadAccGyroEv+0x2cc>)
+ 800349e:	681b      	ldr	r3, [r3, #0]
+ 80034a0:	f003 0301 	and.w	r3, r3, #1
+ 80034a4:	2b00      	cmp	r3, #0
+ 80034a6:	d110      	bne.n	80034ca <_ZN8Odometry11ReadAccGyroEv+0x36>
+ 80034a8:	687b      	ldr	r3, [r7, #4]
+ 80034aa:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+ 80034ac:	4618      	mov	r0, r3
+ 80034ae:	f7fd fb25 	bl	8000afc <__aeabi_i2f>
+ 80034b2:	4603      	mov	r3, r0
+ 80034b4:	49ab      	ldr	r1, [pc, #684]	; (8003764 <_ZN8Odometry11ReadAccGyroEv+0x2d0>)
+ 80034b6:	4618      	mov	r0, r3
+ 80034b8:	f7fd fc28 	bl	8000d0c <__aeabi_fdiv>
+ 80034bc:	4603      	mov	r3, r0
+ 80034be:	461a      	mov	r2, r3
+ 80034c0:	4ba9      	ldr	r3, [pc, #676]	; (8003768 <_ZN8Odometry11ReadAccGyroEv+0x2d4>)
+ 80034c2:	601a      	str	r2, [r3, #0]
+ 80034c4:	4ba6      	ldr	r3, [pc, #664]	; (8003760 <_ZN8Odometry11ReadAccGyroEv+0x2cc>)
+ 80034c6:	2201      	movs	r2, #1
+ 80034c8:	601a      	str	r2, [r3, #0]
 
 	int raw[6];
 	float data[6];
 
 	raw[0] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,
- 80034ce:	687b      	ldr	r3, [r7, #4]
- 80034d0:	68db      	ldr	r3, [r3, #12]
- 80034d2:	2200      	movs	r2, #0
- 80034d4:	21c3      	movs	r1, #195	; 0xc3
- 80034d6:	4618      	mov	r0, r3
- 80034d8:	f7fe ff80 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 80034dc:	4603      	mov	r3, r0
- 80034de:	b21b      	sxth	r3, r3
- 80034e0:	461a      	mov	r2, r3
+ 80034ca:	687b      	ldr	r3, [r7, #4]
+ 80034cc:	68db      	ldr	r3, [r3, #12]
+ 80034ce:	2200      	movs	r2, #0
+ 80034d0:	21c3      	movs	r1, #195	; 0xc3
+ 80034d2:	4618      	mov	r0, r3
+ 80034d4:	f7fe ff82 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 80034d8:	4603      	mov	r3, r0
+ 80034da:	b21b      	sxth	r3, r3
+ 80034dc:	461a      	mov	r2, r3
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
- 80034e2:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 80034e6:	fb03 f302 	mul.w	r3, r3, r2
- 80034ea:	4618      	mov	r0, r3
- 80034ec:	f7fd fb06 	bl	8000afc <__aeabi_i2f>
- 80034f0:	4603      	mov	r3, r0
- 80034f2:	499f      	ldr	r1, [pc, #636]	; (8003770 <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
- 80034f4:	4618      	mov	r0, r3
- 80034f6:	f7fd fc09 	bl	8000d0c <__aeabi_fdiv>
- 80034fa:	4603      	mov	r3, r0
- 80034fc:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003500:	4618      	mov	r0, r3
- 8003502:	f7fd fa47 	bl	8000994 <__addsf3>
- 8003506:	4603      	mov	r3, r0
+ 80034de:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 80034e2:	fb03 f302 	mul.w	r3, r3, r2
+ 80034e6:	4618      	mov	r0, r3
+ 80034e8:	f7fd fb08 	bl	8000afc <__aeabi_i2f>
+ 80034ec:	4603      	mov	r3, r0
+ 80034ee:	499f      	ldr	r1, [pc, #636]	; (800376c <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
+ 80034f0:	4618      	mov	r0, r3
+ 80034f2:	f7fd fc0b 	bl	8000d0c <__aeabi_fdiv>
+ 80034f6:	4603      	mov	r3, r0
+ 80034f8:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 80034fc:	4618      	mov	r0, r3
+ 80034fe:	f7fd fa49 	bl	8000994 <__addsf3>
+ 8003502:	4603      	mov	r3, r0
 	raw[0] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,
- 8003508:	4618      	mov	r0, r3
- 800350a:	f7fd fd27 	bl	8000f5c <__aeabi_f2iz>
- 800350e:	4603      	mov	r3, r0
- 8003510:	623b      	str	r3, [r7, #32]
+ 8003504:	4618      	mov	r0, r3
+ 8003506:	f7fd fd29 	bl	8000f5c <__aeabi_f2iz>
+ 800350a:	4603      	mov	r3, r0
+ 800350c:	623b      	str	r3, [r7, #32]
 	raw[1] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_YOUT_H,
- 8003512:	687b      	ldr	r3, [r7, #4]
- 8003514:	68db      	ldr	r3, [r3, #12]
- 8003516:	2200      	movs	r2, #0
- 8003518:	21c5      	movs	r1, #197	; 0xc5
- 800351a:	4618      	mov	r0, r3
- 800351c:	f7fe ff5e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8003520:	4603      	mov	r3, r0
- 8003522:	b21b      	sxth	r3, r3
- 8003524:	461a      	mov	r2, r3
+ 800350e:	687b      	ldr	r3, [r7, #4]
+ 8003510:	68db      	ldr	r3, [r3, #12]
+ 8003512:	2200      	movs	r2, #0
+ 8003514:	21c5      	movs	r1, #197	; 0xc5
+ 8003516:	4618      	mov	r0, r3
+ 8003518:	f7fe ff60 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 800351c:	4603      	mov	r3, r0
+ 800351e:	b21b      	sxth	r3, r3
+ 8003520:	461a      	mov	r2, r3
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
- 8003526:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 800352a:	fb03 f302 	mul.w	r3, r3, r2
- 800352e:	4618      	mov	r0, r3
- 8003530:	f7fd fae4 	bl	8000afc <__aeabi_i2f>
- 8003534:	4603      	mov	r3, r0
- 8003536:	498e      	ldr	r1, [pc, #568]	; (8003770 <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
- 8003538:	4618      	mov	r0, r3
- 800353a:	f7fd fbe7 	bl	8000d0c <__aeabi_fdiv>
- 800353e:	4603      	mov	r3, r0
- 8003540:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003544:	4618      	mov	r0, r3
- 8003546:	f7fd fa25 	bl	8000994 <__addsf3>
- 800354a:	4603      	mov	r3, r0
+ 8003522:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 8003526:	fb03 f302 	mul.w	r3, r3, r2
+ 800352a:	4618      	mov	r0, r3
+ 800352c:	f7fd fae6 	bl	8000afc <__aeabi_i2f>
+ 8003530:	4603      	mov	r3, r0
+ 8003532:	498e      	ldr	r1, [pc, #568]	; (800376c <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
+ 8003534:	4618      	mov	r0, r3
+ 8003536:	f7fd fbe9 	bl	8000d0c <__aeabi_fdiv>
+ 800353a:	4603      	mov	r3, r0
+ 800353c:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 8003540:	4618      	mov	r0, r3
+ 8003542:	f7fd fa27 	bl	8000994 <__addsf3>
+ 8003546:	4603      	mov	r3, r0
 	raw[1] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_YOUT_H,
- 800354c:	4618      	mov	r0, r3
- 800354e:	f7fd fd05 	bl	8000f5c <__aeabi_f2iz>
- 8003552:	4603      	mov	r3, r0
- 8003554:	627b      	str	r3, [r7, #36]	; 0x24
+ 8003548:	4618      	mov	r0, r3
+ 800354a:	f7fd fd07 	bl	8000f5c <__aeabi_f2iz>
+ 800354e:	4603      	mov	r3, r0
+ 8003550:	627b      	str	r3, [r7, #36]	; 0x24
 	raw[2] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H,
- 8003556:	687b      	ldr	r3, [r7, #4]
- 8003558:	68db      	ldr	r3, [r3, #12]
- 800355a:	2200      	movs	r2, #0
- 800355c:	21c7      	movs	r1, #199	; 0xc7
- 800355e:	4618      	mov	r0, r3
- 8003560:	f7fe ff3c 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8003564:	4603      	mov	r3, r0
- 8003566:	b21b      	sxth	r3, r3
- 8003568:	461a      	mov	r2, r3
+ 8003552:	687b      	ldr	r3, [r7, #4]
+ 8003554:	68db      	ldr	r3, [r3, #12]
+ 8003556:	2200      	movs	r2, #0
+ 8003558:	21c7      	movs	r1, #199	; 0xc7
+ 800355a:	4618      	mov	r0, r3
+ 800355c:	f7fe ff3e 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 8003560:	4603      	mov	r3, r0
+ 8003562:	b21b      	sxth	r3, r3
+ 8003564:	461a      	mov	r2, r3
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
- 800356a:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 800356e:	fb03 f302 	mul.w	r3, r3, r2
- 8003572:	4618      	mov	r0, r3
- 8003574:	f7fd fac2 	bl	8000afc <__aeabi_i2f>
- 8003578:	4603      	mov	r3, r0
- 800357a:	497d      	ldr	r1, [pc, #500]	; (8003770 <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
- 800357c:	4618      	mov	r0, r3
- 800357e:	f7fd fbc5 	bl	8000d0c <__aeabi_fdiv>
- 8003582:	4603      	mov	r3, r0
- 8003584:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003588:	4618      	mov	r0, r3
- 800358a:	f7fd fa03 	bl	8000994 <__addsf3>
- 800358e:	4603      	mov	r3, r0
+ 8003566:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 800356a:	fb03 f302 	mul.w	r3, r3, r2
+ 800356e:	4618      	mov	r0, r3
+ 8003570:	f7fd fac4 	bl	8000afc <__aeabi_i2f>
+ 8003574:	4603      	mov	r3, r0
+ 8003576:	497d      	ldr	r1, [pc, #500]	; (800376c <_ZN8Odometry11ReadAccGyroEv+0x2d8>)
+ 8003578:	4618      	mov	r0, r3
+ 800357a:	f7fd fbc7 	bl	8000d0c <__aeabi_fdiv>
+ 800357e:	4603      	mov	r3, r0
+ 8003580:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 8003584:	4618      	mov	r0, r3
+ 8003586:	f7fd fa05 	bl	8000994 <__addsf3>
+ 800358a:	4603      	mov	r3, r0
 	raw[2] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H,
- 8003590:	4618      	mov	r0, r3
- 8003592:	f7fd fce3 	bl	8000f5c <__aeabi_f2iz>
- 8003596:	4603      	mov	r3, r0
- 8003598:	62bb      	str	r3, [r7, #40]	; 0x28
+ 800358c:	4618      	mov	r0, r3
+ 800358e:	f7fd fce5 	bl	8000f5c <__aeabi_f2iz>
+ 8003592:	4603      	mov	r3, r0
+ 8003594:	62bb      	str	r3, [r7, #40]	; 0x28
 	raw[3] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_XOUT_H,
- 800359a:	687b      	ldr	r3, [r7, #4]
- 800359c:	68db      	ldr	r3, [r3, #12]
- 800359e:	2200      	movs	r2, #0
- 80035a0:	21bb      	movs	r1, #187	; 0xbb
- 80035a2:	4618      	mov	r0, r3
- 80035a4:	f7fe ff1a 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 80035a8:	4603      	mov	r3, r0
- 80035aa:	b21b      	sxth	r3, r3
- 80035ac:	461a      	mov	r2, r3
+ 8003596:	687b      	ldr	r3, [r7, #4]
+ 8003598:	68db      	ldr	r3, [r3, #12]
+ 800359a:	2200      	movs	r2, #0
+ 800359c:	21bb      	movs	r1, #187	; 0xbb
+ 800359e:	4618      	mov	r0, r3
+ 80035a0:	f7fe ff1c 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 80035a4:	4603      	mov	r3, r0
+ 80035a6:	b21b      	sxth	r3, r3
+ 80035a8:	461a      	mov	r2, r3
 			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
- 80035ae:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 80035b2:	fb03 f302 	mul.w	r3, r3, r2
- 80035b6:	2b00      	cmp	r3, #0
- 80035b8:	da01      	bge.n	80035be <_ZN8Odometry11ReadAccGyroEv+0x126>
- 80035ba:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
- 80035be:	12db      	asrs	r3, r3, #11
- 80035c0:	4618      	mov	r0, r3
- 80035c2:	f7fd fa9b 	bl	8000afc <__aeabi_i2f>
- 80035c6:	4603      	mov	r3, r0
- 80035c8:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 80035cc:	4618      	mov	r0, r3
- 80035ce:	f7fd f9e1 	bl	8000994 <__addsf3>
- 80035d2:	4603      	mov	r3, r0
+ 80035aa:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 80035ae:	fb03 f302 	mul.w	r3, r3, r2
+ 80035b2:	2b00      	cmp	r3, #0
+ 80035b4:	da01      	bge.n	80035ba <_ZN8Odometry11ReadAccGyroEv+0x126>
+ 80035b6:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
+ 80035ba:	12db      	asrs	r3, r3, #11
+ 80035bc:	4618      	mov	r0, r3
+ 80035be:	f7fd fa9d 	bl	8000afc <__aeabi_i2f>
+ 80035c2:	4603      	mov	r3, r0
+ 80035c4:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 80035c8:	4618      	mov	r0, r3
+ 80035ca:	f7fd f9e3 	bl	8000994 <__addsf3>
+ 80035ce:	4603      	mov	r3, r0
 	raw[3] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_XOUT_H,
- 80035d4:	4618      	mov	r0, r3
- 80035d6:	f7fd fcc1 	bl	8000f5c <__aeabi_f2iz>
- 80035da:	4603      	mov	r3, r0
- 80035dc:	62fb      	str	r3, [r7, #44]	; 0x2c
+ 80035d0:	4618      	mov	r0, r3
+ 80035d2:	f7fd fcc3 	bl	8000f5c <__aeabi_f2iz>
+ 80035d6:	4603      	mov	r3, r0
+ 80035d8:	62fb      	str	r3, [r7, #44]	; 0x2c
 	raw[4] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_YOUT_H,
- 80035de:	687b      	ldr	r3, [r7, #4]
- 80035e0:	68db      	ldr	r3, [r3, #12]
- 80035e2:	2200      	movs	r2, #0
- 80035e4:	21bd      	movs	r1, #189	; 0xbd
- 80035e6:	4618      	mov	r0, r3
- 80035e8:	f7fe fef8 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 80035ec:	4603      	mov	r3, r0
- 80035ee:	b21b      	sxth	r3, r3
- 80035f0:	461a      	mov	r2, r3
+ 80035da:	687b      	ldr	r3, [r7, #4]
+ 80035dc:	68db      	ldr	r3, [r3, #12]
+ 80035de:	2200      	movs	r2, #0
+ 80035e0:	21bd      	movs	r1, #189	; 0xbd
+ 80035e2:	4618      	mov	r0, r3
+ 80035e4:	f7fe fefa 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 80035e8:	4603      	mov	r3, r0
+ 80035ea:	b21b      	sxth	r3, r3
+ 80035ec:	461a      	mov	r2, r3
 			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
- 80035f2:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 80035f6:	fb03 f302 	mul.w	r3, r3, r2
- 80035fa:	2b00      	cmp	r3, #0
- 80035fc:	da01      	bge.n	8003602 <_ZN8Odometry11ReadAccGyroEv+0x16a>
- 80035fe:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
- 8003602:	12db      	asrs	r3, r3, #11
- 8003604:	4618      	mov	r0, r3
- 8003606:	f7fd fa79 	bl	8000afc <__aeabi_i2f>
- 800360a:	4603      	mov	r3, r0
- 800360c:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003610:	4618      	mov	r0, r3
- 8003612:	f7fd f9bf 	bl	8000994 <__addsf3>
- 8003616:	4603      	mov	r3, r0
+ 80035ee:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 80035f2:	fb03 f302 	mul.w	r3, r3, r2
+ 80035f6:	2b00      	cmp	r3, #0
+ 80035f8:	da01      	bge.n	80035fe <_ZN8Odometry11ReadAccGyroEv+0x16a>
+ 80035fa:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
+ 80035fe:	12db      	asrs	r3, r3, #11
+ 8003600:	4618      	mov	r0, r3
+ 8003602:	f7fd fa7b 	bl	8000afc <__aeabi_i2f>
+ 8003606:	4603      	mov	r3, r0
+ 8003608:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 800360c:	4618      	mov	r0, r3
+ 800360e:	f7fd f9c1 	bl	8000994 <__addsf3>
+ 8003612:	4603      	mov	r3, r0
 	raw[4] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_YOUT_H,
- 8003618:	4618      	mov	r0, r3
- 800361a:	f7fd fc9f 	bl	8000f5c <__aeabi_f2iz>
- 800361e:	4603      	mov	r3, r0
- 8003620:	633b      	str	r3, [r7, #48]	; 0x30
+ 8003614:	4618      	mov	r0, r3
+ 8003616:	f7fd fca1 	bl	8000f5c <__aeabi_f2iz>
+ 800361a:	4603      	mov	r3, r0
+ 800361c:	633b      	str	r3, [r7, #48]	; 0x30
 	raw[5] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_ZOUT_H,
- 8003622:	687b      	ldr	r3, [r7, #4]
- 8003624:	68db      	ldr	r3, [r3, #12]
- 8003626:	2200      	movs	r2, #0
- 8003628:	21bf      	movs	r1, #191	; 0xbf
- 800362a:	4618      	mov	r0, r3
- 800362c:	f7fe fed6 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
- 8003630:	4603      	mov	r3, r0
- 8003632:	b21b      	sxth	r3, r3
- 8003634:	461a      	mov	r2, r3
+ 800361e:	687b      	ldr	r3, [r7, #4]
+ 8003620:	68db      	ldr	r3, [r3, #12]
+ 8003622:	2200      	movs	r2, #0
+ 8003624:	21bf      	movs	r1, #191	; 0xbf
+ 8003626:	4618      	mov	r0, r3
+ 8003628:	f7fe fed8 	bl	80023dc <_ZNK7MPU92509WriteWordEht>
+ 800362c:	4603      	mov	r3, r0
+ 800362e:	b21b      	sxth	r3, r3
+ 8003630:	461a      	mov	r2, r3
 			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
- 8003636:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 800363a:	fb03 f302 	mul.w	r3, r3, r2
- 800363e:	2b00      	cmp	r3, #0
- 8003640:	da01      	bge.n	8003646 <_ZN8Odometry11ReadAccGyroEv+0x1ae>
- 8003642:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
- 8003646:	12db      	asrs	r3, r3, #11
- 8003648:	4618      	mov	r0, r3
- 800364a:	f7fd fa57 	bl	8000afc <__aeabi_i2f>
- 800364e:	4603      	mov	r3, r0
- 8003650:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003654:	4618      	mov	r0, r3
- 8003656:	f7fd f99d 	bl	8000994 <__addsf3>
- 800365a:	4603      	mov	r3, r0
+ 8003632:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 8003636:	fb03 f302 	mul.w	r3, r3, r2
+ 800363a:	2b00      	cmp	r3, #0
+ 800363c:	da01      	bge.n	8003642 <_ZN8Odometry11ReadAccGyroEv+0x1ae>
+ 800363e:	f203 73ff 	addw	r3, r3, #2047	; 0x7ff
+ 8003642:	12db      	asrs	r3, r3, #11
+ 8003644:	4618      	mov	r0, r3
+ 8003646:	f7fd fa59 	bl	8000afc <__aeabi_i2f>
+ 800364a:	4603      	mov	r3, r0
+ 800364c:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 8003650:	4618      	mov	r0, r3
+ 8003652:	f7fd f99f 	bl	8000994 <__addsf3>
+ 8003656:	4603      	mov	r3, r0
 	raw[5] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_ZOUT_H,
- 800365c:	4618      	mov	r0, r3
- 800365e:	f7fd fc7d 	bl	8000f5c <__aeabi_f2iz>
- 8003662:	4603      	mov	r3, r0
- 8003664:	637b      	str	r3, [r7, #52]	; 0x34
+ 8003658:	4618      	mov	r0, r3
+ 800365a:	f7fd fc7f 	bl	8000f5c <__aeabi_f2iz>
+ 800365e:	4603      	mov	r3, r0
+ 8003660:	637b      	str	r3, [r7, #52]	; 0x34
 //	int dy_raw_mdps = (((int16_t) mpu9250->WriteWord(
 //	READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000)) * 1000 / SensitivityScaleFactor)
 //			+ 0.5f;
 	//temp = mpu9250->WriteWord(READ_FLAG | MPUREG_TEMP_OUT_H, 0x0000);
 
 	for (int i = 0; i < 3; i++) {
- 8003666:	2300      	movs	r3, #0
- 8003668:	63fb      	str	r3, [r7, #60]	; 0x3c
- 800366a:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 800366c:	2b02      	cmp	r3, #2
- 800366e:	f300 8085 	bgt.w	800377c <_ZN8Odometry11ReadAccGyroEv+0x2e4>
+ 8003662:	2300      	movs	r3, #0
+ 8003664:	63fb      	str	r3, [r7, #60]	; 0x3c
+ 8003666:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003668:	2b02      	cmp	r3, #2
+ 800366a:	f300 8085 	bgt.w	8003778 <_ZN8Odometry11ReadAccGyroEv+0x2e4>
 		biased[i] = raw[i] - movavg[i];
- 8003672:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 8003674:	009b      	lsls	r3, r3, #2
- 8003676:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 800367a:	4413      	add	r3, r2
- 800367c:	f853 2c20 	ldr.w	r2, [r3, #-32]
- 8003680:	687b      	ldr	r3, [r7, #4]
- 8003682:	6bf9      	ldr	r1, [r7, #60]	; 0x3c
- 8003684:	3104      	adds	r1, #4
- 8003686:	f853 3021 	ldr.w	r3, [r3, r1, lsl #2]
- 800368a:	1ad1      	subs	r1, r2, r3
- 800368c:	687b      	ldr	r3, [r7, #4]
- 800368e:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 8003690:	320a      	adds	r2, #10
- 8003692:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 800366e:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003670:	009b      	lsls	r3, r3, #2
+ 8003672:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 8003676:	4413      	add	r3, r2
+ 8003678:	f853 2c20 	ldr.w	r2, [r3, #-32]
+ 800367c:	687b      	ldr	r3, [r7, #4]
+ 800367e:	6bf9      	ldr	r1, [r7, #60]	; 0x3c
+ 8003680:	3104      	adds	r1, #4
+ 8003682:	f853 3021 	ldr.w	r3, [r3, r1, lsl #2]
+ 8003686:	1ad1      	subs	r1, r2, r3
+ 8003688:	687b      	ldr	r3, [r7, #4]
+ 800368a:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 800368c:	320a      	adds	r2, #10
+ 800368e:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 
 		if (biased[i] < -ang_movband || ang_movband < biased[i]) {
- 8003696:	687b      	ldr	r3, [r7, #4]
- 8003698:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 800369a:	320a      	adds	r2, #10
- 800369c:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80036a0:	f113 0f64 	cmn.w	r3, #100	; 0x64
- 80036a4:	db06      	blt.n	80036b4 <_ZN8Odometry11ReadAccGyroEv+0x21c>
- 80036a6:	687b      	ldr	r3, [r7, #4]
- 80036a8:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 80036aa:	320a      	adds	r2, #10
- 80036ac:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80036b0:	2b64      	cmp	r3, #100	; 0x64
- 80036b2:	dd16      	ble.n	80036e2 <_ZN8Odometry11ReadAccGyroEv+0x24a>
+ 8003692:	687b      	ldr	r3, [r7, #4]
+ 8003694:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 8003696:	320a      	adds	r2, #10
+ 8003698:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 800369c:	f113 0f64 	cmn.w	r3, #100	; 0x64
+ 80036a0:	db06      	blt.n	80036b0 <_ZN8Odometry11ReadAccGyroEv+0x21c>
+ 80036a2:	687b      	ldr	r3, [r7, #4]
+ 80036a4:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 80036a6:	320a      	adds	r2, #10
+ 80036a8:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80036ac:	2b64      	cmp	r3, #100	; 0x64
+ 80036ae:	dd16      	ble.n	80036de <_ZN8Odometry11ReadAccGyroEv+0x24a>
 //			yaw -= (2.0f * (float) M_PI);
 //		} else if (yaw < -(float) M_PI) {
 //			yaw += (2.0f * (float) M_PI);
 //		}
 
 			data[i] = biased[i] / 1000.0f;
- 80036b4:	687b      	ldr	r3, [r7, #4]
- 80036b6:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 80036b8:	320a      	adds	r2, #10
- 80036ba:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80036be:	4618      	mov	r0, r3
- 80036c0:	f7fd fa1c 	bl	8000afc <__aeabi_i2f>
- 80036c4:	4603      	mov	r3, r0
- 80036c6:	4928      	ldr	r1, [pc, #160]	; (8003768 <_ZN8Odometry11ReadAccGyroEv+0x2d0>)
- 80036c8:	4618      	mov	r0, r3
- 80036ca:	f7fd fb1f 	bl	8000d0c <__aeabi_fdiv>
- 80036ce:	4603      	mov	r3, r0
- 80036d0:	461a      	mov	r2, r3
- 80036d2:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 80036d4:	009b      	lsls	r3, r3, #2
- 80036d6:	f107 0140 	add.w	r1, r7, #64	; 0x40
- 80036da:	440b      	add	r3, r1
- 80036dc:	f843 2c38 	str.w	r2, [r3, #-56]
- 80036e0:	e03b      	b.n	800375a <_ZN8Odometry11ReadAccGyroEv+0x2c2>
+ 80036b0:	687b      	ldr	r3, [r7, #4]
+ 80036b2:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 80036b4:	320a      	adds	r2, #10
+ 80036b6:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80036ba:	4618      	mov	r0, r3
+ 80036bc:	f7fd fa1e 	bl	8000afc <__aeabi_i2f>
+ 80036c0:	4603      	mov	r3, r0
+ 80036c2:	4928      	ldr	r1, [pc, #160]	; (8003764 <_ZN8Odometry11ReadAccGyroEv+0x2d0>)
+ 80036c4:	4618      	mov	r0, r3
+ 80036c6:	f7fd fb21 	bl	8000d0c <__aeabi_fdiv>
+ 80036ca:	4603      	mov	r3, r0
+ 80036cc:	461a      	mov	r2, r3
+ 80036ce:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 80036d0:	009b      	lsls	r3, r3, #2
+ 80036d2:	f107 0140 	add.w	r1, r7, #64	; 0x40
+ 80036d6:	440b      	add	r3, r1
+ 80036d8:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80036dc:	e03b      	b.n	8003756 <_ZN8Odometry11ReadAccGyroEv+0x2c2>
 		} else {
 			data[i] = 0.0f;
- 80036e2:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 80036e4:	009b      	lsls	r3, r3, #2
- 80036e6:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 80036ea:	4413      	add	r3, r2
- 80036ec:	f04f 0200 	mov.w	r2, #0
- 80036f0:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80036de:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 80036e0:	009b      	lsls	r3, r3, #2
+ 80036e2:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 80036e6:	4413      	add	r3, r2
+ 80036e8:	f04f 0200 	mov.w	r2, #0
+ 80036ec:	f843 2c38 	str.w	r2, [r3, #-56]
 			movavg[i] = (int) ((((float) movavg[i] * (1 - ang_w))
- 80036f4:	687b      	ldr	r3, [r7, #4]
- 80036f6:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 80036f8:	3204      	adds	r2, #4
- 80036fa:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80036fe:	4618      	mov	r0, r3
- 8003700:	f7fd f9fc 	bl	8000afc <__aeabi_i2f>
- 8003704:	4603      	mov	r3, r0
- 8003706:	491b      	ldr	r1, [pc, #108]	; (8003774 <_ZN8Odometry11ReadAccGyroEv+0x2dc>)
- 8003708:	4618      	mov	r0, r3
- 800370a:	f7fd fa4b 	bl	8000ba4 <__aeabi_fmul>
- 800370e:	4603      	mov	r3, r0
- 8003710:	461c      	mov	r4, r3
+ 80036f0:	687b      	ldr	r3, [r7, #4]
+ 80036f2:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 80036f4:	3204      	adds	r2, #4
+ 80036f6:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80036fa:	4618      	mov	r0, r3
+ 80036fc:	f7fd f9fe 	bl	8000afc <__aeabi_i2f>
+ 8003700:	4603      	mov	r3, r0
+ 8003702:	491b      	ldr	r1, [pc, #108]	; (8003770 <_ZN8Odometry11ReadAccGyroEv+0x2dc>)
+ 8003704:	4618      	mov	r0, r3
+ 8003706:	f7fd fa4d 	bl	8000ba4 <__aeabi_fmul>
+ 800370a:	4603      	mov	r3, r0
+ 800370c:	461c      	mov	r4, r3
 					+ ((float) raw[i] * ang_w)) + 0.5f);
- 8003712:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 8003714:	009b      	lsls	r3, r3, #2
- 8003716:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 800371a:	4413      	add	r3, r2
- 800371c:	f853 3c20 	ldr.w	r3, [r3, #-32]
- 8003720:	4618      	mov	r0, r3
- 8003722:	f7fd f9eb 	bl	8000afc <__aeabi_i2f>
- 8003726:	4603      	mov	r3, r0
- 8003728:	4913      	ldr	r1, [pc, #76]	; (8003778 <_ZN8Odometry11ReadAccGyroEv+0x2e0>)
- 800372a:	4618      	mov	r0, r3
- 800372c:	f7fd fa3a 	bl	8000ba4 <__aeabi_fmul>
- 8003730:	4603      	mov	r3, r0
- 8003732:	4619      	mov	r1, r3
- 8003734:	4620      	mov	r0, r4
- 8003736:	f7fd f92d 	bl	8000994 <__addsf3>
- 800373a:	4603      	mov	r3, r0
- 800373c:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003740:	4618      	mov	r0, r3
- 8003742:	f7fd f927 	bl	8000994 <__addsf3>
- 8003746:	4603      	mov	r3, r0
+ 800370e:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003710:	009b      	lsls	r3, r3, #2
+ 8003712:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 8003716:	4413      	add	r3, r2
+ 8003718:	f853 3c20 	ldr.w	r3, [r3, #-32]
+ 800371c:	4618      	mov	r0, r3
+ 800371e:	f7fd f9ed 	bl	8000afc <__aeabi_i2f>
+ 8003722:	4603      	mov	r3, r0
+ 8003724:	4913      	ldr	r1, [pc, #76]	; (8003774 <_ZN8Odometry11ReadAccGyroEv+0x2e0>)
+ 8003726:	4618      	mov	r0, r3
+ 8003728:	f7fd fa3c 	bl	8000ba4 <__aeabi_fmul>
+ 800372c:	4603      	mov	r3, r0
+ 800372e:	4619      	mov	r1, r3
+ 8003730:	4620      	mov	r0, r4
+ 8003732:	f7fd f92f 	bl	8000994 <__addsf3>
+ 8003736:	4603      	mov	r3, r0
+ 8003738:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 800373c:	4618      	mov	r0, r3
+ 800373e:	f7fd f929 	bl	8000994 <__addsf3>
+ 8003742:	4603      	mov	r3, r0
 			movavg[i] = (int) ((((float) movavg[i] * (1 - ang_w))
- 8003748:	4618      	mov	r0, r3
- 800374a:	f7fd fc07 	bl	8000f5c <__aeabi_f2iz>
- 800374e:	4601      	mov	r1, r0
- 8003750:	687b      	ldr	r3, [r7, #4]
- 8003752:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 8003754:	3204      	adds	r2, #4
- 8003756:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 8003744:	4618      	mov	r0, r3
+ 8003746:	f7fd fc09 	bl	8000f5c <__aeabi_f2iz>
+ 800374a:	4601      	mov	r1, r0
+ 800374c:	687b      	ldr	r3, [r7, #4]
+ 800374e:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 8003750:	3204      	adds	r2, #4
+ 8003752:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 	for (int i = 0; i < 3; i++) {
- 800375a:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 800375c:	3301      	adds	r3, #1
- 800375e:	63fb      	str	r3, [r7, #60]	; 0x3c
- 8003760:	e783      	b.n	800366a <_ZN8Odometry11ReadAccGyroEv+0x1d2>
- 8003762:	bf00      	nop
- 8003764:	2000089c 	.word	0x2000089c
- 8003768:	447a0000 	.word	0x447a0000
- 800376c:	20000898 	.word	0x20000898
- 8003770:	42033333 	.word	0x42033333
- 8003774:	3f666666 	.word	0x3f666666
- 8003778:	3dcccccd 	.word	0x3dcccccd
+ 8003756:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003758:	3301      	adds	r3, #1
+ 800375a:	63fb      	str	r3, [r7, #60]	; 0x3c
+ 800375c:	e783      	b.n	8003666 <_ZN8Odometry11ReadAccGyroEv+0x1d2>
+ 800375e:	bf00      	nop
+ 8003760:	2000089c 	.word	0x2000089c
+ 8003764:	447a0000 	.word	0x447a0000
+ 8003768:	20000898 	.word	0x20000898
+ 800376c:	42033333 	.word	0x42033333
+ 8003770:	3f666666 	.word	0x3f666666
+ 8003774:	3dcccccd 	.word	0x3dcccccd
 		}
 	}
 	for (int i = 3; i < 5; i++) {
- 800377c:	2303      	movs	r3, #3
- 800377e:	63bb      	str	r3, [r7, #56]	; 0x38
- 8003780:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003782:	2b04      	cmp	r3, #4
- 8003784:	dc77      	bgt.n	8003876 <_ZN8Odometry11ReadAccGyroEv+0x3de>
+ 8003778:	2303      	movs	r3, #3
+ 800377a:	63bb      	str	r3, [r7, #56]	; 0x38
+ 800377c:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 800377e:	2b04      	cmp	r3, #4
+ 8003780:	dc77      	bgt.n	8003872 <_ZN8Odometry11ReadAccGyroEv+0x3de>
 		biased[i] = raw[i] - movavg[i];
- 8003786:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003788:	009b      	lsls	r3, r3, #2
- 800378a:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 800378e:	4413      	add	r3, r2
- 8003790:	f853 2c20 	ldr.w	r2, [r3, #-32]
- 8003794:	687b      	ldr	r3, [r7, #4]
- 8003796:	6bb9      	ldr	r1, [r7, #56]	; 0x38
- 8003798:	3104      	adds	r1, #4
- 800379a:	f853 3021 	ldr.w	r3, [r3, r1, lsl #2]
- 800379e:	1ad1      	subs	r1, r2, r3
- 80037a0:	687b      	ldr	r3, [r7, #4]
- 80037a2:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 80037a4:	320a      	adds	r2, #10
- 80037a6:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 8003782:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 8003784:	009b      	lsls	r3, r3, #2
+ 8003786:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 800378a:	4413      	add	r3, r2
+ 800378c:	f853 2c20 	ldr.w	r2, [r3, #-32]
+ 8003790:	687b      	ldr	r3, [r7, #4]
+ 8003792:	6bb9      	ldr	r1, [r7, #56]	; 0x38
+ 8003794:	3104      	adds	r1, #4
+ 8003796:	f853 3021 	ldr.w	r3, [r3, r1, lsl #2]
+ 800379a:	1ad1      	subs	r1, r2, r3
+ 800379c:	687b      	ldr	r3, [r7, #4]
+ 800379e:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 80037a0:	320a      	adds	r2, #10
+ 80037a2:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 
 		if (biased[i] < -acc_movband || acc_movband < biased[i]) {
- 80037aa:	687b      	ldr	r3, [r7, #4]
- 80037ac:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 80037ae:	320a      	adds	r2, #10
- 80037b0:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80037b4:	f113 0f64 	cmn.w	r3, #100	; 0x64
- 80037b8:	db06      	blt.n	80037c8 <_ZN8Odometry11ReadAccGyroEv+0x330>
- 80037ba:	687b      	ldr	r3, [r7, #4]
- 80037bc:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 80037be:	320a      	adds	r2, #10
- 80037c0:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80037c4:	2b64      	cmp	r3, #100	; 0x64
- 80037c6:	dd16      	ble.n	80037f6 <_ZN8Odometry11ReadAccGyroEv+0x35e>
+ 80037a6:	687b      	ldr	r3, [r7, #4]
+ 80037a8:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 80037aa:	320a      	adds	r2, #10
+ 80037ac:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80037b0:	f113 0f64 	cmn.w	r3, #100	; 0x64
+ 80037b4:	db06      	blt.n	80037c4 <_ZN8Odometry11ReadAccGyroEv+0x330>
+ 80037b6:	687b      	ldr	r3, [r7, #4]
+ 80037b8:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 80037ba:	320a      	adds	r2, #10
+ 80037bc:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80037c0:	2b64      	cmp	r3, #100	; 0x64
+ 80037c2:	dd16      	ble.n	80037f2 <_ZN8Odometry11ReadAccGyroEv+0x35e>
 			data[i] = biased[i] / 1000.0f;
- 80037c8:	687b      	ldr	r3, [r7, #4]
- 80037ca:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 80037cc:	320a      	adds	r2, #10
- 80037ce:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80037d2:	4618      	mov	r0, r3
- 80037d4:	f7fd f992 	bl	8000afc <__aeabi_i2f>
- 80037d8:	4603      	mov	r3, r0
- 80037da:	4957      	ldr	r1, [pc, #348]	; (8003938 <_ZN8Odometry11ReadAccGyroEv+0x4a0>)
- 80037dc:	4618      	mov	r0, r3
- 80037de:	f7fd fa95 	bl	8000d0c <__aeabi_fdiv>
- 80037e2:	4603      	mov	r3, r0
- 80037e4:	461a      	mov	r2, r3
- 80037e6:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 80037e8:	009b      	lsls	r3, r3, #2
- 80037ea:	f107 0140 	add.w	r1, r7, #64	; 0x40
- 80037ee:	440b      	add	r3, r1
- 80037f0:	f843 2c38 	str.w	r2, [r3, #-56]
- 80037f4:	e03b      	b.n	800386e <_ZN8Odometry11ReadAccGyroEv+0x3d6>
+ 80037c4:	687b      	ldr	r3, [r7, #4]
+ 80037c6:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 80037c8:	320a      	adds	r2, #10
+ 80037ca:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80037ce:	4618      	mov	r0, r3
+ 80037d0:	f7fd f994 	bl	8000afc <__aeabi_i2f>
+ 80037d4:	4603      	mov	r3, r0
+ 80037d6:	495a      	ldr	r1, [pc, #360]	; (8003940 <_ZN8Odometry11ReadAccGyroEv+0x4ac>)
+ 80037d8:	4618      	mov	r0, r3
+ 80037da:	f7fd fa97 	bl	8000d0c <__aeabi_fdiv>
+ 80037de:	4603      	mov	r3, r0
+ 80037e0:	461a      	mov	r2, r3
+ 80037e2:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 80037e4:	009b      	lsls	r3, r3, #2
+ 80037e6:	f107 0140 	add.w	r1, r7, #64	; 0x40
+ 80037ea:	440b      	add	r3, r1
+ 80037ec:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80037f0:	e03b      	b.n	800386a <_ZN8Odometry11ReadAccGyroEv+0x3d6>
 		} else {
 			data[i] = 0.0f;
- 80037f6:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 80037f8:	009b      	lsls	r3, r3, #2
- 80037fa:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 80037fe:	4413      	add	r3, r2
- 8003800:	f04f 0200 	mov.w	r2, #0
- 8003804:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80037f2:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 80037f4:	009b      	lsls	r3, r3, #2
+ 80037f6:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 80037fa:	4413      	add	r3, r2
+ 80037fc:	f04f 0200 	mov.w	r2, #0
+ 8003800:	f843 2c38 	str.w	r2, [r3, #-56]
 			movavg[i] = (int) ((((float) movavg[i] * (1 - acc_w))
- 8003808:	687b      	ldr	r3, [r7, #4]
- 800380a:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 800380c:	3204      	adds	r2, #4
- 800380e:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 8003812:	4618      	mov	r0, r3
- 8003814:	f7fd f972 	bl	8000afc <__aeabi_i2f>
- 8003818:	4603      	mov	r3, r0
- 800381a:	4948      	ldr	r1, [pc, #288]	; (800393c <_ZN8Odometry11ReadAccGyroEv+0x4a4>)
- 800381c:	4618      	mov	r0, r3
- 800381e:	f7fd f9c1 	bl	8000ba4 <__aeabi_fmul>
- 8003822:	4603      	mov	r3, r0
- 8003824:	461c      	mov	r4, r3
+ 8003804:	687b      	ldr	r3, [r7, #4]
+ 8003806:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 8003808:	3204      	adds	r2, #4
+ 800380a:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 800380e:	4618      	mov	r0, r3
+ 8003810:	f7fd f974 	bl	8000afc <__aeabi_i2f>
+ 8003814:	4603      	mov	r3, r0
+ 8003816:	494b      	ldr	r1, [pc, #300]	; (8003944 <_ZN8Odometry11ReadAccGyroEv+0x4b0>)
+ 8003818:	4618      	mov	r0, r3
+ 800381a:	f7fd f9c3 	bl	8000ba4 <__aeabi_fmul>
+ 800381e:	4603      	mov	r3, r0
+ 8003820:	461c      	mov	r4, r3
 					+ ((float) raw[i] * acc_w)) + 0.5f);
- 8003826:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003828:	009b      	lsls	r3, r3, #2
- 800382a:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 800382e:	4413      	add	r3, r2
- 8003830:	f853 3c20 	ldr.w	r3, [r3, #-32]
- 8003834:	4618      	mov	r0, r3
- 8003836:	f7fd f961 	bl	8000afc <__aeabi_i2f>
- 800383a:	4603      	mov	r3, r0
- 800383c:	4940      	ldr	r1, [pc, #256]	; (8003940 <_ZN8Odometry11ReadAccGyroEv+0x4a8>)
- 800383e:	4618      	mov	r0, r3
- 8003840:	f7fd f9b0 	bl	8000ba4 <__aeabi_fmul>
- 8003844:	4603      	mov	r3, r0
- 8003846:	4619      	mov	r1, r3
- 8003848:	4620      	mov	r0, r4
- 800384a:	f7fd f8a3 	bl	8000994 <__addsf3>
- 800384e:	4603      	mov	r3, r0
- 8003850:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003854:	4618      	mov	r0, r3
- 8003856:	f7fd f89d 	bl	8000994 <__addsf3>
- 800385a:	4603      	mov	r3, r0
+ 8003822:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 8003824:	009b      	lsls	r3, r3, #2
+ 8003826:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 800382a:	4413      	add	r3, r2
+ 800382c:	f853 3c20 	ldr.w	r3, [r3, #-32]
+ 8003830:	4618      	mov	r0, r3
+ 8003832:	f7fd f963 	bl	8000afc <__aeabi_i2f>
+ 8003836:	4603      	mov	r3, r0
+ 8003838:	4943      	ldr	r1, [pc, #268]	; (8003948 <_ZN8Odometry11ReadAccGyroEv+0x4b4>)
+ 800383a:	4618      	mov	r0, r3
+ 800383c:	f7fd f9b2 	bl	8000ba4 <__aeabi_fmul>
+ 8003840:	4603      	mov	r3, r0
+ 8003842:	4619      	mov	r1, r3
+ 8003844:	4620      	mov	r0, r4
+ 8003846:	f7fd f8a5 	bl	8000994 <__addsf3>
+ 800384a:	4603      	mov	r3, r0
+ 800384c:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 8003850:	4618      	mov	r0, r3
+ 8003852:	f7fd f89f 	bl	8000994 <__addsf3>
+ 8003856:	4603      	mov	r3, r0
 			movavg[i] = (int) ((((float) movavg[i] * (1 - acc_w))
- 800385c:	4618      	mov	r0, r3
- 800385e:	f7fd fb7d 	bl	8000f5c <__aeabi_f2iz>
- 8003862:	4601      	mov	r1, r0
- 8003864:	687b      	ldr	r3, [r7, #4]
- 8003866:	6bba      	ldr	r2, [r7, #56]	; 0x38
- 8003868:	3204      	adds	r2, #4
- 800386a:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 8003858:	4618      	mov	r0, r3
+ 800385a:	f7fd fb7f 	bl	8000f5c <__aeabi_f2iz>
+ 800385e:	4601      	mov	r1, r0
+ 8003860:	687b      	ldr	r3, [r7, #4]
+ 8003862:	6bba      	ldr	r2, [r7, #56]	; 0x38
+ 8003864:	3204      	adds	r2, #4
+ 8003866:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 	for (int i = 3; i < 5; i++) {
- 800386e:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003870:	3301      	adds	r3, #1
- 8003872:	63bb      	str	r3, [r7, #56]	; 0x38
- 8003874:	e784      	b.n	8003780 <_ZN8Odometry11ReadAccGyroEv+0x2e8>
+ 800386a:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 800386c:	3301      	adds	r3, #1
+ 800386e:	63bb      	str	r3, [r7, #56]	; 0x38
+ 8003870:	e784      	b.n	800377c <_ZN8Odometry11ReadAccGyroEv+0x2e8>
 		}
 	}
 
 	biased[5] = raw[5] - movavg[5];
- 8003876:	6b7a      	ldr	r2, [r7, #52]	; 0x34
- 8003878:	687b      	ldr	r3, [r7, #4]
- 800387a:	6a5b      	ldr	r3, [r3, #36]	; 0x24
- 800387c:	1ad2      	subs	r2, r2, r3
- 800387e:	687b      	ldr	r3, [r7, #4]
- 8003880:	63da      	str	r2, [r3, #60]	; 0x3c
+ 8003872:	6b7a      	ldr	r2, [r7, #52]	; 0x34
+ 8003874:	687b      	ldr	r3, [r7, #4]
+ 8003876:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+ 8003878:	1ad2      	subs	r2, r2, r3
+ 800387a:	687b      	ldr	r3, [r7, #4]
+ 800387c:	63da      	str	r2, [r3, #60]	; 0x3c
 
 	if (biased[5] < -acc_movband || acc_movband < biased[5]) {
- 8003882:	687b      	ldr	r3, [r7, #4]
- 8003884:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
- 8003886:	f113 0f64 	cmn.w	r3, #100	; 0x64
- 800388a:	db03      	blt.n	8003894 <_ZN8Odometry11ReadAccGyroEv+0x3fc>
- 800388c:	687b      	ldr	r3, [r7, #4]
- 800388e:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
- 8003890:	2b64      	cmp	r3, #100	; 0x64
- 8003892:	dd14      	ble.n	80038be <_ZN8Odometry11ReadAccGyroEv+0x426>
+ 800387e:	687b      	ldr	r3, [r7, #4]
+ 8003880:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+ 8003882:	f113 0f64 	cmn.w	r3, #100	; 0x64
+ 8003886:	db03      	blt.n	8003890 <_ZN8Odometry11ReadAccGyroEv+0x3fc>
+ 8003888:	687b      	ldr	r3, [r7, #4]
+ 800388a:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+ 800388c:	2b64      	cmp	r3, #100	; 0x64
+ 800388e:	dd14      	ble.n	80038ba <_ZN8Odometry11ReadAccGyroEv+0x426>
 		data[5] = (biased[5] / 1000.0f) + offset_G;
- 8003894:	687b      	ldr	r3, [r7, #4]
- 8003896:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
- 8003898:	4618      	mov	r0, r3
- 800389a:	f7fd f92f 	bl	8000afc <__aeabi_i2f>
- 800389e:	4603      	mov	r3, r0
- 80038a0:	4925      	ldr	r1, [pc, #148]	; (8003938 <_ZN8Odometry11ReadAccGyroEv+0x4a0>)
- 80038a2:	4618      	mov	r0, r3
- 80038a4:	f7fd fa32 	bl	8000d0c <__aeabi_fdiv>
- 80038a8:	4603      	mov	r3, r0
- 80038aa:	461a      	mov	r2, r3
- 80038ac:	4b25      	ldr	r3, [pc, #148]	; (8003944 <_ZN8Odometry11ReadAccGyroEv+0x4ac>)
- 80038ae:	681b      	ldr	r3, [r3, #0]
- 80038b0:	4619      	mov	r1, r3
- 80038b2:	4610      	mov	r0, r2
- 80038b4:	f7fd f86e 	bl	8000994 <__addsf3>
- 80038b8:	4603      	mov	r3, r0
- 80038ba:	61fb      	str	r3, [r7, #28]
- 80038bc:	e029      	b.n	8003912 <_ZN8Odometry11ReadAccGyroEv+0x47a>
+ 8003890:	687b      	ldr	r3, [r7, #4]
+ 8003892:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+ 8003894:	4618      	mov	r0, r3
+ 8003896:	f7fd f931 	bl	8000afc <__aeabi_i2f>
+ 800389a:	4603      	mov	r3, r0
+ 800389c:	4928      	ldr	r1, [pc, #160]	; (8003940 <_ZN8Odometry11ReadAccGyroEv+0x4ac>)
+ 800389e:	4618      	mov	r0, r3
+ 80038a0:	f7fd fa34 	bl	8000d0c <__aeabi_fdiv>
+ 80038a4:	4603      	mov	r3, r0
+ 80038a6:	461a      	mov	r2, r3
+ 80038a8:	4b28      	ldr	r3, [pc, #160]	; (800394c <_ZN8Odometry11ReadAccGyroEv+0x4b8>)
+ 80038aa:	681b      	ldr	r3, [r3, #0]
+ 80038ac:	4619      	mov	r1, r3
+ 80038ae:	4610      	mov	r0, r2
+ 80038b0:	f7fd f870 	bl	8000994 <__addsf3>
+ 80038b4:	4603      	mov	r3, r0
+ 80038b6:	61fb      	str	r3, [r7, #28]
+ 80038b8:	e029      	b.n	800390e <_ZN8Odometry11ReadAccGyroEv+0x47a>
 	} else {
 		data[5] = offset_G;
- 80038be:	4b21      	ldr	r3, [pc, #132]	; (8003944 <_ZN8Odometry11ReadAccGyroEv+0x4ac>)
- 80038c0:	681b      	ldr	r3, [r3, #0]
- 80038c2:	61fb      	str	r3, [r7, #28]
+ 80038ba:	4b24      	ldr	r3, [pc, #144]	; (800394c <_ZN8Odometry11ReadAccGyroEv+0x4b8>)
+ 80038bc:	681b      	ldr	r3, [r3, #0]
+ 80038be:	61fb      	str	r3, [r7, #28]
 		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
- 80038c4:	687b      	ldr	r3, [r7, #4]
- 80038c6:	6a5b      	ldr	r3, [r3, #36]	; 0x24
- 80038c8:	4618      	mov	r0, r3
- 80038ca:	f7fd f917 	bl	8000afc <__aeabi_i2f>
- 80038ce:	4603      	mov	r3, r0
- 80038d0:	491a      	ldr	r1, [pc, #104]	; (800393c <_ZN8Odometry11ReadAccGyroEv+0x4a4>)
- 80038d2:	4618      	mov	r0, r3
- 80038d4:	f7fd f966 	bl	8000ba4 <__aeabi_fmul>
- 80038d8:	4603      	mov	r3, r0
- 80038da:	461c      	mov	r4, r3
+ 80038c0:	687b      	ldr	r3, [r7, #4]
+ 80038c2:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+ 80038c4:	4618      	mov	r0, r3
+ 80038c6:	f7fd f919 	bl	8000afc <__aeabi_i2f>
+ 80038ca:	4603      	mov	r3, r0
+ 80038cc:	491d      	ldr	r1, [pc, #116]	; (8003944 <_ZN8Odometry11ReadAccGyroEv+0x4b0>)
+ 80038ce:	4618      	mov	r0, r3
+ 80038d0:	f7fd f968 	bl	8000ba4 <__aeabi_fmul>
+ 80038d4:	4603      	mov	r3, r0
+ 80038d6:	461c      	mov	r4, r3
 				+ ((float) raw[5] * acc_w)) + 0.5f);
- 80038dc:	6b7b      	ldr	r3, [r7, #52]	; 0x34
- 80038de:	4618      	mov	r0, r3
- 80038e0:	f7fd f90c 	bl	8000afc <__aeabi_i2f>
- 80038e4:	4603      	mov	r3, r0
- 80038e6:	4916      	ldr	r1, [pc, #88]	; (8003940 <_ZN8Odometry11ReadAccGyroEv+0x4a8>)
- 80038e8:	4618      	mov	r0, r3
- 80038ea:	f7fd f95b 	bl	8000ba4 <__aeabi_fmul>
- 80038ee:	4603      	mov	r3, r0
- 80038f0:	4619      	mov	r1, r3
- 80038f2:	4620      	mov	r0, r4
- 80038f4:	f7fd f84e 	bl	8000994 <__addsf3>
- 80038f8:	4603      	mov	r3, r0
- 80038fa:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 80038fe:	4618      	mov	r0, r3
- 8003900:	f7fd f848 	bl	8000994 <__addsf3>
- 8003904:	4603      	mov	r3, r0
+ 80038d8:	6b7b      	ldr	r3, [r7, #52]	; 0x34
+ 80038da:	4618      	mov	r0, r3
+ 80038dc:	f7fd f90e 	bl	8000afc <__aeabi_i2f>
+ 80038e0:	4603      	mov	r3, r0
+ 80038e2:	4919      	ldr	r1, [pc, #100]	; (8003948 <_ZN8Odometry11ReadAccGyroEv+0x4b4>)
+ 80038e4:	4618      	mov	r0, r3
+ 80038e6:	f7fd f95d 	bl	8000ba4 <__aeabi_fmul>
+ 80038ea:	4603      	mov	r3, r0
+ 80038ec:	4619      	mov	r1, r3
+ 80038ee:	4620      	mov	r0, r4
+ 80038f0:	f7fd f850 	bl	8000994 <__addsf3>
+ 80038f4:	4603      	mov	r3, r0
+ 80038f6:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 80038fa:	4618      	mov	r0, r3
+ 80038fc:	f7fd f84a 	bl	8000994 <__addsf3>
+ 8003900:	4603      	mov	r3, r0
 		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
- 8003906:	4618      	mov	r0, r3
- 8003908:	f7fd fb28 	bl	8000f5c <__aeabi_f2iz>
- 800390c:	4602      	mov	r2, r0
- 800390e:	687b      	ldr	r3, [r7, #4]
- 8003910:	625a      	str	r2, [r3, #36]	; 0x24
-//	accZ = (1. * arawZ / AccSensitivityScaleFactor);
-//	gyroX = (1. * grawX / GyroSensitivityScaleFactor);
-//	gyroY = (1. * grawY / GyroSensitivityScaleFactor);
-//	gyroZ = (1. * grawZ / GyroSensitivityScaleFactor);
+ 8003902:	4618      	mov	r0, r3
+ 8003904:	f7fd fb2a 	bl	8000f5c <__aeabi_f2iz>
+ 8003908:	4602      	mov	r2, r0
+ 800390a:	687b      	ldr	r3, [r7, #4]
+ 800390c:	625a      	str	r2, [r3, #36]	; 0x24
+	}
 
 	MDGF.updateIMU(data[0], data[1], data[2], data[3], data[4], data[5]);
- 8003912:	68b8      	ldr	r0, [r7, #8]
- 8003914:	68fc      	ldr	r4, [r7, #12]
- 8003916:	693d      	ldr	r5, [r7, #16]
- 8003918:	697b      	ldr	r3, [r7, #20]
- 800391a:	69ba      	ldr	r2, [r7, #24]
- 800391c:	69f9      	ldr	r1, [r7, #28]
- 800391e:	9102      	str	r1, [sp, #8]
- 8003920:	9201      	str	r2, [sp, #4]
- 8003922:	9300      	str	r3, [sp, #0]
- 8003924:	462b      	mov	r3, r5
- 8003926:	4622      	mov	r2, r4
- 8003928:	4601      	mov	r1, r0
- 800392a:	4807      	ldr	r0, [pc, #28]	; (8003948 <_ZN8Odometry11ReadAccGyroEv+0x4b0>)
- 800392c:	f7fe fdb4 	bl	8002498 <_ZN8Madgwick9updateIMUEffffff>
+ 800390e:	68b8      	ldr	r0, [r7, #8]
+ 8003910:	68fc      	ldr	r4, [r7, #12]
+ 8003912:	693d      	ldr	r5, [r7, #16]
+ 8003914:	697b      	ldr	r3, [r7, #20]
+ 8003916:	69ba      	ldr	r2, [r7, #24]
+ 8003918:	69f9      	ldr	r1, [r7, #28]
+ 800391a:	9102      	str	r1, [sp, #8]
+ 800391c:	9201      	str	r2, [sp, #4]
+ 800391e:	9300      	str	r3, [sp, #0]
+ 8003920:	462b      	mov	r3, r5
+ 8003922:	4622      	mov	r2, r4
+ 8003924:	4601      	mov	r1, r0
+ 8003926:	480a      	ldr	r0, [pc, #40]	; (8003950 <_ZN8Odometry11ReadAccGyroEv+0x4bc>)
+ 8003928:	f7fe fdb6 	bl	8002498 <_ZN8Madgwick9updateIMUEffffff>
+	this->yaw = MDGF.getYawRadians();
+ 800392c:	4808      	ldr	r0, [pc, #32]	; (8003950 <_ZN8Odometry11ReadAccGyroEv+0x4bc>)
+ 800392e:	f7ff fa7d 	bl	8002e2c <_ZN8Madgwick13getYawRadiansEv>
+ 8003932:	4602      	mov	r2, r0
+ 8003934:	687b      	ldr	r3, [r7, #4]
+ 8003936:	609a      	str	r2, [r3, #8]
 }
- 8003930:	bf00      	nop
- 8003932:	3740      	adds	r7, #64	; 0x40
- 8003934:	46bd      	mov	sp, r7
- 8003936:	bdb0      	pop	{r4, r5, r7, pc}
- 8003938:	447a0000 	.word	0x447a0000
- 800393c:	3f666666 	.word	0x3f666666
- 8003940:	3dcccccd 	.word	0x3dcccccd
- 8003944:	20000898 	.word	0x20000898
- 8003948:	20000870 	.word	0x20000870
+ 8003938:	bf00      	nop
+ 800393a:	3740      	adds	r7, #64	; 0x40
+ 800393c:	46bd      	mov	sp, r7
+ 800393e:	bdb0      	pop	{r4, r5, r7, pc}
+ 8003940:	447a0000 	.word	0x447a0000
+ 8003944:	3f666666 	.word	0x3f666666
+ 8003948:	3dcccccd 	.word	0x3dcccccd
+ 800394c:	20000898 	.word	0x20000898
+ 8003950:	20000870 	.word	0x20000870
 
-0800394c <_ZN8Odometry10InitializeEv>:
+08003954 <_ZN8Odometry10InitializeEv>:
 
 bool Odometry::Initialize(void) {
- 800394c:	b580      	push	{r7, lr}
- 800394e:	b082      	sub	sp, #8
- 8003950:	af00      	add	r7, sp, #0
- 8003952:	6078      	str	r0, [r7, #4]
+ 8003954:	b580      	push	{r7, lr}
+ 8003956:	b082      	sub	sp, #8
+ 8003958:	af00      	add	r7, sp, #0
+ 800395a:	6078      	str	r0, [r7, #4]
 	return this->InitGyro();
- 8003954:	6878      	ldr	r0, [r7, #4]
- 8003956:	f7ff fc4f 	bl	80031f8 <_ZN8Odometry8InitGyroEv>
- 800395a:	4603      	mov	r3, r0
+ 800395c:	6878      	ldr	r0, [r7, #4]
+ 800395e:	f7ff fc43 	bl	80031e8 <_ZN8Odometry8InitGyroEv>
+ 8003962:	4603      	mov	r3, r0
 }
- 800395c:	4618      	mov	r0, r3
- 800395e:	3708      	adds	r7, #8
- 8003960:	46bd      	mov	sp, r7
- 8003962:	bd80      	pop	{r7, pc}
+ 8003964:	4618      	mov	r0, r3
+ 8003966:	3708      	adds	r7, #8
+ 8003968:	46bd      	mov	sp, r7
+ 800396a:	bd80      	pop	{r7, pc}
 
-08003964 <_ZN8Odometry6SampleEv>:
+0800396c <_ZN8Odometry6SampleEv>:
 
 void Odometry::Sample(void) {
- 8003964:	b580      	push	{r7, lr}
- 8003966:	b082      	sub	sp, #8
- 8003968:	af00      	add	r7, sp, #0
- 800396a:	6078      	str	r0, [r7, #4]
+ 800396c:	b580      	push	{r7, lr}
+ 800396e:	b082      	sub	sp, #8
+ 8003970:	af00      	add	r7, sp, #0
+ 8003972:	6078      	str	r0, [r7, #4]
 	this->ReadEncoder();
- 800396c:	6878      	ldr	r0, [r7, #4]
- 800396e:	f7ff fd0d 	bl	800338c <_ZN8Odometry11ReadEncoderEv>
+ 8003974:	6878      	ldr	r0, [r7, #4]
+ 8003976:	f7ff fd07 	bl	8003388 <_ZN8Odometry11ReadEncoderEv>
 	this->ReadAccGyro();
- 8003972:	6878      	ldr	r0, [r7, #4]
- 8003974:	f7ff fd90 	bl	8003498 <_ZN8Odometry11ReadAccGyroEv>
+ 800397a:	6878      	ldr	r0, [r7, #4]
+ 800397c:	f7ff fd8a 	bl	8003494 <_ZN8Odometry11ReadAccGyroEv>
 }
- 8003978:	bf00      	nop
- 800397a:	3708      	adds	r7, #8
- 800397c:	46bd      	mov	sp, r7
- 800397e:	bd80      	pop	{r7, pc}
+ 8003980:	bf00      	nop
+ 8003982:	3708      	adds	r7, #8
+ 8003984:	46bd      	mov	sp, r7
+ 8003986:	bd80      	pop	{r7, pc}
 
-08003980 <_ZN8Odometry7GetPoseEPfS0_S0_>:
+08003988 <_ZN8Odometry7GetPoseEPfS0_S0_>:
 	this->x = x;
 	this->y = y;
 	this->yaw = yaw;
 }
 
 void Odometry::GetPose(float * const x, float * const y, float * const yaw) {
- 8003980:	b580      	push	{r7, lr}
- 8003982:	b084      	sub	sp, #16
- 8003984:	af00      	add	r7, sp, #0
- 8003986:	60f8      	str	r0, [r7, #12]
- 8003988:	60b9      	str	r1, [r7, #8]
- 800398a:	607a      	str	r2, [r7, #4]
- 800398c:	603b      	str	r3, [r7, #0]
+ 8003988:	b480      	push	{r7}
+ 800398a:	b085      	sub	sp, #20
+ 800398c:	af00      	add	r7, sp, #0
+ 800398e:	60f8      	str	r0, [r7, #12]
+ 8003990:	60b9      	str	r1, [r7, #8]
+ 8003992:	607a      	str	r2, [r7, #4]
+ 8003994:	603b      	str	r3, [r7, #0]
 	*x = this->x;
- 800398e:	68fb      	ldr	r3, [r7, #12]
- 8003990:	681a      	ldr	r2, [r3, #0]
- 8003992:	68bb      	ldr	r3, [r7, #8]
- 8003994:	601a      	str	r2, [r3, #0]
-	*y = this->y;
  8003996:	68fb      	ldr	r3, [r7, #12]
- 8003998:	685a      	ldr	r2, [r3, #4]
- 800399a:	687b      	ldr	r3, [r7, #4]
+ 8003998:	681a      	ldr	r2, [r3, #0]
+ 800399a:	68bb      	ldr	r3, [r7, #8]
  800399c:	601a      	str	r2, [r3, #0]
-	*yaw = MDGF.getYawRadians();
- 800399e:	4805      	ldr	r0, [pc, #20]	; (80039b4 <_ZN8Odometry7GetPoseEPfS0_S0_+0x34>)
- 80039a0:	f7ff fa44 	bl	8002e2c <_ZN8Madgwick13getYawRadiansEv>
- 80039a4:	4602      	mov	r2, r0
- 80039a6:	683b      	ldr	r3, [r7, #0]
- 80039a8:	601a      	str	r2, [r3, #0]
+	*y = this->y;
+ 800399e:	68fb      	ldr	r3, [r7, #12]
+ 80039a0:	685a      	ldr	r2, [r3, #4]
+ 80039a2:	687b      	ldr	r3, [r7, #4]
+ 80039a4:	601a      	str	r2, [r3, #0]
+	*yaw = this->yaw;
+ 80039a6:	68fb      	ldr	r3, [r7, #12]
+ 80039a8:	689a      	ldr	r2, [r3, #8]
+ 80039aa:	683b      	ldr	r3, [r7, #0]
+ 80039ac:	601a      	str	r2, [r3, #0]
 }
- 80039aa:	bf00      	nop
- 80039ac:	3710      	adds	r7, #16
- 80039ae:	46bd      	mov	sp, r7
- 80039b0:	bd80      	pop	{r7, pc}
- 80039b2:	bf00      	nop
- 80039b4:	20000870 	.word	0x20000870
+ 80039ae:	bf00      	nop
+ 80039b0:	3714      	adds	r7, #20
+ 80039b2:	46bd      	mov	sp, r7
+ 80039b4:	bc80      	pop	{r7}
+ 80039b6:	4770      	bx	lr
 
 080039b8 <_Z41__static_initialization_and_destruction_0ii>:
  80039b8:	b580      	push	{r7, lr}
@@ -8179,7 +8181,7 @@ int main(void) {
  8003d80:	4b3a      	ldr	r3, [pc, #232]	; (8003e6c <main+0x148>)
  8003d82:	681b      	ldr	r3, [r3, #0]
  8003d84:	4618      	mov	r0, r3
- 8003d86:	f7ff fde1 	bl	800394c <_ZN8Odometry10InitializeEv>
+ 8003d86:	f7ff fde5 	bl	8003954 <_ZN8Odometry10InitializeEv>
  8003d8a:	4603      	mov	r3, r0
  8003d8c:	70fb      	strb	r3, [r7, #3]
 	if (!r) {
@@ -8247,7 +8249,7 @@ int main(void) {
  8003de6:	4b23      	ldr	r3, [pc, #140]	; (8003e74 <main+0x150>)
  8003de8:	4a23      	ldr	r2, [pc, #140]	; (8003e78 <main+0x154>)
  8003dea:	4924      	ldr	r1, [pc, #144]	; (8003e7c <main+0x158>)
- 8003dec:	f7ff fdc8 	bl	8003980 <_ZN8Odometry7GetPoseEPfS0_S0_>
+ 8003dec:	f7ff fdcc 	bl	8003988 <_ZN8Odometry7GetPoseEPfS0_S0_>
 		can_pack(tx_payload_x,X);
  8003df0:	4b22      	ldr	r3, [pc, #136]	; (8003e7c <main+0x158>)
  8003df2:	681b      	ldr	r3, [r3, #0]
@@ -8346,7 +8348,7 @@ int main(void) {
 	}
 }
 
-extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
+extern "C" void TIM2_IRQHandler(void)
 		{
  8003e98:	b580      	push	{r7, lr}
  8003e9a:	af00      	add	r7, sp, #0
@@ -8365,7 +8367,7 @@ extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
  8003eb4:	4b08      	ldr	r3, [pc, #32]	; (8003ed8 <TIM2_IRQHandler+0x40>)
  8003eb6:	681b      	ldr	r3, [r3, #0]
  8003eb8:	4618      	mov	r0, r3
- 8003eba:	f7ff fd53 	bl	8003964 <_ZN8Odometry6SampleEv>
+ 8003eba:	f7ff fd57 	bl	800396c <_ZN8Odometry6SampleEv>
 
 		TIM2->SR &= ~TIM_SR_UIF;
  8003ebe:	f04f 4380 	mov.w	r3, #1073741824	; 0x40000000
@@ -8951,17 +8953,17 @@ static void MX_TIM2_Init(void) {
  8004200:	4b25      	ldr	r3, [pc, #148]	; (8004298 <_ZL12MX_TIM2_Initv+0xb4>)
  8004202:	f04f 4280 	mov.w	r2, #1073741824	; 0x40000000
  8004206:	601a      	str	r2, [r3, #0]
-	htim2.Init.Prescaler = 72 - 1;
+	htim2.Init.Prescaler = 9-1;//512Hz
  8004208:	4b23      	ldr	r3, [pc, #140]	; (8004298 <_ZL12MX_TIM2_Initv+0xb4>)
- 800420a:	2247      	movs	r2, #71	; 0x47
+ 800420a:	2208      	movs	r2, #8
  800420c:	605a      	str	r2, [r3, #4]
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
  800420e:	4b22      	ldr	r3, [pc, #136]	; (8004298 <_ZL12MX_TIM2_Initv+0xb4>)
  8004210:	2200      	movs	r2, #0
  8004212:	609a      	str	r2, [r3, #8]
-	htim2.Init.Period = Period - 1;
+	htim2.Init.Period = 15625 - 1;
  8004214:	4b20      	ldr	r3, [pc, #128]	; (8004298 <_ZL12MX_TIM2_Initv+0xb4>)
- 8004216:	f240 72cf 	movw	r2, #1999	; 0x7cf
+ 8004216:	f643 5208 	movw	r2, #15624	; 0x3d08
  800421a:	60da      	str	r2, [r3, #12]
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
  800421c:	4b1e      	ldr	r3, [pc, #120]	; (8004298 <_ZL12MX_TIM2_Initv+0xb4>)

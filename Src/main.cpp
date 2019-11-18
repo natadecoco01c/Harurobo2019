@@ -85,7 +85,8 @@ Odometry *odom = new Odometry();
 uint8_t tx_payload_x[CAN_MTU]; //データの格納場所
 uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];
-static constexpr uint32_t Period = pow(10, 6) / (odom->SamplingFrequency);
+//static constexpr uint32_t Period = pow(10, 6) / (odom->SamplingFrequency);
+//周波数に合わせて下のとこいじって(丸投げ)
 static constexpr uint32_t CAN_Freq = 200;
 /* USER CODE END PV */
 
@@ -98,7 +99,7 @@ static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
-static void MX_CAN_Init(void);
+//static void MX_CAN_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_USART1_UART_Init(void);
 static void CANtxinit(void);
@@ -245,7 +246,7 @@ int main(void) {
 	}
 }
 
-extern "C" void TIM2_IRQHandler(void) //サンプリングレート1000
+extern "C" void TIM2_IRQHandler(void)
 		{
 	if (TIM2->SR & TIM_SR_UIF) {
 		odom->Sample();
@@ -315,32 +316,32 @@ void SystemClock_Config(void) {
  * @param None
  * @retval None
  */
-static void MX_CAN_Init(void) {
-
-	/* USER CODE BEGIN CAN_Init 0 */
-
-	/* USER CODE END CAN_Init 0 */
-
-	/* USER CODE BEGIN CAN_Init 1 */
-
-	/* USER CODE END CAN_Init 1 */
-	hcan.Instance = CAN1;
-	hcan.Init.Prescaler = 48;
-	hcan.Init.Mode = CAN_MODE_NORMAL;
-	hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
-	hcan.Init.TimeSeg1 = CAN_BS1_4TQ; //1->4
-	hcan.Init.TimeSeg2 = CAN_BS2_3TQ; //1->3
-	hcan.Init.TimeTriggeredMode = DISABLE;
-	hcan.Init.AutoBusOff = DISABLE;
-	hcan.Init.AutoWakeUp = DISABLE;
-	hcan.Init.AutoRetransmission = ENABLE; //DISABLE->ENABLE
-	hcan.Init.ReceiveFifoLocked = DISABLE;
-	hcan.Init.TransmitFifoPriority = DISABLE;
-	if (HAL_CAN_Init(&hcan) != HAL_OK) {
-		Error_Handler();
-	}
-
-}
+//static void MX_CAN_Init(void) {
+//
+//	/* USER CODE BEGIN CAN_Init 0 */
+//
+//	/* USER CODE END CAN_Init 0 */
+//
+//	/* USER CODE BEGIN CAN_Init 1 */
+//
+//	/* USER CODE END CAN_Init 1 */
+//	hcan.Instance = CAN1;
+//	hcan.Init.Prescaler = 48;
+//	hcan.Init.Mode = CAN_MODE_NORMAL;
+//	hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
+//	hcan.Init.TimeSeg1 = CAN_BS1_4TQ; //1->4
+//	hcan.Init.TimeSeg2 = CAN_BS2_3TQ; //1->3
+//	hcan.Init.TimeTriggeredMode = DISABLE;
+//	hcan.Init.AutoBusOff = DISABLE;
+//	hcan.Init.AutoWakeUp = DISABLE;
+//	hcan.Init.AutoRetransmission = ENABLE; //DISABLE->ENABLE
+//	hcan.Init.ReceiveFifoLocked = DISABLE;
+//	hcan.Init.TransmitFifoPriority = DISABLE;
+//	if (HAL_CAN_Init(&hcan) != HAL_OK) {
+//		Error_Handler();
+//	}
+//
+//}
 
 /**
  * @brief SPI2 Initialization Function
@@ -490,9 +491,9 @@ static void MX_TIM2_Init(void) {
 
 	/* USER CODE END TIM2_Init 1 */
 	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = 72 - 1;
+	htim2.Init.Prescaler = 9-1;//512Hz
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = Period - 1;
+	htim2.Init.Period = 15625 - 1;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {

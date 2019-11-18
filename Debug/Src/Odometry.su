@@ -1,13 +1,13 @@
 MadgwickAHRS.h:42:10:void Madgwick::begin(float)	16	static
 MadgwickAHRS.h:68:11:float Madgwick::getYawRadians()	16	static
 Odometry.cpp:17:1:Odometry::Odometry()	24	static
-Odometry.cpp:29:6:void Odometry::GetBias(float*, float*) const	120	static
-Odometry.cpp:75:6:bool Odometry::InitGyro()	80	static
+Odometry.cpp:27:6:void Odometry::GetBias(float*, float*) const	120	static
+Odometry.cpp:73:6:bool Odometry::InitGyro()	80	static
 Odometry.cpp:127:6:void Odometry::ReadEncoder()	40	static
 Odometry.cpp:144:6:void Odometry::ReadAccGyro()	96	static
-Odometry.cpp:229:6:bool Odometry::Initialize()	16	static
-Odometry.cpp:233:6:void Odometry::Sample()	16	static
-Odometry.cpp:238:6:void Odometry::SetPose(float, float, float)	24	static
-Odometry.cpp:244:6:void Odometry::GetPose(float*, float*, float*)	24	static
-Odometry.cpp:248:1:void __static_initialization_and_destruction_0(int, int)	16	static
-Odometry.cpp:248:1:cpp)	8	static
+Odometry.cpp:223:6:bool Odometry::Initialize()	16	static
+Odometry.cpp:227:6:void Odometry::Sample()	16	static
+Odometry.cpp:232:6:void Odometry::SetPose(float, float, float)	24	static
+Odometry.cpp:238:6:void Odometry::GetPose(float*, float*, float*)	24	static
+Odometry.cpp:242:1:void __static_initialization_and_destruction_0(int, int)	16	static
+Odometry.cpp:242:1:cpp)	8	static
