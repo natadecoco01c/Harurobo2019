@@ -142,17 +142,20 @@ void Odometry::ReadEncoder(void) {
 }
 
 void Odometry::ReadAccGyro(void) {
-	static constexpr int32_t ang_movband = 100;
-	static constexpr int32_t acc_movband = 100;
+	static constexpr int32_t ang_movband = 300;
+//	static constexpr int32_t acc_movband = 150;
 //	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
 //	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg
 //			/ SamplingFrequency;
 	static constexpr float ang_w = 0.1f; //追従の強さ
-	static constexpr float acc_w = 0.1f;
-	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
+//	static constexpr float acc_w = 0.1f;
+//	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
 
 	int raw[6];
 	float data[6];
+
+//	static uint32_t lasttime=0;
+//	static uint16_t dt=0;
 
 	raw[0] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
@@ -194,29 +197,34 @@ void Odometry::ReadAccGyro(void) {
 					+ ((float) raw[i] * ang_w)) + 0.5f);
 		}
 	}
-	for (int i = 3; i < 5; i++) {
-		biased[i] = raw[i] - movavg[i];
-
-		if (biased[i] < -acc_movband || acc_movband < biased[i]) {
-			data[i] = biased[i] / 1000.0f;
-		} else {
-			data[i] = 0.0f;
-			movavg[i] = (int) ((((float) movavg[i] * (1 - acc_w))
-					+ ((float) raw[i] * acc_w)) + 0.5f);
-		}
-	}
-
-	biased[5] = raw[5] - movavg[5];
-
-	if (biased[5] < -acc_movband || acc_movband < biased[5]) {
-		data[5] = (biased[5] / 1000.0f) + offset_G;
-	} else {
-		data[5] = offset_G;
-		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
-				+ ((float) raw[5] * acc_w)) + 0.5f);
+//	for (int i = 3; i < 5; i++) {
+//		biased[i] = raw[i] - movavg[i];
+//
+//		if (biased[i] < -acc_movband || acc_movband < biased[i]) {
+//			data[i] = biased[i] / 1000.0f;
+//		} else {
+//			data[i] = 0.0f;
+//			movavg[i] = (int) ((((float) movavg[i] * (1 - acc_w))
+//					+ ((float) raw[i] * acc_w)) + 0.5f);
+//		}
+//	}
+//
+//	biased[5] = raw[5] - movavg[5];
+//
+//	if (biased[5] < -acc_movband || acc_movband < biased[5]) {
+//		data[5] = (biased[5] / 1000.0f) + offset_G;
+//	} else {
+//		data[5] = offset_G;
+//		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
+//				+ ((float) raw[5] * acc_w)) + 0.5f);
+//	}
+	for(int i=3;i<6;i++){ //多分やんなくてもいい
+		data[i]=raw[i]/1000.0f;
 	}
 
 	MDGF.updateIMU(data[0], data[1], data[2], data[3], data[4], data[5]);
+//	dt = HAL_GetTick()-lasttime;
+//	lasttime=HAL_GetTick();
 	this->yaw = MDGF.getYawRadians();
 }
 

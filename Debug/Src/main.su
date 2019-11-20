@@ -1,16 +1,16 @@
 core_cm3.h:1524:22:void NVIC_SetPriority(IRQn_Type, uint32_t)	16	static
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
 main.cpp:118:5:int main()	16	static,ignoring_inline_asm
-main.cpp:249:17:void TIM2_IRQHandler()	8	static
-main.cpp:260:6:void CANtxinit()	4	static
-main.cpp:284:6:void SystemClock_Config()	72	static
-main.cpp:351:13:void MX_SPI2_Init()	8	static
-main.cpp:387:13:void MX_TIM4_Init()	56	static
-main.cpp:434:13:void MX_TIM3_Init()	56	static
-main.cpp:481:13:void MX_TIM2_Init()	32	static
-main.cpp:523:13:void MX_USART1_UART_Init()	8	static
-main.cpp:553:13:void MX_GPIO_Init()	40	static
-main.cpp:603:6:void Error_Handler()	4	static
+main.cpp:248:17:void TIM2_IRQHandler()	8	static
+main.cpp:258:6:void CANtxinit()	4	static
+main.cpp:282:6:void SystemClock_Config()	72	static
+main.cpp:348:13:void MX_SPI2_Init()	8	static
+main.cpp:384:13:void MX_TIM4_Init()	56	static
+main.cpp:431:13:void MX_TIM3_Init()	56	static
+main.cpp:478:13:void MX_TIM2_Init()	32	static
+main.cpp:520:13:void MX_USART2_UART_Init()	8	static
+main.cpp:550:13:void MX_GPIO_Init()	40	static
+main.cpp:600:6:void Error_Handler()	4	static
 can.hpp:73:7:void can_pack(uint8_t (&)[8], T) [with T = float]	32	static
-main.cpp:608:1:void __static_initialization_and_destruction_0(int, int)	24	static
-main.cpp:608:1:cpp)	8	static
+main.cpp:605:1:void __static_initialization_and_destruction_0(int, int)	24	static
+main.cpp:605:1:cpp)	8	static
