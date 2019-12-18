@@ -23,9 +23,9 @@ private:
 	MPU9250 *mpu9250 = nullptr;
 
 	// diameter of wheels in metre
-	static constexpr float WheelDiameter = 0.048; //タイヤの直径によって変更
+	static constexpr float WheelDiameter = 0.0508; //タイヤの直径によって変更
 	// pulse/rev
-	static constexpr float PulsePerRevolution = 500.0 * 4; //パルス
+	static constexpr float PulsePerRevolution = 100.0 * 4; //パルス
 	/// Kpd = 2_pi_r[mm/rev] / Kp[pulse/rev]
 	static constexpr float MPerPulse = M_PI * WheelDiameter / PulsePerRevolution;
 

@@ -40,9 +40,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 #include "Odometry.h"
 #include "stm32f1xx_hal.h"
 #include "can.hpp"
@@ -186,7 +183,7 @@ int main(void) {
 		}
 	}
 
-	can_enable(); //CANの有効化
+	can_enable();
 
 	HAL_NVIC_EnableIRQ(TIM2_IRQn); //割り込み有効化 上のodom->Initializeが終わってからでないと、初期化終わる前にジャイロの値をとってしまう 初期の角度がズレる
 

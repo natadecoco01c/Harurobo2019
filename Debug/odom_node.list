@@ -21,11 +21,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000029  00000000  00000000  00020854  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0001fde4  00000000  00000000  0002087d  2**0
+  9 .debug_info   0001fde3  00000000  00000000  0002087d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 000042f0  00000000  00000000  00040661  2**0
+ 10 .debug_abbrev 000042f0  00000000  00000000  00040660  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00006b83  00000000  00000000  00044951  2**0
+ 11 .debug_loc    00006b83  00000000  00000000  00044950  2**0
                   CONTENTS, READONLY, DEBUGGING
  12 .debug_aranges 00000b98  00000000  00000000  0004b4d8  2**3
                   CONTENTS, READONLY, DEBUGGING
@@ -6894,7 +6894,7 @@ void Odometry::ReadEncoder(void) {
  8003484:	40000400 	.word	0x40000400
  8003488:	40000800 	.word	0x40000800
  800348c:	3f490fdb 	.word	0x3f490fdb
- 8003490:	389e1f1d 	.word	0x389e1f1d
+ 8003490:	39d12e7e 	.word	0x39d12e7e
 
 08003494 <_ZN8Odometry11ReadAccGyroEv>:
 
@@ -8026,7 +8026,7 @@ int main(void) {
 		}
 	}
 
-	can_enable(); //CANの有効化
+	can_enable();
  8003c1c:	f7ff fe8c 	bl	8003938 <can_enable>
 
 	HAL_NVIC_EnableIRQ(TIM2_IRQn); //割り込み有効化 上のodom->Initializeが終わってからでないと、初期化終わる前にジャイロの値をとってしまう 初期の角度がズレる
