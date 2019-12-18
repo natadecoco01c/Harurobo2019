@@ -128,12 +128,12 @@ void Odometry::ReadEncoder(void) {
 	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);
 	TIM3->CNT = 0;
 
-	volatile int16_t _p2 = static_cast<int16_t>(TIM4->CNT);
+	volatile int16_t _p2 = (-1)*static_cast<int16_t>(TIM4->CNT);
 	TIM4->CNT = 0;
 
 	// just a simple rotation matrix
 	// translate encoder rates to velocity on x-y plane
-	float _yaw = yaw - ((float) M_PI / 4.0f); //いじるとしたらこの辺　ジャイロの付け方に依る
+	float _yaw = yaw; //- ((float) M_PI / 4.0f); //いじるとしたらこの辺　ジャイロの付け方に依る
 	float _cos = cosf(_yaw);
 	float _sin = sinf(_yaw);
 
