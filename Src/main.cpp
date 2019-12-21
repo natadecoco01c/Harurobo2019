@@ -256,17 +256,17 @@ void CANtxinit(void) {
 
 	tx_header_x.RTR = CAN_RTR_DATA;
 	tx_header_x.IDE = CAN_ID_STD;
-	tx_header_x.StdId = 0x205; //ID決める
+	tx_header_x.StdId = 0x605; //ID決める
 	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
 	tx_header_x.DLC = 8;
 	tx_header_y.RTR = CAN_RTR_DATA;
 	tx_header_y.IDE = CAN_ID_STD;
-	tx_header_y.StdId = 0x206;
+	tx_header_y.StdId = 0x606;
 	tx_header_y.ExtId = 0;
 	tx_header_y.DLC = 8;
 	tx_header_yaw.RTR = CAN_RTR_DATA;
 	tx_header_yaw.IDE = CAN_ID_STD;
-	tx_header_yaw.StdId = 0x207;
+	tx_header_yaw.StdId = 0x607;
 	tx_header_yaw.ExtId = 0;
 	tx_header_yaw.DLC = 8;
 }

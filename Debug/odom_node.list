@@ -8217,9 +8217,9 @@ void CANtxinit(void) {
  8003d42:	4b18      	ldr	r3, [pc, #96]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
  8003d44:	2200      	movs	r2, #0
  8003d46:	609a      	str	r2, [r3, #8]
-	tx_header_x.StdId = 0x205; //ID決める
+	tx_header_x.StdId = 0x605; //ID決める
  8003d48:	4b16      	ldr	r3, [pc, #88]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
- 8003d4a:	f240 2205 	movw	r2, #517	; 0x205
+ 8003d4a:	f240 6205 	movw	r2, #1541	; 0x605
  8003d4e:	601a      	str	r2, [r3, #0]
 	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
  8003d50:	4b14      	ldr	r3, [pc, #80]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
@@ -8237,9 +8237,9 @@ void CANtxinit(void) {
  8003d62:	4b11      	ldr	r3, [pc, #68]	; (8003da8 <_ZL9CANtxinitv+0x70>)
  8003d64:	2200      	movs	r2, #0
  8003d66:	609a      	str	r2, [r3, #8]
-	tx_header_y.StdId = 0x206;
+	tx_header_y.StdId = 0x606;
  8003d68:	4b0f      	ldr	r3, [pc, #60]	; (8003da8 <_ZL9CANtxinitv+0x70>)
- 8003d6a:	f240 2206 	movw	r2, #518	; 0x206
+ 8003d6a:	f240 6206 	movw	r2, #1542	; 0x606
  8003d6e:	601a      	str	r2, [r3, #0]
 	tx_header_y.ExtId = 0;
  8003d70:	4b0d      	ldr	r3, [pc, #52]	; (8003da8 <_ZL9CANtxinitv+0x70>)
@@ -8257,9 +8257,9 @@ void CANtxinit(void) {
  8003d82:	4b0a      	ldr	r3, [pc, #40]	; (8003dac <_ZL9CANtxinitv+0x74>)
  8003d84:	2200      	movs	r2, #0
  8003d86:	609a      	str	r2, [r3, #8]
-	tx_header_yaw.StdId = 0x207;
+	tx_header_yaw.StdId = 0x607;
  8003d88:	4b08      	ldr	r3, [pc, #32]	; (8003dac <_ZL9CANtxinitv+0x74>)
- 8003d8a:	f240 2207 	movw	r2, #519	; 0x207
+ 8003d8a:	f240 6207 	movw	r2, #1543	; 0x607
  8003d8e:	601a      	str	r2, [r3, #0]
 	tx_header_yaw.ExtId = 0;
  8003d90:	4b06      	ldr	r3, [pc, #24]	; (8003dac <_ZL9CANtxinitv+0x74>)
