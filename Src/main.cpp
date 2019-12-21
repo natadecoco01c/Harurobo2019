@@ -84,7 +84,7 @@ uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];
 //static constexpr uint32_t Period = pow(10, 6) / (odom->SamplingFrequency);
 //周波数に合わせて下のとこいじって(丸投げ)
-static constexpr uint32_t CAN_Freq = 200;
+static constexpr uint32_t CAN_Freq = 100;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -256,17 +256,17 @@ void CANtxinit(void) {
 
 	tx_header_x.RTR = CAN_RTR_DATA;
 	tx_header_x.IDE = CAN_ID_STD;
-	tx_header_x.StdId = 0x605; //ID決める
+	tx_header_x.StdId = 0x205; //ID決める
 	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
 	tx_header_x.DLC = 8;
 	tx_header_y.RTR = CAN_RTR_DATA;
 	tx_header_y.IDE = CAN_ID_STD;
-	tx_header_y.StdId = 0x606;
+	tx_header_y.StdId = 0x206;
 	tx_header_y.ExtId = 0;
 	tx_header_y.DLC = 8;
 	tx_header_yaw.RTR = CAN_RTR_DATA;
 	tx_header_yaw.IDE = CAN_ID_STD;
-	tx_header_yaw.StdId = 0x607;
+	tx_header_yaw.StdId = 0x207;
 	tx_header_yaw.ExtId = 0;
 	tx_header_yaw.DLC = 8;
 }

@@ -7090,7 +7090,7 @@ void Odometry::ReadAccGyro(void) {
  800362e:	63fb      	str	r3, [r7, #60]	; 0x3c
  8003630:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
  8003632:	2b02      	cmp	r3, #2
- 8003634:	dc78      	bgt.n	8003728 <_ZN8Odometry11ReadAccGyroEv+0x29c>
+ 8003634:	dc77      	bgt.n	8003726 <_ZN8Odometry11ReadAccGyroEv+0x29a>
 		biased[i] = raw[i] - movavg[i];
  8003636:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
  8003638:	009b      	lsls	r3, r3, #2
@@ -7112,162 +7112,163 @@ void Odometry::ReadAccGyro(void) {
  800365c:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
  800365e:	320a      	adds	r2, #10
  8003660:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 8003664:	f513 7f96 	cmn.w	r3, #300	; 0x12c
- 8003668:	db07      	blt.n	800367a <_ZN8Odometry11ReadAccGyroEv+0x1ee>
+ 8003664:	f113 0ffa 	cmn.w	r3, #250	; 0xfa
+ 8003668:	db06      	blt.n	8003678 <_ZN8Odometry11ReadAccGyroEv+0x1ec>
  800366a:	687b      	ldr	r3, [r7, #4]
  800366c:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
  800366e:	320a      	adds	r2, #10
  8003670:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 8003674:	f5b3 7f96 	cmp.w	r3, #300	; 0x12c
- 8003678:	dd16      	ble.n	80036a8 <_ZN8Odometry11ReadAccGyroEv+0x21c>
+ 8003674:	2bfa      	cmp	r3, #250	; 0xfa
+ 8003676:	dd16      	ble.n	80036a6 <_ZN8Odometry11ReadAccGyroEv+0x21a>
 //			yaw -= (2.0f * (float) M_PI);
 //		} else if (yaw < -(float) M_PI) {
 //			yaw += (2.0f * (float) M_PI);
 //		}
 
 			data[i] = biased[i] / 1000.0f;
- 800367a:	687b      	ldr	r3, [r7, #4]
- 800367c:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 800367e:	320a      	adds	r2, #10
- 8003680:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 8003684:	4618      	mov	r0, r3
- 8003686:	f7fd fa39 	bl	8000afc <__aeabi_i2f>
- 800368a:	4603      	mov	r3, r0
- 800368c:	4944      	ldr	r1, [pc, #272]	; (80037a0 <_ZN8Odometry11ReadAccGyroEv+0x314>)
- 800368e:	4618      	mov	r0, r3
- 8003690:	f7fd fb3c 	bl	8000d0c <__aeabi_fdiv>
- 8003694:	4603      	mov	r3, r0
- 8003696:	461a      	mov	r2, r3
- 8003698:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 800369a:	009b      	lsls	r3, r3, #2
- 800369c:	f107 0140 	add.w	r1, r7, #64	; 0x40
- 80036a0:	440b      	add	r3, r1
- 80036a2:	f843 2c38 	str.w	r2, [r3, #-56]
- 80036a6:	e03b      	b.n	8003720 <_ZN8Odometry11ReadAccGyroEv+0x294>
+ 8003678:	687b      	ldr	r3, [r7, #4]
+ 800367a:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 800367c:	320a      	adds	r2, #10
+ 800367e:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 8003682:	4618      	mov	r0, r3
+ 8003684:	f7fd fa3a 	bl	8000afc <__aeabi_i2f>
+ 8003688:	4603      	mov	r3, r0
+ 800368a:	4945      	ldr	r1, [pc, #276]	; (80037a0 <_ZN8Odometry11ReadAccGyroEv+0x314>)
+ 800368c:	4618      	mov	r0, r3
+ 800368e:	f7fd fb3d 	bl	8000d0c <__aeabi_fdiv>
+ 8003692:	4603      	mov	r3, r0
+ 8003694:	461a      	mov	r2, r3
+ 8003696:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003698:	009b      	lsls	r3, r3, #2
+ 800369a:	f107 0140 	add.w	r1, r7, #64	; 0x40
+ 800369e:	440b      	add	r3, r1
+ 80036a0:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80036a4:	e03b      	b.n	800371e <_ZN8Odometry11ReadAccGyroEv+0x292>
 		} else {
 			data[i] = 0.0f;
- 80036a8:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 80036aa:	009b      	lsls	r3, r3, #2
- 80036ac:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 80036b0:	4413      	add	r3, r2
- 80036b2:	f04f 0200 	mov.w	r2, #0
- 80036b6:	f843 2c38 	str.w	r2, [r3, #-56]
+ 80036a6:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 80036a8:	009b      	lsls	r3, r3, #2
+ 80036aa:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 80036ae:	4413      	add	r3, r2
+ 80036b0:	f04f 0200 	mov.w	r2, #0
+ 80036b4:	f843 2c38 	str.w	r2, [r3, #-56]
 			movavg[i] = (int) ((((float) movavg[i] * (1 - ang_w))
- 80036ba:	687b      	ldr	r3, [r7, #4]
- 80036bc:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 80036be:	3204      	adds	r2, #4
- 80036c0:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
- 80036c4:	4618      	mov	r0, r3
- 80036c6:	f7fd fa19 	bl	8000afc <__aeabi_i2f>
- 80036ca:	4603      	mov	r3, r0
- 80036cc:	4935      	ldr	r1, [pc, #212]	; (80037a4 <_ZN8Odometry11ReadAccGyroEv+0x318>)
- 80036ce:	4618      	mov	r0, r3
- 80036d0:	f7fd fa68 	bl	8000ba4 <__aeabi_fmul>
- 80036d4:	4603      	mov	r3, r0
- 80036d6:	461c      	mov	r4, r3
+ 80036b8:	687b      	ldr	r3, [r7, #4]
+ 80036ba:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 80036bc:	3204      	adds	r2, #4
+ 80036be:	f853 3022 	ldr.w	r3, [r3, r2, lsl #2]
+ 80036c2:	4618      	mov	r0, r3
+ 80036c4:	f7fd fa1a 	bl	8000afc <__aeabi_i2f>
+ 80036c8:	4603      	mov	r3, r0
+ 80036ca:	4936      	ldr	r1, [pc, #216]	; (80037a4 <_ZN8Odometry11ReadAccGyroEv+0x318>)
+ 80036cc:	4618      	mov	r0, r3
+ 80036ce:	f7fd fa69 	bl	8000ba4 <__aeabi_fmul>
+ 80036d2:	4603      	mov	r3, r0
+ 80036d4:	461c      	mov	r4, r3
 					+ ((float) raw[i] * ang_w)) + 0.5f);
- 80036d8:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 80036da:	009b      	lsls	r3, r3, #2
- 80036dc:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 80036e0:	4413      	add	r3, r2
- 80036e2:	f853 3c20 	ldr.w	r3, [r3, #-32]
- 80036e6:	4618      	mov	r0, r3
- 80036e8:	f7fd fa08 	bl	8000afc <__aeabi_i2f>
- 80036ec:	4603      	mov	r3, r0
- 80036ee:	492e      	ldr	r1, [pc, #184]	; (80037a8 <_ZN8Odometry11ReadAccGyroEv+0x31c>)
- 80036f0:	4618      	mov	r0, r3
- 80036f2:	f7fd fa57 	bl	8000ba4 <__aeabi_fmul>
- 80036f6:	4603      	mov	r3, r0
- 80036f8:	4619      	mov	r1, r3
- 80036fa:	4620      	mov	r0, r4
- 80036fc:	f7fd f94a 	bl	8000994 <__addsf3>
- 8003700:	4603      	mov	r3, r0
- 8003702:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
- 8003706:	4618      	mov	r0, r3
- 8003708:	f7fd f944 	bl	8000994 <__addsf3>
- 800370c:	4603      	mov	r3, r0
+ 80036d6:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 80036d8:	009b      	lsls	r3, r3, #2
+ 80036da:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 80036de:	4413      	add	r3, r2
+ 80036e0:	f853 3c20 	ldr.w	r3, [r3, #-32]
+ 80036e4:	4618      	mov	r0, r3
+ 80036e6:	f7fd fa09 	bl	8000afc <__aeabi_i2f>
+ 80036ea:	4603      	mov	r3, r0
+ 80036ec:	492e      	ldr	r1, [pc, #184]	; (80037a8 <_ZN8Odometry11ReadAccGyroEv+0x31c>)
+ 80036ee:	4618      	mov	r0, r3
+ 80036f0:	f7fd fa58 	bl	8000ba4 <__aeabi_fmul>
+ 80036f4:	4603      	mov	r3, r0
+ 80036f6:	4619      	mov	r1, r3
+ 80036f8:	4620      	mov	r0, r4
+ 80036fa:	f7fd f94b 	bl	8000994 <__addsf3>
+ 80036fe:	4603      	mov	r3, r0
+ 8003700:	f04f 517c 	mov.w	r1, #1056964608	; 0x3f000000
+ 8003704:	4618      	mov	r0, r3
+ 8003706:	f7fd f945 	bl	8000994 <__addsf3>
+ 800370a:	4603      	mov	r3, r0
 			movavg[i] = (int) ((((float) movavg[i] * (1 - ang_w))
- 800370e:	4618      	mov	r0, r3
- 8003710:	f7fd fc24 	bl	8000f5c <__aeabi_f2iz>
- 8003714:	4601      	mov	r1, r0
- 8003716:	687b      	ldr	r3, [r7, #4]
- 8003718:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
- 800371a:	3204      	adds	r2, #4
- 800371c:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 800370c:	4618      	mov	r0, r3
+ 800370e:	f7fd fc25 	bl	8000f5c <__aeabi_f2iz>
+ 8003712:	4601      	mov	r1, r0
+ 8003714:	687b      	ldr	r3, [r7, #4]
+ 8003716:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
+ 8003718:	3204      	adds	r2, #4
+ 800371a:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 	for (int i = 0; i < 3; i++) {
- 8003720:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
- 8003722:	3301      	adds	r3, #1
- 8003724:	63fb      	str	r3, [r7, #60]	; 0x3c
- 8003726:	e783      	b.n	8003630 <_ZN8Odometry11ReadAccGyroEv+0x1a4>
+ 800371e:	6bfb      	ldr	r3, [r7, #60]	; 0x3c
+ 8003720:	3301      	adds	r3, #1
+ 8003722:	63fb      	str	r3, [r7, #60]	; 0x3c
+ 8003724:	e784      	b.n	8003630 <_ZN8Odometry11ReadAccGyroEv+0x1a4>
 //	} else {
 //		data[5] = offset_G;
 //		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
 //				+ ((float) raw[5] * acc_w)) + 0.5f);
 //	}
 	for(int i=3;i<6;i++){ //多分やんなくてもいい
- 8003728:	2303      	movs	r3, #3
- 800372a:	63bb      	str	r3, [r7, #56]	; 0x38
- 800372c:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 800372e:	2b05      	cmp	r3, #5
- 8003730:	dc1b      	bgt.n	800376a <_ZN8Odometry11ReadAccGyroEv+0x2de>
+ 8003726:	2303      	movs	r3, #3
+ 8003728:	63bb      	str	r3, [r7, #56]	; 0x38
+ 800372a:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 800372c:	2b05      	cmp	r3, #5
+ 800372e:	dc1b      	bgt.n	8003768 <_ZN8Odometry11ReadAccGyroEv+0x2dc>
 		data[i]=raw[i]/1000.0f;
- 8003732:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003734:	009b      	lsls	r3, r3, #2
- 8003736:	f107 0240 	add.w	r2, r7, #64	; 0x40
- 800373a:	4413      	add	r3, r2
- 800373c:	f853 3c20 	ldr.w	r3, [r3, #-32]
- 8003740:	4618      	mov	r0, r3
- 8003742:	f7fd f9db 	bl	8000afc <__aeabi_i2f>
- 8003746:	4603      	mov	r3, r0
- 8003748:	4915      	ldr	r1, [pc, #84]	; (80037a0 <_ZN8Odometry11ReadAccGyroEv+0x314>)
- 800374a:	4618      	mov	r0, r3
- 800374c:	f7fd fade 	bl	8000d0c <__aeabi_fdiv>
- 8003750:	4603      	mov	r3, r0
- 8003752:	461a      	mov	r2, r3
- 8003754:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003756:	009b      	lsls	r3, r3, #2
- 8003758:	f107 0140 	add.w	r1, r7, #64	; 0x40
- 800375c:	440b      	add	r3, r1
- 800375e:	f843 2c38 	str.w	r2, [r3, #-56]
+ 8003730:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 8003732:	009b      	lsls	r3, r3, #2
+ 8003734:	f107 0240 	add.w	r2, r7, #64	; 0x40
+ 8003738:	4413      	add	r3, r2
+ 800373a:	f853 3c20 	ldr.w	r3, [r3, #-32]
+ 800373e:	4618      	mov	r0, r3
+ 8003740:	f7fd f9dc 	bl	8000afc <__aeabi_i2f>
+ 8003744:	4603      	mov	r3, r0
+ 8003746:	4916      	ldr	r1, [pc, #88]	; (80037a0 <_ZN8Odometry11ReadAccGyroEv+0x314>)
+ 8003748:	4618      	mov	r0, r3
+ 800374a:	f7fd fadf 	bl	8000d0c <__aeabi_fdiv>
+ 800374e:	4603      	mov	r3, r0
+ 8003750:	461a      	mov	r2, r3
+ 8003752:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 8003754:	009b      	lsls	r3, r3, #2
+ 8003756:	f107 0140 	add.w	r1, r7, #64	; 0x40
+ 800375a:	440b      	add	r3, r1
+ 800375c:	f843 2c38 	str.w	r2, [r3, #-56]
 	for(int i=3;i<6;i++){ //多分やんなくてもいい
- 8003762:	6bbb      	ldr	r3, [r7, #56]	; 0x38
- 8003764:	3301      	adds	r3, #1
- 8003766:	63bb      	str	r3, [r7, #56]	; 0x38
- 8003768:	e7e0      	b.n	800372c <_ZN8Odometry11ReadAccGyroEv+0x2a0>
+ 8003760:	6bbb      	ldr	r3, [r7, #56]	; 0x38
+ 8003762:	3301      	adds	r3, #1
+ 8003764:	63bb      	str	r3, [r7, #56]	; 0x38
+ 8003766:	e7e0      	b.n	800372a <_ZN8Odometry11ReadAccGyroEv+0x29e>
 	}
 
 	MDGF.updateIMU(data[0], data[1], data[2], data[3], data[4], data[5]);
- 800376a:	68b8      	ldr	r0, [r7, #8]
- 800376c:	68fc      	ldr	r4, [r7, #12]
- 800376e:	693d      	ldr	r5, [r7, #16]
- 8003770:	697b      	ldr	r3, [r7, #20]
- 8003772:	69ba      	ldr	r2, [r7, #24]
- 8003774:	69f9      	ldr	r1, [r7, #28]
- 8003776:	9102      	str	r1, [sp, #8]
- 8003778:	9201      	str	r2, [sp, #4]
- 800377a:	9300      	str	r3, [sp, #0]
- 800377c:	462b      	mov	r3, r5
- 800377e:	4622      	mov	r2, r4
- 8003780:	4601      	mov	r1, r0
- 8003782:	480a      	ldr	r0, [pc, #40]	; (80037ac <_ZN8Odometry11ReadAccGyroEv+0x320>)
- 8003784:	f7fe fe88 	bl	8002498 <_ZN8Madgwick9updateIMUEffffff>
+ 8003768:	68b8      	ldr	r0, [r7, #8]
+ 800376a:	68fc      	ldr	r4, [r7, #12]
+ 800376c:	693d      	ldr	r5, [r7, #16]
+ 800376e:	697b      	ldr	r3, [r7, #20]
+ 8003770:	69ba      	ldr	r2, [r7, #24]
+ 8003772:	69f9      	ldr	r1, [r7, #28]
+ 8003774:	9102      	str	r1, [sp, #8]
+ 8003776:	9201      	str	r2, [sp, #4]
+ 8003778:	9300      	str	r3, [sp, #0]
+ 800377a:	462b      	mov	r3, r5
+ 800377c:	4622      	mov	r2, r4
+ 800377e:	4601      	mov	r1, r0
+ 8003780:	480a      	ldr	r0, [pc, #40]	; (80037ac <_ZN8Odometry11ReadAccGyroEv+0x320>)
+ 8003782:	f7fe fe89 	bl	8002498 <_ZN8Madgwick9updateIMUEffffff>
 //	dt = HAL_GetTick()-lasttime;
 //	lasttime=HAL_GetTick();
 	this->yaw = MDGF.getYawRadians();
- 8003788:	4808      	ldr	r0, [pc, #32]	; (80037ac <_ZN8Odometry11ReadAccGyroEv+0x320>)
- 800378a:	f7ff fb4f 	bl	8002e2c <_ZN8Madgwick13getYawRadiansEv>
- 800378e:	4602      	mov	r2, r0
- 8003790:	687b      	ldr	r3, [r7, #4]
- 8003792:	609a      	str	r2, [r3, #8]
+ 8003786:	4809      	ldr	r0, [pc, #36]	; (80037ac <_ZN8Odometry11ReadAccGyroEv+0x320>)
+ 8003788:	f7ff fb50 	bl	8002e2c <_ZN8Madgwick13getYawRadiansEv>
+ 800378c:	4602      	mov	r2, r0
+ 800378e:	687b      	ldr	r3, [r7, #4]
+ 8003790:	609a      	str	r2, [r3, #8]
 }
- 8003794:	bf00      	nop
- 8003796:	3740      	adds	r7, #64	; 0x40
- 8003798:	46bd      	mov	sp, r7
- 800379a:	bdb0      	pop	{r4, r5, r7, pc}
+ 8003792:	bf00      	nop
+ 8003794:	3740      	adds	r7, #64	; 0x40
+ 8003796:	46bd      	mov	sp, r7
+ 8003798:	bdb0      	pop	{r4, r5, r7, pc}
+ 800379a:	bf00      	nop
  800379c:	42033333 	.word	0x42033333
  80037a0:	447a0000 	.word	0x447a0000
- 80037a4:	3f666666 	.word	0x3f666666
- 80037a8:	3dcccccd 	.word	0x3dcccccd
+ 80037a4:	3f6b851f 	.word	0x3f6b851f
+ 80037a8:	3da3d70a 	.word	0x3da3d70a
  80037ac:	20000870 	.word	0x20000870
 
 080037b0 <_ZN8Odometry10InitializeEv>:
@@ -8050,7 +8051,7 @@ int main(void) {
  8003c2a:	4602      	mov	r2, r0
  8003c2c:	687b      	ldr	r3, [r7, #4]
  8003c2e:	1ad3      	subs	r3, r2, r3
- 8003c30:	2b04      	cmp	r3, #4
+ 8003c30:	2b09      	cmp	r3, #9
  8003c32:	bf8c      	ite	hi
  8003c34:	2301      	movhi	r3, #1
  8003c36:	2300      	movls	r3, #0
@@ -8217,9 +8218,9 @@ void CANtxinit(void) {
  8003d42:	4b18      	ldr	r3, [pc, #96]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
  8003d44:	2200      	movs	r2, #0
  8003d46:	609a      	str	r2, [r3, #8]
-	tx_header_x.StdId = 0x605; //ID決める
+	tx_header_x.StdId = 0x205; //ID決める
  8003d48:	4b16      	ldr	r3, [pc, #88]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
- 8003d4a:	f240 6205 	movw	r2, #1541	; 0x605
+ 8003d4a:	f240 2205 	movw	r2, #517	; 0x205
  8003d4e:	601a      	str	r2, [r3, #0]
 	tx_header_x.ExtId = 0; //ここは0のままで 無くても問題ないと思う
  8003d50:	4b14      	ldr	r3, [pc, #80]	; (8003da4 <_ZL9CANtxinitv+0x6c>)
@@ -8237,9 +8238,9 @@ void CANtxinit(void) {
  8003d62:	4b11      	ldr	r3, [pc, #68]	; (8003da8 <_ZL9CANtxinitv+0x70>)
  8003d64:	2200      	movs	r2, #0
  8003d66:	609a      	str	r2, [r3, #8]
-	tx_header_y.StdId = 0x606;
+	tx_header_y.StdId = 0x206;
  8003d68:	4b0f      	ldr	r3, [pc, #60]	; (8003da8 <_ZL9CANtxinitv+0x70>)
- 8003d6a:	f240 6206 	movw	r2, #1542	; 0x606
+ 8003d6a:	f240 2206 	movw	r2, #518	; 0x206
  8003d6e:	601a      	str	r2, [r3, #0]
 	tx_header_y.ExtId = 0;
  8003d70:	4b0d      	ldr	r3, [pc, #52]	; (8003da8 <_ZL9CANtxinitv+0x70>)
@@ -8257,9 +8258,9 @@ void CANtxinit(void) {
  8003d82:	4b0a      	ldr	r3, [pc, #40]	; (8003dac <_ZL9CANtxinitv+0x74>)
  8003d84:	2200      	movs	r2, #0
  8003d86:	609a      	str	r2, [r3, #8]
-	tx_header_yaw.StdId = 0x607;
+	tx_header_yaw.StdId = 0x207;
  8003d88:	4b08      	ldr	r3, [pc, #32]	; (8003dac <_ZL9CANtxinitv+0x74>)
- 8003d8a:	f240 6207 	movw	r2, #1543	; 0x607
+ 8003d8a:	f240 2207 	movw	r2, #519	; 0x207
  8003d8e:	601a      	str	r2, [r3, #0]
 	tx_header_yaw.ExtId = 0;
  8003d90:	4b06      	ldr	r3, [pc, #24]	; (8003dac <_ZL9CANtxinitv+0x74>)
