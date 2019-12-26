@@ -147,7 +147,7 @@ void Odometry::ReadAccGyro(void) {
 //	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
 //	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg
 //			/ SamplingFrequency;
-	static constexpr float ang_w = 0.08f; //追従の強さ
+	static constexpr float ang_w = 0.01f; //追従の強さ
 //	static constexpr float acc_w = 0.1f;
 //	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
 
