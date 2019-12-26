@@ -84,7 +84,7 @@ uint8_t tx_payload_y[CAN_MTU];
 uint8_t tx_payload_yaw[CAN_MTU];
 //static constexpr uint32_t Period = pow(10, 6) / (odom->SamplingFrequency);
 //周波数に合わせて下のとこいじって(丸投げ)
-static constexpr uint32_t CAN_Freq = 10;
+static constexpr uint32_t CAN_Freq = 100;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -153,7 +153,7 @@ int main(void) {
 	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
 
 	//CANの通信速度を設定する
-	can_set_bitrate(CAN_BITRATE_500K);
+	can_set_bitrate(CAN_BITRATE_1000K);
 
 //	GPIOC->BSRR = GPIO_BSRR_BS13;
 //
@@ -216,7 +216,7 @@ int main(void) {
 			asm("NOP");
 			asm("NOP");
 			asm("NOP");
-//			can_tx(&tx_header_y, tx_payload_y);
+			can_tx(&tx_header_y, tx_payload_y);
 			asm("NOP");
 			asm("NOP");
 			asm("NOP");
@@ -227,7 +227,7 @@ int main(void) {
 			asm("NOP");
 			asm("NOP");
 			asm("NOP");
-//			can_tx(&tx_header_yaw, tx_payload_yaw);
+			can_tx(&tx_header_yaw, tx_payload_yaw);
 
 			// UART使ったデバッグ用に残しておく
 //			char kakudo[7];
