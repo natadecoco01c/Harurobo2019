@@ -152,7 +152,7 @@ void Odometry::ReadAccGyro(void) {
 //	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
 
 	int raw[6];
-	float data[6];
+	float data[3];
 
 //	static uint32_t lasttime=0;
 //	static uint16_t dt=0;
@@ -197,32 +197,8 @@ void Odometry::ReadAccGyro(void) {
 					+ ((float) raw[i] * ang_w)) + 0.5f);
 		}
 	}
-//	for (int i = 3; i < 5; i++) {
-//		biased[i] = raw[i] - movavg[i];
-//
-//		if (biased[i] < -acc_movband || acc_movband < biased[i]) {
-//			data[i] = biased[i] / 1000.0f;
-//		} else {
-//			data[i] = 0.0f;
-//			movavg[i] = (int) ((((float) movavg[i] * (1 - acc_w))
-//					+ ((float) raw[i] * acc_w)) + 0.5f);
-//		}
-//	}
-//
-//	biased[5] = raw[5] - movavg[5];
-//
-//	if (biased[5] < -acc_movband || acc_movband < biased[5]) {
-//		data[5] = (biased[5] / 1000.0f) + offset_G;
-//	} else {
-//		data[5] = offset_G;
-//		movavg[5] = (int) ((((float) movavg[5] * (1 - acc_w))
-//				+ ((float) raw[5] * acc_w)) + 0.5f);
-//	}
-	for(int i=3;i<6;i++){ //多分やんなくてもいい
-		data[i]=raw[i]/1000.0f;
-	}
 
-	MDGF.updateIMU(data[0], data[1], data[2], data[3], data[4], data[5]);
+	MDGF.updateIMU(data[0], data[1], data[2], raw[3], raw[4], raw[5]);
 //	dt = HAL_GetTick()-lasttime;
 //	lasttime=HAL_GetTick();
 	this->yaw = MDGF.getYawRadians();
