@@ -55,7 +55,7 @@ SPI_HandleTypeDef hspi2; //ジャイロとの通信用
 TIM_HandleTypeDef htim2; //TIM3,4はエンコーダー用
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
-UART_HandleTypeDef huart2; //デバッグ用に残しておく
+UART_HandleTypeDef huart1; //デバッグ用に残しておく
 CAN_HandleTypeDef hcan;
 //CAN_RxHeaderTypeDef rx_header;
 CAN_TxHeaderTypeDef tx_header_x;
@@ -98,7 +98,7 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 //static void MX_CAN_Init(void);
 static void MX_SPI2_Init(void);
-static void MX_USART2_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 static void CANtxinit(void);
 
 /* USER CODE END PFP */
@@ -130,7 +130,7 @@ int main(void) {
 	MX_TIM4_Init();
 //	MX_CAN_Init(); //要らないかもだけど確認取れて無いので残しておく
 	MX_SPI2_Init();
-	MX_USART2_UART_Init(); //デバッグ用だよ
+	MX_USART1_UART_Init(); //デバッグ用だよ
 	// CANを初期化する．
 	can_init();
 
@@ -230,9 +230,11 @@ int main(void) {
 			can_tx(&tx_header_yaw, tx_payload_yaw);
 
 			// UART使ったデバッグ用に残しておく
-			char kakudo[7];
-			sprintf(kakudo, "%1.2f\n\r", Yaw);
-			HAL_UART_Transmit_IT(&huart2, (uint8_t *) kakudo, 7);
+			char kakudo[12];
+			sprintf(kakudo, "%1.7f\n\r", Yaw);
+			HAL_UART_Transmit(&huart1, (uint8_t *) kakudo, 12, 1000);
+//			char buf[] = "unchi";
+//			HAL_UART_Transmit(&huart1, (uint8_t *) buf, sizeof(buf), 1000);
 
 			last_time = HAL_GetTick();
 		}
@@ -507,32 +509,32 @@ static void MX_TIM2_Init(void) {
 }
 
 /**
- * @brief USART2 Initialization Function
+ * @brief USART1 Initialization Function
  * @param None
  * @retval None
  */
-static void MX_USART2_UART_Init(void) {
+static void MX_USART1_UART_Init(void) {
 
-	/* USER CODE BEGIN USART2_Init 0 */
+	/* USER CODE BEGIN USART1_Init 0 */
 
-	/* USER CODE END USART2_Init 0 */
+	/* USER CODE END USART1_Init 0 */
 
-	/* USER CODE BEGIN USART2_Init 1 */
+	/* USER CODE BEGIN USART1_Init 1 */
 
-	/* USER CODE END USART2_Init 1 */
-	huart2.Instance = USART2;
-	huart2.Init.BaudRate = 115200; //変更してもいいかな
-	huart2.Init.WordLength = UART_WORDLENGTH_8B;
-	huart2.Init.StopBits = UART_STOPBITS_1;
-	huart2.Init.Parity = UART_PARITY_NONE;
-	huart2.Init.Mode = UART_MODE_TX_RX;
-	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-	if (HAL_UART_Init(&huart2) != HAL_OK) {
+	/* USER CODE END USART1_Init 1 */
+	huart1.Instance = USART1;
+	huart1.Init.BaudRate = 115200; //変更してもいいかな
+	huart1.Init.WordLength = UART_WORDLENGTH_8B;
+	huart1.Init.StopBits = UART_STOPBITS_1;
+	huart1.Init.Parity = UART_PARITY_NONE;
+	huart1.Init.Mode = UART_MODE_TX_RX;
+	huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+	if (HAL_UART_Init(&huart1) != HAL_OK) {
 		Error_Handler();
 	}
-	/* USER CODE BEGIN USART2_Init 2 */
-	/* USER CODE END USART2_Init 2 */
+	/* USER CODE BEGIN USART1_Init 2 */
+	/* USER CODE END USART1_Init 2 */
 
 }
 

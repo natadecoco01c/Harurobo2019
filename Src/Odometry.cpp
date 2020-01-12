@@ -143,19 +143,13 @@ void Odometry::ReadEncoder(void) {
 
 void Odometry::ReadAccGyro(void) {
 	static constexpr int32_t ang_movband = 250;
-//	static constexpr int32_t acc_movband = 150;
-//	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
-//	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg
-//			/ SamplingFrequency;
 	static constexpr float ang_w = 0.01f; //追従の強さ
-//	static constexpr float acc_w = 0.1f;
-//	static const float offset_G = movavg[5] / 1000.0f; //Z軸重力の分,フィルタで消えてしまうので足す
+
+//	static uint32_t lasttime=0;
+//		static uint16_t dt=0;
 
 	int raw[6];
 	float data[3];
-
-//	static uint32_t lasttime=0;
-//	static uint16_t dt=0;
 
 	raw[0] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
@@ -164,11 +158,11 @@ void Odometry::ReadAccGyro(void) {
 	raw[2] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_ZOUT_H,
 			0x0000)) * 1000 / GyroSensitivityScaleFactor) + 0.5f;
 	raw[3] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_XOUT_H,
-			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
+			0x0000))  / AccSensitivityScaleFactor) + 0.5f;
 	raw[4] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_YOUT_H,
-			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
+			0x0000))  / AccSensitivityScaleFactor) + 0.5f;
 	raw[5] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_ZOUT_H,
-			0x0000)) * 1000 / AccSensitivityScaleFactor) + 0.5f;
+			0x0000))  / AccSensitivityScaleFactor) + 0.5f;
 
 	//static constexpr float halfPi = M_PI / 2.0;
 
