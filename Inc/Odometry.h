@@ -30,8 +30,8 @@ private:
 	static constexpr float MPerPulse = M_PI * WheelDiameter / PulsePerRevolution;
 
 	// milli degree per sec // milli G per sec //Gxyz,Axyz
-	int movavg[6];
-	int biased[6];
+//	int movavg[6];
+//	int biased[6];
 
 	void GetBias(float * const avg, float * const stdev) const;
 	bool InitGyro(void);
@@ -43,6 +43,10 @@ public:
 	Odometry(void);
 
 	bool Initialize(void);
+
+	int raw[6]; //後で戻す
+	int movavg[6];
+	int biased[6];
 
 	void Sample(void);
 	void SetPose(float x, float y, float yaw);

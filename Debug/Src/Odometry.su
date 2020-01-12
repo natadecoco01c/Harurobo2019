@@ -4,7 +4,7 @@ Odometry.cpp:17:1:Odometry::Odometry()	24	static
 Odometry.cpp:27:6:void Odometry::GetBias(float*, float*) const	120	static
 Odometry.cpp:73:6:bool Odometry::InitGyro()	80	static
 Odometry.cpp:127:6:void Odometry::ReadEncoder()	40	static
-Odometry.cpp:144:6:void Odometry::ReadAccGyro()	96	static
+Odometry.cpp:144:6:void Odometry::ReadAccGyro()	72	static
 Odometry.cpp:201:6:bool Odometry::Initialize()	16	static
 Odometry.cpp:205:6:void Odometry::Sample()	16	static
 Odometry.cpp:210:6:void Odometry::SetPose(float, float, float)	24	static

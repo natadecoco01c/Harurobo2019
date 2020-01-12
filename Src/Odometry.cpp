@@ -143,12 +143,12 @@ void Odometry::ReadEncoder(void) {
 
 void Odometry::ReadAccGyro(void) {
 	static constexpr int32_t ang_movband = 250;
-	static constexpr float ang_w = 0.01f; //追従の強さ
+	static constexpr float ang_w = 0.02f; //追従の強さ
 
 //	static uint32_t lasttime=0;
 //		static uint16_t dt=0;
 
-	int raw[6];
+//	int raw[6];
 	float data[3];
 
 	raw[0] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_GYRO_XOUT_H,

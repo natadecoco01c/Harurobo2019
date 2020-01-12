@@ -189,9 +189,9 @@ int main(void) {
 
 	CANtxinit();
 
-	static float X;
-	static float Y;
-	static float Yaw;
+	static int X;
+	static int Y;
+	static int Yaw;
 	uint32_t last_time = 0;
 
 	/* USER CODE END 2 */
@@ -200,39 +200,44 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		if (HAL_GetTick() - last_time >= (1000 / CAN_Freq)) {
-			odom->GetPose(&X, &Y, &Yaw);
-			can_pack(tx_payload_x, X);
-			can_pack(tx_payload_y, Y);
-			can_pack(tx_payload_yaw, Yaw);
+			//odom->GetPose(&X, &Y, &Yaw);
+			X = odom->movavg[2];
+			Y = odom->movavg[2]-250;
+			Yaw = odom->raw[2];
+			can_pack(tx_payload_x, (float)X);
+			can_pack(tx_payload_y, (float)Y);
+			can_pack(tx_payload_yaw, (float)Yaw);
 
 			can_tx(&tx_header_x, tx_payload_x); //can pack 通して tx_payload
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
+			HAL_Delay(1);
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
 			can_tx(&tx_header_y, tx_payload_y);
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
-			asm("NOP");
+			HAL_Delay(1);
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
+//			asm("NOP");
 			can_tx(&tx_header_yaw, tx_payload_yaw);
 
 			// UART使ったデバッグ用に残しておく
-			char kakudo[12];
-			sprintf(kakudo, "%1.7f\n\r", Yaw);
-			HAL_UART_Transmit(&huart1, (uint8_t *) kakudo, 12, 1000);
+//			char kakudo[12];
+//			sprintf(kakudo, "%1.7f\n\r", Yaw);
+//			HAL_UART_Transmit(&huart1, (uint8_t *) kakudo, 12, 1000);
 //			char buf[] = "unchi";
 //			HAL_UART_Transmit(&huart1, (uint8_t *) buf, sizeof(buf), 1000);
 
