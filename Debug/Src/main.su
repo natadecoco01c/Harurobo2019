@@ -1,6 +1,6 @@
 core_cm3.h:1524:22:void NVIC_SetPriority(IRQn_Type, uint32_t)	16	static
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
-main.cpp:115:5:int main()	16	static,ignoring_inline_asm
+main.cpp:115:5:int main()	32	static,ignoring_inline_asm
 main.cpp:245:17:void TIM2_IRQHandler()	8	static
 main.cpp:255:6:void CANtxinit()	4	static
 main.cpp:276:6:void SystemClock_Config()	72	static

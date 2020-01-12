@@ -53,8 +53,8 @@ void can_enable(void)
         hcan.Init.Prescaler = prescaler;
         hcan.Init.Mode = CAN_MODE_NORMAL;
         hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
-        hcan.Init.TimeSeg1 = CAN_BS1_4TQ;
-        hcan.Init.TimeSeg2 = CAN_BS2_3TQ;
+        hcan.Init.TimeSeg1 = CAN_BS1_15TQ;
+        hcan.Init.TimeSeg2 = CAN_BS2_2TQ;
         hcan.Init.TimeTriggeredMode = DISABLE;
         hcan.Init.AutoBusOff = ENABLE;
         hcan.Init.AutoWakeUp = DISABLE;
@@ -128,13 +128,13 @@ void can_set_bitrate(enum can_bitrate bitrate)
             prescaler = 18;
             break;
         case CAN_BITRATE_500K:
-            prescaler = 9;
+            prescaler = 4;
             break;
         case CAN_BITRATE_750K:
-            prescaler = 6;
+            prescaler = 3;
             break;
         case CAN_BITRATE_1000K:
-            prescaler = 4;
+            prescaler = 2;
             break;
     }
 }

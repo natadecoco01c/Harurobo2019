@@ -173,15 +173,15 @@ int main(void) {
 //	GPIOC->BSRR = GPIO_BSRR_BR13;
 //	GPIOB->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
 
-//	bool r = odom->Initialize(); //ジャイロの初期化に失敗するとループに入る
-//	if (!r) {
-//		while (1) {
-//			HAL_Delay(100);
-//			GPIOB->BSRR = GPIO_BSRR_BR9;
-//			HAL_Delay(100);
-//			GPIOB->BSRR = GPIO_BSRR_BS9;
-//		}
-//	}
+	bool r = odom->Initialize(); //ジャイロの初期化に失敗するとループに入る
+	if (!r) {
+		while (1) {
+			HAL_Delay(100);
+			GPIOB->BSRR = GPIO_BSRR_BR9;
+			HAL_Delay(100);
+			GPIOB->BSRR = GPIO_BSRR_BS9;
+		}
+	}
 
 	can_enable();
 
@@ -230,9 +230,9 @@ int main(void) {
 			can_tx(&tx_header_yaw, tx_payload_yaw);
 
 			// UART使ったデバッグ用に残しておく
-//			char kakudo[7];
-//			sprintf(kakudo, "%1.2f\n\r", Yaw);
-//			HAL_UART_Transmit_IT(&huart2, (uint8_t *) kakudo, 7);
+			char kakudo[7];
+			sprintf(kakudo, "%1.2f\n\r", Yaw);
+			HAL_UART_Transmit_IT(&huart2, (uint8_t *) kakudo, 7);
 
 			last_time = HAL_GetTick();
 		}
