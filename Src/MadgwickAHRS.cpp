@@ -26,7 +26,7 @@
 //-------------------------------------------------------------------------------------------
 // Definitions
 
-#define sampleFreqDef   512.0f          // sample frequency in Hz //ちゃんと合わせてやる必要アリ
+#define sampleFreqDef   1000.0f          // sample frequency in Hz //ちゃんと合わせてやる必要アリ
 #define betaDef         0.1f    // 2 * proportional gain
 
 //============================================================================================

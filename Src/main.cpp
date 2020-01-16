@@ -189,9 +189,9 @@ int main(void) {
 
 	CANtxinit();
 
-	static int X;
-	static int Y;
-	static int Yaw;
+	static float X;
+	static float Y;
+	static float Yaw;
 	uint32_t last_time = 0;
 
 	/* USER CODE END 2 */
@@ -200,10 +200,10 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		if (HAL_GetTick() - last_time >= (1000 / CAN_Freq)) {
-			//odom->GetPose(&X, &Y, &Yaw);
-			X = odom->movavg[2];
-			Y = odom->movavg[2]-250;
-			Yaw = odom->raw[2];
+			odom->GetPose(&X, &Y, &Yaw);
+//			X = odom->movavg[2] + 250;
+//			Y = odom->movavg[2]-250;
+//			Yaw = odom->raw[2];
 			can_pack(tx_payload_x, (float)X);
 			can_pack(tx_payload_y, (float)Y);
 			can_pack(tx_payload_yaw, (float)Yaw);
@@ -489,9 +489,9 @@ static void MX_TIM2_Init(void) {
 
 	/* USER CODE END TIM2_Init 1 */
 	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = 9 - 1; //512Hz
+	htim2.Init.Prescaler = 72 - 1; //1000Hz
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 15625-1;
+	htim2.Init.Period = 1000-1;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {

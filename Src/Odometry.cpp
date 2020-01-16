@@ -86,12 +86,12 @@ bool Odometry::InitGyro(void) {
 	// DLPF_CFG = bits 2:0 = 000; this sets the sample rate at 8 kHz for both
 	// Maximum delay is 0.97 ms which is just over a 1 kHz maximum rate
 	//mpu9250->WriteByte(MPUREG_CONFIG, 0x00);
-	mpu9250->WriteByte(MPUREG_CONFIG, 0x03);	//1khz
+	mpu9250->WriteByte(MPUREG_CONFIG, 0x00);	//8khz
 
 	// Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x07);  // Use a 1 kHz rate; the same rate set in CONFIG above
 	//mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
-	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00); //1khzでサンプリング
+	mpu9250->WriteByte(MPUREG_SMPLRT_DIV, 0x00); //8khzでサンプリング
 
 	mpu9250->WriteByte(MPUREG_GYRO_CONFIG, BITS_FS_1000DPS);
 	mpu9250->WriteByte(MPUREG_ACCEL_CONFIG, 0b11000);
@@ -125,7 +125,7 @@ bool Odometry::InitGyro(void) {
 }
 
 void Odometry::ReadEncoder(void) {
-	volatile int16_t _p1 = static_cast<int16_t>(TIM3->CNT);
+	volatile int16_t _p1 = (-1)*static_cast<int16_t>(TIM3->CNT);
 	TIM3->CNT = 0;
 
 	volatile int16_t _p2 = (-1)*static_cast<int16_t>(TIM4->CNT);
@@ -143,10 +143,10 @@ void Odometry::ReadEncoder(void) {
 
 void Odometry::ReadAccGyro(void) {
 	static constexpr int32_t ang_movband = 250;
-	static constexpr float ang_w = 0.02f; //追従の強さ
+	static constexpr float ang_w = 0.01f; //追従の強さ
 
-//	static uint32_t lasttime=0;
-//		static uint16_t dt=0;
+	static uint32_t lasttime=0;
+	static uint16_t dt=0;
 
 //	int raw[6];
 	float data[3];
@@ -164,7 +164,9 @@ void Odometry::ReadAccGyro(void) {
 	raw[5] = (((int16_t) mpu9250->WriteWord(READ_FLAG | MPUREG_ACCEL_ZOUT_H,
 			0x0000))  / AccSensitivityScaleFactor) + 0.5f;
 
-	//static constexpr float halfPi = M_PI / 2.0;
+//	static constexpr float halfPi = M_PI / 2.0;
+//	static constexpr float RadPerMilliDeg = M_PI / 180000.0;
+//	static constexpr float RadPerMilliDegPerSec = RadPerMilliDeg / SamplingFrequency;
 
 //	int dy_raw_mdps = (((int16_t) mpu9250->WriteWord(
 //	READ_FLAG | MPUREG_GYRO_ZOUT_H, 0x0000)) * 1000 / SensitivityScaleFactor)
@@ -187,14 +189,14 @@ void Odometry::ReadAccGyro(void) {
 			data[i] = biased[i] / 1000.0f;
 		} else {
 			data[i] = 0.0f;
-			movavg[i] = (int) ((((float) movavg[i] * (1 - ang_w))
-					+ ((float) raw[i] * ang_w)) + 0.5f);
+			movavg[i] = (int) (roundf(( movavg[i] * (1.0 - ang_w)) + ( raw[i] * ang_w)));
+//			movavg[i] = (int) ((( movavg[i] * (1.0 - ang_w))) );
 		}
 	}
 
 	MDGF.updateIMU(data[0], data[1], data[2], raw[3], raw[4], raw[5]);
-//	dt = HAL_GetTick()-lasttime;
-//	lasttime=HAL_GetTick();
+	dt = HAL_GetTick()-lasttime;
+	lasttime=HAL_GetTick();
 	this->yaw = MDGF.getYawRadians();
 }
 
